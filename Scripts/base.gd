@@ -33,6 +33,7 @@ func _input(event):
 		if selected_ship == null and not docked_ships.is_empty():
 				launched_ship = docked_ships.pop_front()
 				launched_ship.cargo = cargo_amount
+				launched_ship.global_position = global_position + global_position.direction_to(get_global_mouse_position()) * $CollisionShape2D.shape.radius * 1.25
 				launched_ship.add_waypoint(get_global_mouse_position())
 				launched_ship.update_rotation()
 				ship_active(launched_ship, true)
