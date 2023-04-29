@@ -31,9 +31,7 @@ func _input(event):
 		$Sprite2D.modulate = Color("#BDD156") if selected else Color("#3fc778")
 	elif selected and event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed():
 		if selected_ship == null and not docked_ships.is_empty():
-				print(docked_ships)
 				launched_ship = docked_ships.pop_front()
-				print(docked_ships)
 				launched_ship.cargo = cargo_amount
 				launched_ship.add_waypoint(get_global_mouse_position())
 				launched_ship.update_rotation()
@@ -66,7 +64,7 @@ func ship_active(current_ship:Node2D, active:bool):
 		current_ship.waypoint_clear()
 
 func _on_body_entered(body: Node2D):
-	if body.waypoint_count() <= 1 and body.waypoint_next_post().distance_to_squared(global_position) < ($CollisionShape2D.shape.radius*$CollisionShape2D.shape.radius):
+	if body.waypoint_count() == 0 or (body.waypoint_count() == 1 and body.waypoint_next_pos().distance_squared_to(global_position) < ($CollisionShape2D.shape.radius*$CollisionShape2D.shape.radius)):
 		body.select_ship(false)
 		ship_active(body, false)
 		docked_ships.append(body)
