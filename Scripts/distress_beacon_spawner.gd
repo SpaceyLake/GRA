@@ -6,6 +6,8 @@ const MIN_LENGTH_FROM_DISTRESS_BEACON_SQUARED = 100*100
 var time_decreasment:int = 1
 var time:int = 15
 var timer:Timer = Timer.new()
+@export var min_need:int = 1
+@export var max_need:int = 3
 @onready var size: Vector2 = get_viewport().get_size()
 @onready var camera:Camera2D = get_parent().get_node("Camera")
 var rnd: RandomNumberGenerator = RandomNumberGenerator.new()
@@ -38,5 +40,6 @@ func _timeout():
 			if distress_beacon.global_position.distance_squared_to(proposed_position) < MIN_LENGTH_FROM_DISTRESS_BEACON_SQUARED:
 				accepted_proposition = false
 				break
-	distress_beacon_pool.request_distress_beacon(proposed_position)
+	var distress_beacon:Node2D = distress_beacon_pool.request_distress_beacon(proposed_position)
+	distress_beacon.set_need(rnd.randi_range(min_need, max_need))
 	timer.start(time)
