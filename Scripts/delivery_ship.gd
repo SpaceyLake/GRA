@@ -4,7 +4,7 @@ var howered:bool = false
 var selected:bool = false
 var destinations:Array = []
 var cargo: int = 0
-var base_position:Vector2
+var base_position:Vector2 = Vector2(-1, -1)
 
 func _ready():
 	mouse_entered.connect(is_howering)
@@ -16,6 +16,8 @@ func _physics_process(delta):
 		velocity = Vector2.ZERO
 		path_marker_pool.return_path_marker(destinations.pop_front())
 		$Node/PathLine.remove_point(1)
+		if cargo <= 0 and base_position != Vector2(-1, -1) and destinations.is_empty():
+			add_waypoint(base_position)
 	if not destinations.is_empty():
 #		$Sprite2D.look_at(destinations.front().global_position)
 		velocity = global_position.direction_to(destinations.front().global_position)*20
@@ -36,13 +38,8 @@ func _input(event):
 			select_ship(false)
 	elif selected and event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed():
 		if not Input.is_action_pressed("shift"):
-			for marker in destinations:
-				path_marker_pool.return_path_marker(marker)
-			destinations.clear()
-			$Node/PathLine.clear_points()
-			$Node/PathLine.add_point(global_position)
-		destinations.append(path_marker_pool.request_path_marker(get_global_mouse_position()))
-		$Node/PathLine.add_point(get_global_mouse_position())
+			waypoint_clear()
+		add_waypoint(get_global_mouse_position())
 
 func set_base_position(new_position):
 	base_position = new_position
@@ -65,7 +62,22 @@ func add_waypoint(pos:Vector2):
 	destinations.append(marker)
 	$Node/PathLine.add_point(pos)
 
-func set_goal_roation():
+func waypoint_count():
+	return destinations.size()
+
+func waypoint_clear():
+	for marker in destinations:
+		path_marker_pool.return_path_marker(marker)
+		destinations.clear()
+	$Node/PathLine.clear_points()
+	$Node/PathLine.add_point(global_position)
+
+func waypoint_next_pos():
+	if destinations.is_empty():
+		return null
+	return destinations.front().global_position
+
+func update_rotation():
 	if not destinations.is_empty():
 		global_rotation = global_position.angle_to_point(destinations.front().global_position)
 
