@@ -10,7 +10,7 @@ func request_path_marker(location):
 	if path_marker_pool.is_empty():
 		if node_creation_parent == null:
 			print_debug("node_creation_parent is null")
-			return
+			return null
 		node_instance = scn_path_marker.instantiate()
 		node_creation_parent.add_child(node_instance)
 	else:

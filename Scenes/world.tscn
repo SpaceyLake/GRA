@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://bt6kdd48rxcyv"]
+[gd_scene load_steps=8 format=3 uid="uid://bt6kdd48rxcyv"]
 
 [ext_resource type="Script" path="res://Scripts/world.gd" id="1_s7eyf"]
 [ext_resource type="PackedScene" uid="uid://dxp165f3yspdb" path="res://Scenes/base.tscn" id="3_lnp6p"]
-[ext_resource type="PackedScene" path="res://Scenes/distress_beacon_spawner.tscn" id="4_7i0cp"]
+[ext_resource type="PackedScene" uid="uid://bixxpibpivcwh" path="res://Scenes/distress_beacon_spawner.tscn" id="4_7i0cp"]
 [ext_resource type="PackedScene" path="res://Scenes/camera.tscn" id="4_14cax"]
 [ext_resource type="Script" path="res://Scenes/camera.gd" id="5_3ev71"]
+[ext_resource type="PackedScene" uid="uid://bsuriqu5ia71i" path="res://Scenes/distress_beacon.tscn" id="6_aggjf"]
 
 [sub_resource type="Environment" id="Environment_47pud"]
 background_mode = 3
@@ -28,3 +29,6 @@ environment = SubResource("Environment_47pud")
 script = ExtResource("5_3ev71")
 
 [node name="Base" parent="." instance=ExtResource("3_lnp6p")]
+
+[node name="DistressBeacon" parent="." instance=ExtResource("6_aggjf")]
+position = Vector2(369, 0)
