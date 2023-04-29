@@ -1,7 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://bt6kdd48rxcyv"]
+[gd_scene load_steps=5 format=3 uid="uid://bt6kdd48rxcyv"]
 
 [ext_resource type="Script" path="res://Scripts/world.gd" id="1_s7eyf"]
-[ext_resource type="PackedScene" uid="uid://bsuriqu5ia71i" path="res://Scenes/distress_beacon.tscn" id="2_tvihd"]
 [ext_resource type="PackedScene" uid="uid://dxp165f3yspdb" path="res://Scenes/base.tscn" id="3_lnp6p"]
 [ext_resource type="PackedScene" uid="uid://rvea6i06e302" path="res://Scenes/distress_beacon_spawner.tscn" id="4_7i0cp"]
 
@@ -16,9 +15,6 @@ glow_hdr_threshold = 0.0
 
 [node name="World" type="Node2D"]
 script = ExtResource("1_s7eyf")
-
-[node name="DistressBeacon" parent="." instance=ExtResource("2_tvihd")]
-position = Vector2(598, 288)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_47pud")
