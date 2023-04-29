@@ -3,6 +3,7 @@ extends Area2D
 var howered:bool = false
 var selected:bool = false
 const cargo_ship:PackedScene = preload("res://Scenes/delivery_ship.tscn")
+const cargo_ship_marker = preload("res://Sprites/DeliveryShipIcon.svg")
 @export var nr_ships = 3
 @export var scroll_sensitivity = 5
 var scroll_state = 0
@@ -54,19 +55,21 @@ func _input(event):
 			launched_ship = null
 			selected_ship = null
 		$Sprite2D.modulate = Color("#BDD156") if selected else Color("#3fc778")
+		queue_redraw()
 	elif selected and event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed():
 		if global_position.distance_squared_to(get_global_mouse_position()) > ($CollisionShape2D.shape.radius + ship_radius + 2)*($CollisionShape2D.shape.radius + ship_radius + 2):
 			if selected_ship == null and not docked_ships.is_empty():
-					launched_ship = docked_ships.pop_front()
-					deployed_ships.append(launched_ship)
-					launched_ship.set_cargo(cargo_amount)
-					launched_ship.global_position = global_position + global_position.direction_to(get_global_mouse_position()) * ($CollisionShape2D.shape.radius + ship_radius + 1)
-					launched_ship.add_waypoint(get_global_mouse_position())
-					launched_ship.update_rotation()
-					ship_active(launched_ship, true)
-					if (Input.is_action_pressed("shift")):
-						selected_ship = launched_ship
-						selected_ship.select_ship(true)
+				launched_ship = docked_ships.pop_front()
+				queue_redraw()
+				deployed_ships.append(launched_ship)
+				launched_ship.set_cargo(cargo_amount)
+				launched_ship.global_position = global_position + global_position.direction_to(get_global_mouse_position()) * ($CollisionShape2D.shape.radius + ship_radius + 1)
+				launched_ship.add_waypoint(get_global_mouse_position())
+				launched_ship.update_rotation()
+				ship_active(launched_ship, true)
+				if (Input.is_action_pressed("shift")):
+					selected_ship = launched_ship
+					selected_ship.select_ship(true)
 	elif event is InputEventKey and event.is_action_released("shift"):
 		if not selected_ship == null:
 			selected_ship.select_ship(false)
@@ -103,6 +106,7 @@ func _on_body_entered(body: Node2D):
 		body.select_ship(false)
 		ship_active(body, false)
 		docked_ships.append(body)
+		queue_redraw()
 		return
 	if body.waypoint_next_pos().distance_squared_to(global_position) < (($CollisionShape2D.shape.radius+ship_radius)*($CollisionShape2D.shape.radius+ship_radius)):
 		if body.waypoint_count() == 1:
@@ -110,6 +114,7 @@ func _on_body_entered(body: Node2D):
 			body.select_ship(false)
 			ship_active(body, false)
 			docked_ships.append(body)
+			queue_redraw()
 		else:
 			on_base_ships.append(body)
 			body.set_cargo(cargo_amount)
@@ -117,3 +122,11 @@ func _on_body_entered(body: Node2D):
 	else:
 		on_base_ships.append(body)
 		body.set_cargo(cargo_amount)
+
+func _draw():
+	var ships = docked_ships.size()
+	for i in range(ceil(ships/5.0)):
+		var row_length = min(5, ships-i*5)
+		var start = -row_length*10-2
+		for q in range(row_length):
+			draw_texture(cargo_ship_marker, Vector2(start+20*q, 100+24*i), $Sprite2D.modulate)
