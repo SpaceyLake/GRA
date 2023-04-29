@@ -1,14 +1,14 @@
 extends Node
 
-const MIN_LENGTH_FROM_BASE = 200
+const MIN_LENGTH_FROM_BASE_SQUARED = 200*200
+const MIN_LENGTH_FROM_DISTRESS_BEACON_SQUARED = 100*100
 
 var time_decreasment:int = 1
 var time:int = 15
 var timer:Timer = Timer.new()
 @onready var size: Vector2 = get_viewport().get_size()
+@onready var camera:Camera2D = get_parent().get_node("Camera")
 var rnd: RandomNumberGenerator = RandomNumberGenerator.new()
-
-var distress_beacon = preload("res://Scenes/path_marker.tscn")
 var path_marker_pool:Array = []
 
 @onready var base_position:Vector2 = get_parent().get_node("Base").get_position()
@@ -26,8 +26,17 @@ func _timeout():
 	timer.stop()
 	time -= 1
 	print("Beacon spawned")
-	var proposed_position: Vector2 = Vector2(rnd.randf_range(0, size.x), rnd.randf_range(0, size.y))
-	while proposed_position.distance_to(base_position) < MIN_LENGTH_FROM_BASE:
-		proposed_position = Vector2(rnd.randf_range(0, size.x), rnd.randf_range(0, size.y))
+	var accepted_proposition:bool = false
+	var proposed_position: Vector2
+	while not accepted_proposition:
+		proposed_position = Vector2(rnd.randf_range(-size.x * camera.zoom.x/2, size.x * camera.zoom.x/2), rnd.randf_range(-size.y * camera.zoom.y/2, size.y * camera.zoom.y/2))
+		accepted_proposition = true
+		if proposed_position.distance_squared_to(base_position) < MIN_LENGTH_FROM_BASE_SQUARED:
+			accepted_proposition = false
+			continue
+		for distress_beacon in distress_beacon_pool.distress_beacons_placed:
+			if distress_beacon.global_position.distance_squared_to(proposed_position) < MIN_LENGTH_FROM_DISTRESS_BEACON_SQUARED:
+				accepted_proposition = false
+				break
 	distress_beacon_pool.request_distress_beacon(proposed_position)
 	timer.start(time)
