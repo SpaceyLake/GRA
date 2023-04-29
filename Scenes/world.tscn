@@ -1,10 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://bt6kdd48rxcyv"]
+[gd_scene load_steps=9 format=3 uid="uid://bt6kdd48rxcyv"]
 
 [ext_resource type="Script" path="res://Scripts/world.gd" id="1_s7eyf"]
 [ext_resource type="PackedScene" uid="uid://dxp165f3yspdb" path="res://Scenes/base.tscn" id="3_lnp6p"]
 [ext_resource type="PackedScene" uid="uid://bixxpibpivcwh" path="res://Scenes/distress_beacon_spawner.tscn" id="4_7i0cp"]
 [ext_resource type="PackedScene" path="res://Scenes/camera.tscn" id="4_14cax"]
-[ext_resource type="PackedScene" uid="uid://bsuriqu5ia71i" path="res://Scenes/distress_beacon.tscn" id="6_aggjf"]
+[ext_resource type="Texture2D" uid="uid://dw65hg0bkaleh" path="res://Sprites/DistressBeacon.svg" id="4_o2c3h"]
 
 [sub_resource type="Environment" id="Environment_47pud"]
 background_mode = 3
@@ -16,6 +16,14 @@ glow_levels/4 = 16.0
 glow_intensity = 8.0
 glow_hdr_threshold = 0.0
 
+[sub_resource type="SystemFont" id="SystemFont_syf1m"]
+font_names = PackedStringArray("Impact")
+
+[sub_resource type="LabelSettings" id="LabelSettings_wv7uq"]
+font = SubResource("SystemFont_syf1m")
+font_size = 50
+font_color = Color(0.972549, 0.972549, 0.972549, 1)
+
 [node name="World" type="Node2D"]
 script = ExtResource("1_s7eyf")
 
@@ -24,9 +32,30 @@ environment = SubResource("Environment_47pud")
 
 [node name="DistressBeaconSpawner" parent="." instance=ExtResource("4_7i0cp")]
 
-[node name="Camera" parent="." instance=ExtResource("4_14cax")]
-
 [node name="Base" parent="." instance=ExtResource("3_lnp6p")]
 
-[node name="DistressBeacon" parent="." instance=ExtResource("6_aggjf")]
-position = Vector2(369, 0)
+[node name="Camera" parent="." instance=ExtResource("4_14cax")]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+follow_viewport_enabled = true
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer"]
+modulate = Color(0.972549, 0.972549, 0.972549, 1)
+light_mask = 0
+offset_left = 857.0
+offset_top = -513.0
+offset_right = 923.0
+offset_bottom = -434.0
+size_flags_horizontal = 8
+texture = ExtResource("4_o2c3h")
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="CanvasLayer"]
+offset_left = 650.0
+offset_top = -501.0
+offset_right = 845.0
+offset_bottom = -434.0
+text = "150"
+label_settings = SubResource("LabelSettings_wv7uq")
+horizontal_alignment = 2
+vertical_alignment = 1
