@@ -15,6 +15,7 @@ func _ready():
 			var new_ship:Node2D = cargo_ship.instantiate()
 			add_sibling.call_deferred(new_ship)
 			new_ship.global_position = global_position
+			new_ship.set_base_position(global_position)
 	mouse_entered.connect(is_howering)
 	mouse_exited.connect(is_not_howering)
 	body_entered.connect(_on_body_entered)
@@ -35,7 +36,7 @@ func _input(event):
 				print(docked_ships)
 				launched_ship.cargo = cargo_amount
 				launched_ship.add_waypoint(get_global_mouse_position())
-				launched_ship.set_goal_roation()
+				launched_ship.update_rotation()
 				ship_active(launched_ship, true)
 				if (Input.is_action_pressed("shift")):
 					selected_ship = launched_ship
@@ -62,9 +63,10 @@ func ship_active(current_ship:Node2D, active:bool):
 	current_ship.restart_particles()
 	if active == false:
 		current_ship.global_position = global_position
+		current_ship.waypoint_clear()
 
 func _on_body_entered(body: Node2D):
-	if body != launched_ship:
+	if body.waypoint_count() <= 1 and body.waypoint_next_post().distance_to_squared(global_position) < ($CollisionShape2D.shape.radius*$CollisionShape2D.shape.radius):
 		body.select_ship(false)
 		ship_active(body, false)
 		docked_ships.append(body)
