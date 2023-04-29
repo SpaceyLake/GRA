@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://rvea6i06e302"]
+
+[ext_resource type="Script" path="res://Scripts/distress_beacon_spawner.gd" id="1_q3pah"]
+
+[node name="DistressBeaconSpawner" type="Node"]
+script = ExtResource("1_q3pah")
