@@ -4,8 +4,8 @@ const MIN_LENGTH_FROM_BASE_SQUARED = 200*200
 const MIN_LENGTH_FROM_DISTRESS_BEACON_SQUARED = 100*100
 const MIN_LENGTH_FROM_SHIP_SQUARED = 100*100
 
-var time_decreasment:int = 1
-var time:int = 15
+@export var time_decreasment:float = 0.99
+var time:float = 15
 var timer:Timer = Timer.new()
 @export var min_need:int = 1
 @export var max_need:int = 3
@@ -27,7 +27,8 @@ func _ready():
 
 func _timeout():
 	timer.stop()
-	time -= 1
+	time *= time_decreasment
+	print(time)
 	print("Beacon spawned")
 	var accepted_proposition:bool = false
 	var proposed_position: Vector2
@@ -43,7 +44,7 @@ func _timeout():
 				break
 		if accepted_proposition == false:
 			continue
-		for ship in base.deplayed_ships:
+		for ship in base.get_deployed_ships():
 			if ship.global_position.distance_squared_to(proposed_position) < MIN_LENGTH_FROM_SHIP_SQUARED:
 				accepted_proposition = false
 				break
