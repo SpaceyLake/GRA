@@ -24,8 +24,7 @@ environment = SubResource("Environment_47pud")
 
 [node name="DistressBeaconSpawner" parent="." instance=ExtResource("4_7i0cp")]
 
-[node name="Base" parent="." instance=ExtResource("3_lnp6p")]
-nr_ships = 8
-
 [node name="Camera" parent="." instance=ExtResource("4_14cax")]
 script = ExtResource("5_3ev71")
+
+[node name="Base" parent="." instance=ExtResource("3_lnp6p")]
