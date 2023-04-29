@@ -8,6 +8,7 @@ const cargo_ship:PackedScene = preload("res://Scenes/delivery_ship.tscn")
 var scroll_state = 0
 var docked_ships:Array = []
 var deployed_ships:Array = []
+var on_base_ships:Array = []
 var launched_ship:Node2D
 var selected_ship:Node2D
 var cargo_amount = 5
@@ -26,6 +27,7 @@ func _ready():
 	mouse_entered.connect(is_howering)
 	mouse_exited.connect(is_not_howering)
 	body_entered.connect(_on_body_entered)
+	body_exited.connect(_on_body_exited)
 
 func _input(event):
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_WHEEL_UP and event.is_pressed():
@@ -33,12 +35,16 @@ func _input(event):
 		if scroll_state == scroll_sensitivity:
 			scroll_state = 0
 			cargo_amount = min(max_cargo, cargo_amount + 1)
+			for ship in on_base_ships:
+				ship.set_cargo(cargo_amount)
 			print(cargo_amount)
 	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_WHEEL_DOWN and event.is_pressed():
 		scroll_state -= 1
 		if scroll_state == -scroll_sensitivity:
 			scroll_state = 0
 			cargo_amount = max(min_cargo, cargo_amount - 1)
+			for ship in on_base_ships:
+				ship.set_cargo(cargo_amount)
 			print(cargo_amount)
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
 		if howered:
@@ -88,6 +94,9 @@ func ship_active(current_ship:Node2D, active:bool):
 		current_ship.global_position = global_position
 		current_ship.waypoint_clear()
 
+func _on_body_exited(body: Node2D):
+	on_base_ships.erase(body)
+
 func _on_body_entered(body: Node2D):
 	if body.waypoint_count() == 0:
 		deployed_ships.erase(body)
@@ -102,7 +111,9 @@ func _on_body_entered(body: Node2D):
 			ship_active(body, false)
 			docked_ships.append(body)
 		else:
+			on_base_ships.append(body)
 			body.set_cargo(cargo_amount)
 			body.waypoint_skip()
 	else:
+		on_base_ships.append(body)
 		body.set_cargo(cargo_amount)
