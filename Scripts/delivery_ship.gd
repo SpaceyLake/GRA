@@ -43,7 +43,8 @@ func _input(event):
 			waypoint_clear()
 		add_waypoint(get_global_mouse_position())
 
-
+func get_radius():
+	return $CollisionShape2D.shape.radius
 
 func update_speed():
 	speed = base_speed - cargo*4
