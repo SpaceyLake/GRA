@@ -63,7 +63,7 @@ func select_ship(select:bool):
 func deliver(delivering_cargo:int):
 	var delivered_cargo:int = min(cargo, delivering_cargo)
 	set_cargo(cargo - delivered_cargo)
-	if cargo <= 0 and waypoint_count() <= 1 and waypoint_next_pos().distance_squared_to(global_position) < 2500:
+	if cargo <= 0 and waypoint_count() == 0 or (waypoint_count() == 1 and waypoint_next_pos().distance_squared_to(global_position) < 2500):
 		return_home()
 	return delivered_cargo
 
