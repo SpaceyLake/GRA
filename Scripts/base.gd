@@ -5,7 +5,8 @@ var selected:bool = false
 const cargo_ship:PackedScene = preload("res://Scenes/delivery_ship.tscn")
 const cargo_ship_marker = preload("res://Sprites/DeliveryShipIcon.svg")
 const fuel_marker = preload("res://Sprites/BaseFuelIcon.svg")
-@export var nr_ships = 3
+@export var start_nr_ships = 2
+var nr_ships = 0
 @export var scroll_sensitivity = 2
 var scroll_state = 0
 var docked_ships:Array = []
@@ -20,12 +21,8 @@ var ship_radius:float
 
 func _ready():
 	if cargo_ship.can_instantiate():
-		for i in nr_ships:
-			var new_ship:Node2D = cargo_ship.instantiate()
-			add_sibling.call_deferred(new_ship)
-			new_ship.global_position = global_position
-			new_ship.set_base_position(global_position)
-			ship_radius = new_ship.get_radius()
+		for i in start_nr_ships:
+			add_ship()
 	mouse_entered.connect(is_howering)
 	mouse_exited.connect(is_not_howering)
 	body_entered.connect(_on_body_entered)
@@ -75,6 +72,15 @@ func _input(event):
 		if not selected_ship == null:
 			selected_ship.select_ship(false)
 			selected_ship = null
+
+func add_ship():
+	var new_ship:Node2D = cargo_ship.instantiate()
+	add_sibling.call_deferred(new_ship)
+	new_ship.global_position = global_position
+	new_ship.set_base_position(global_position)
+	ship_radius = new_ship.get_radius()
+	nr_ships += 1
+	queue_redraw()
 
 func get_deployed_ships():
 	return deployed_ships
