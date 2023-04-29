@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 path_marker_pool="*res://Scripts/path_marker_pool.gd"
 distress_beacon_pool="*res://Scripts/distress_beacon_pool.gd"
+global="*res://Scripts/global.gd"
 
 [display]
 

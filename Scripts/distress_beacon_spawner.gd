@@ -41,5 +41,5 @@ func _timeout():
 				accepted_proposition = false
 				break
 	var distress_beacon:Node2D = distress_beacon_pool.request_distress_beacon(proposed_position)
-	distress_beacon.set_need(rnd.randi_range(min_need, max_need))
+	distress_beacon.set_needs(rnd.randi_range(min_need, max_need))
 	timer.start(time)
