@@ -14,8 +14,8 @@ func _on_body_entered(body: Node2D):
 	needs -= body.deliver(needs)
 	if not needs:
 		print("Success")
-		queue_free()
+		distress_beacon_pool.return_distress_beacon(self)
 
 func _timeout():
 	print("Fail")
-	queue_free()
+	distress_beacon_pool.return_distress_beacon(self)
