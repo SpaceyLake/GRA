@@ -27,6 +27,7 @@ func _input(event):
 			selected = false
 			launched_ship = null
 			selected_ship = null
+		$Sprite2D.modulate = Color("#BDD156") if selected else Color("#3fc778")
 	elif selected and event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed():
 		if selected_ship == null and not docked_ships.is_empty():
 				print(docked_ships)
