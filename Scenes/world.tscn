@@ -1,8 +1,12 @@
-[gd_scene load_steps=2 format=3 uid="uid://bt6kdd48rxcyv"]
+[gd_scene load_steps=3 format=3 uid="uid://bt6kdd48rxcyv"]
 
 [ext_resource type="PackedScene" uid="uid://bx64nlay3qjx4" path="res://Scenes/delivery_ship.tscn" id="1_u2ala"]
+[ext_resource type="PackedScene" uid="uid://bsuriqu5ia71i" path="res://Scenes/distress_beacon.tscn" id="2_tvihd"]
 
 [node name="World" type="Node2D"]
 
 [node name="DeliveryShip" parent="." instance=ExtResource("1_u2ala")]
 position = Vector2(488, 288)
+
+[node name="DistressBeacon" parent="." instance=ExtResource("2_tvihd")]
+position = Vector2(598, 288)
