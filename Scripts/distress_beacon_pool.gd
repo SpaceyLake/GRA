@@ -28,3 +28,6 @@ func _distress_beacon_set_active(distress_beacon, active):
 	distress_beacon.set_process_internal(active)
 	distress_beacon.set_process_unhandled_input(active)
 	distress_beacon.set_process_unhandled_key_input(active)
+	if active:
+		distress_beacon.reset_timer()
+		distress_beacon.play_spawn_animation()
