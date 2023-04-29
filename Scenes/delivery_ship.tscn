@@ -1,9 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://bx64nlay3qjx4"]
+[gd_scene load_steps=12 format=3 uid="uid://bx64nlay3qjx4"]
 
 [ext_resource type="Script" path="res://Scripts/delivery_ship.gd" id="1_eox2d"]
 [ext_resource type="Texture2D" uid="uid://cbolycx0ij8ph" path="res://Sprites/DeliveryShip.svg" id="2_oyjne"]
 [ext_resource type="Texture2D" uid="uid://c036im7071r62" path="res://Sprites/PathLine.svg" id="3_y86k7"]
 [ext_resource type="Texture2D" uid="uid://dkmbbbomkkuju" path="res://Sprites/Circle.svg" id="4_73fo8"]
+[ext_resource type="Texture2D" uid="uid://35ns2mw55ic8" path="res://Sprites/DeliveryShipFuelGauge.svg" id="5_3axg1"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_dd135"]
 radius = 20.025
@@ -67,3 +68,13 @@ amount = 40
 process_material = SubResource("ParticleProcessMaterial_3evnj")
 texture = ExtResource("4_73fo8")
 visibility_rect = Rect2(-80, -50, 100, 100)
+
+[node name="CargoMeter" type="TextureProgressBar" parent="."]
+offset_left = -14.0
+offset_top = -6.0
+offset_right = 14.0
+offset_bottom = 6.0
+max_value = 5.0
+value = 5.0
+texture_progress = ExtResource("5_3axg1")
+tint_progress = Color(0.247059, 0.780392, 0.470588, 1)
