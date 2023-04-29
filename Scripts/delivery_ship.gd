@@ -8,32 +8,55 @@ var cargo: int = 0
 func _ready():
 	mouse_entered.connect(is_howering)
 	mouse_exited.connect(is_not_howering)
+	$Node/PathLine.add_point(global_position)
+
 
 func _physics_process(delta):
-	if not destinations.is_empty() and position.distance_to(destinations.front()) < velocity.length()*delta:
-			velocity = Vector2.ZERO
-			destinations.pop_front()
+	if not destinations.is_empty() and global_position.distance_to(destinations.front().global_position) < velocity.length()*delta:
+		velocity = Vector2.ZERO
+		path_marker_pool.return_path_marker(destinations.pop_front())
+		$Node/PathLine.remove_point(1)
 	if not destinations.is_empty():
-			look_at(destinations.front())
-			velocity = position.direction_to(destinations.front())*20
+#		$Sprite2D.look_at(destinations.front().global_position)
+		velocity = global_position.direction_to(destinations.front().global_position)*20
+		#Rotate
+		var diff = global_position.angle_to_point(destinations.front().global_position) - global_rotation
+		diff = wrap(diff, -PI, PI)
+		global_rotation += sign(diff) * min(5 * delta, abs(diff))
+
 	move_and_slide()
+	$Node/PathLine.set_point_position(0, global_position)
+	$GPUParticles2D.emitting = velocity != Vector2.ZERO
 
 func _input(event):
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
 		if howered:
 			selected = true
+			$Sprite2D.modulate = Color("#BDD156")
 		else:
 			selected = false
+			$Sprite2D.modulate = Color("#3fc778")
+		$Node/PathLine.visible = selected
+		for marker in destinations:
+				marker.visible = selected
 	elif selected and event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed():
-		if Input.is_action_pressed("shift"):
-			destinations.append(get_global_mouse_position())
-		else:
-			destinations = [get_global_mouse_position()]
+		if not Input.is_action_pressed("shift"):
+			for marker in destinations:
+				path_marker_pool.return_path_marker(marker)
+			destinations.clear()
+			$Node/PathLine.clear_points()
+			$Node/PathLine.add_point(global_position)
+		destinations.append(path_marker_pool.request_path_marker(get_global_mouse_position()))
+		$Node/PathLine.add_point(get_global_mouse_position())
 
 func deliver(delivering_cargo:int):
 	var delivered_cargo:int = min(cargo, delivering_cargo)
-	cargo = delivering_cargo
-	return delivering_cargo
+	cargo = delivered_cargo
+	return delivered_cargo
+
+func add_waypoint(pos:Vector2):
+	destinations.append(path_marker_pool.request_path_marker(pos))
+	$Node/PathLine.add_point(pos)
 
 func is_howering():
 	howered = true
