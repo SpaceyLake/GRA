@@ -4,11 +4,15 @@ var howered:bool = false
 var selected:bool = false
 const cargo_ship:PackedScene = preload("res://Scenes/delivery_ship.tscn")
 @export var nr_ships = 3
+@export var scroll_sensitivity = 5
+var scroll_state = 0
 var docked_ships:Array = []
 var deployed_ships:Array = []
 var launched_ship:Node2D
 var selected_ship:Node2D
 var cargo_amount = 5
+var max_cargo = 20
+var min_cargo = 1
 var ship_radius:float
 
 func _ready():
@@ -24,6 +28,18 @@ func _ready():
 	body_entered.connect(_on_body_entered)
 
 func _input(event):
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_WHEEL_UP and event.is_pressed():
+		scroll_state += 1
+		if scroll_state == scroll_sensitivity:
+			scroll_state = 0
+			cargo_amount = min(max_cargo, cargo_amount + 1)
+			print(cargo_amount)
+	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_WHEEL_DOWN and event.is_pressed():
+		scroll_state -= 1
+		if scroll_state == -scroll_sensitivity:
+			scroll_state = 0
+			cargo_amount = max(min_cargo, cargo_amount - 1)
+			print(cargo_amount)
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
 		if howered:
 			selected = true
@@ -49,6 +65,9 @@ func _input(event):
 		if not selected_ship == null:
 			selected_ship.select_ship(false)
 			selected_ship = null
+
+func get_deployed_ships():
+	return deployed_ships
 
 func is_howering():
 	howered = true
