@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://bt6kdd48rxcyv"]
+[gd_scene load_steps=5 format=3 uid="uid://bt6kdd48rxcyv"]
 
 [ext_resource type="PackedScene" uid="uid://bx64nlay3qjx4" path="res://Scenes/delivery_ship.tscn" id="1_u2ala"]
 [ext_resource type="PackedScene" uid="uid://bsuriqu5ia71i" path="res://Scenes/distress_beacon.tscn" id="2_tvihd"]
+[ext_resource type="PackedScene" uid="uid://dxp165f3yspdb" path="res://Scenes/base.tscn" id="3_lnp6p"]
 
 [sub_resource type="Environment" id="Environment_47pud"]
 background_mode = 3
@@ -15,9 +16,14 @@ glow_hdr_threshold = 0.0
 [node name="World" type="Node2D"]
 
 [node name="DeliveryShip" parent="." instance=ExtResource("1_u2ala")]
+visible = false
 position = Vector2(488, 288)
 
 [node name="DistressBeacon" parent="." instance=ExtResource("2_tvihd")]
 position = Vector2(598, 288)
+
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_47pud")
+
+[node name="Base" parent="." instance=ExtResource("3_lnp6p")]
+position = Vector2(271, 280)
