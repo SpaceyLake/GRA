@@ -56,7 +56,7 @@ func select_ship(select:bool):
 
 func deliver(delivering_cargo:int):
 	var delivered_cargo:int = min(cargo, delivering_cargo)
-	cargo = delivered_cargo
+	cargo -= delivered_cargo
 	return delivered_cargo
 
 func add_waypoint(pos:Vector2):
