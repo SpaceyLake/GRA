@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Scripts/world.gd" id="1_s7eyf"]
 [ext_resource type="PackedScene" uid="uid://dxp165f3yspdb" path="res://Scenes/base.tscn" id="3_lnp6p"]
-[ext_resource type="PackedScene" path="res://Scenes/distress_beacon_spawner.tscn" id="4_7i0cp"]
+[ext_resource type="PackedScene" uid="uid://rvea6i06e302" path="res://Scenes/distress_beacon_spawner.tscn" id="4_7i0cp"]
 
 [sub_resource type="Environment" id="Environment_47pud"]
 background_mode = 3
