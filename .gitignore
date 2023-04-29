@@ -16,3 +16,6 @@ mono_crash.*.json
 
 # Ignore addons
 addons/
+
+# Ignore VSCode
+.vscode/
