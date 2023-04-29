@@ -1,7 +1,7 @@
 extends Area2D
 
 var needs: int = 5
-var timeout: float = 20
+var timeout: float = 60
 var timer: float = timeout
 
 func _ready():
@@ -26,6 +26,12 @@ func _process(delta):
 		$TextureProgressBar.value = $TextureProgressBar.max_value*progress
 	else:
 		_timeout()
+
+func play_spawn_animation():
+	$AnimationPlayer.play("Spawn")
+
+func reset_timer():
+	timer = timeout
 
 func _on_body_entered(body: Node2D):
 	needs -= body.deliver(needs)
