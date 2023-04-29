@@ -20,7 +20,7 @@ script = ExtResource("1_s7eyf")
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_47pud")
 
-[node name="Base" parent="." instance=ExtResource("3_lnp6p")]
-position = Vector2(271, 280)
-
 [node name="DistressBeaconSpawner" parent="." instance=ExtResource("4_7i0cp")]
+
+[node name="Base" parent="." instance=ExtResource("3_lnp6p")]
+position = Vector2(246, 268)
