@@ -10,8 +10,15 @@ var scared:bool = false
 var target:Node2D
 var calming:bool = false
 var visible_targets:Array = []
+var attack_time:float = 0.5
+var attack_timer:Timer = Timer.new()
+var attackable_targets = []
+var attack_target = null
 
 func _ready():
+	add_child(attack_timer)
+	attack_timer.timeout.connect(attack)
+	attack_timer.wait_time = attack_time
 	direction = randf_range(-PI, PI)
 	destination = global_position + random_vector(direction)
 	$VisionArea.area_entered.connect(_on_area_entered_vision)
@@ -19,6 +26,8 @@ func _ready():
 	$VisionArea.body_entered.connect(_on_body_entered_vision)
 	$VisionArea.body_exited.connect(_on_body_exited_vision)
 	$PlunderArea.body_entered.connect(_on_body_entered_plunder)
+	$AttackArea.body_entered.connect(_on_body_entered_attack)
+	$AttackArea.body_exited.connect(_on_body_exited_attack)
 	pass
 
 func _physics_process(delta):
@@ -74,15 +83,30 @@ func _on_body_exited_vision(body:Node2D):
 		print(visible_targets)
 		print(target)
 
+func _on_body_entered_attack(body:Node2D):
+	if body.get_collision_layer_value(2):
+		attackable_targets.append(body)
+		if body == target:
+			attack_timer.start()
+
+func _on_body_exited_attack(body:Node2D):
+	attackable_targets.erase(body)
+	choose_target()
+	if not target == null and attackable_targets.find(target) == 1:
+		if attack_timer.is_stopped():
+			attack_timer.start()
+	else:
+		attack_timer.stop()
+
+func attack():
+	pass
+
 func choose_target():
 	if not visible_targets.is_empty():
 		target = visible_targets.front()
 		for visible_target in visible_targets:
-			if visible_target.get_cargo_amount() > target.get_cargo_amount():
+			if (visible_target.get_cargo_amount() * 40)*(visible_target.get_cargo_amount() * 40)/global_position.distance_squared_to(target.global_position) > (target.get_cargo_amount()*40*target.get_cargo_amount()*40)/global_position.distance_squared_to(visible_target.global_position):
 				target = visible_target
-			elif visible_target.get_cargo_amount() == target.get_cargo_amount():
-				if global_position.distance_squared_to(target.global_position) > global_position.distance_squared_to(visible_target.global_position):
-					target = visible_target
 	else:
 		target = null
 
