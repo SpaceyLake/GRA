@@ -87,11 +87,6 @@ glow_hdr_threshold = 0.0
 [node name="World" type="Node2D"]
 script = ExtResource("1_s7eyf")
 
-[node name="DistressBeaconSpawner" parent="." instance=ExtResource("4_7i0cp")]
-
-[node name="Base" parent="." instance=ExtResource("3_lnp6p")]
-metadata/_edit_lock_ = true
-
 [node name="AsteroidField" parent="." instance=ExtResource("11_hbnrm")]
 position = Vector2(600, 200)
 
@@ -100,6 +95,11 @@ position = Vector2(664, 312)
 
 [node name="AsteroidField3" parent="." instance=ExtResource("11_hbnrm")]
 position = Vector2(712, 432)
+
+[node name="DistressBeaconSpawner" parent="." instance=ExtResource("4_7i0cp")]
+
+[node name="Base" parent="." instance=ExtResource("3_lnp6p")]
+metadata/_edit_lock_ = true
 
 [node name="Camera" parent="." instance=ExtResource("4_14cax")]
 
