@@ -4,8 +4,10 @@ var howered:bool = false
 var selected:bool = false
 const cargo_ship:PackedScene = preload("res://Scenes/delivery_ship.tscn")
 const cargo_ship_marker = preload("res://Sprites/DeliveryShipIcon.svg")
-@export var nr_ships = 3
-@export var scroll_sensitivity = 5
+const fuel_marker = preload("res://Sprites/BaseFuelIcon.svg")
+@export var start_nr_ships = 2
+var nr_ships = 0
+@export var scroll_sensitivity = 2
 var scroll_state = 0
 var docked_ships:Array = []
 var deployed_ships:Array = []
@@ -13,18 +15,14 @@ var on_base_ships:Array = []
 var launched_ship:Node2D
 var selected_ship:Node2D
 var cargo_amount = 5
-var max_cargo = 20
+var max_cargo = 5
 var min_cargo = 1
 var ship_radius:float
 
 func _ready():
 	if cargo_ship.can_instantiate():
-		for i in nr_ships:
-			var new_ship:Node2D = cargo_ship.instantiate()
-			add_sibling.call_deferred(new_ship)
-			new_ship.global_position = global_position
-			new_ship.set_base_position(global_position)
-			ship_radius = new_ship.get_radius()
+		for i in start_nr_ships:
+			add_ship()
 	mouse_entered.connect(is_howering)
 	mouse_exited.connect(is_not_howering)
 	body_entered.connect(_on_body_entered)
@@ -38,7 +36,7 @@ func _input(event):
 			cargo_amount = min(max_cargo, cargo_amount + 1)
 			for ship in on_base_ships:
 				ship.set_cargo(cargo_amount)
-			print(cargo_amount)
+			queue_redraw()
 	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_WHEEL_DOWN and event.is_pressed():
 		scroll_state -= 1
 		if scroll_state == -scroll_sensitivity:
@@ -46,7 +44,7 @@ func _input(event):
 			cargo_amount = max(min_cargo, cargo_amount - 1)
 			for ship in on_base_ships:
 				ship.set_cargo(cargo_amount)
-			print(cargo_amount)
+			queue_redraw()
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
 		if howered:
 			selected = true
@@ -74,6 +72,15 @@ func _input(event):
 		if not selected_ship == null:
 			selected_ship.select_ship(false)
 			selected_ship = null
+
+func add_ship():
+	var new_ship:Node2D = cargo_ship.instantiate()
+	add_sibling.call_deferred(new_ship)
+	new_ship.global_position = global_position
+	new_ship.set_base_position(global_position)
+	ship_radius = new_ship.get_radius()
+	nr_ships += 1
+	queue_redraw()
 
 func get_deployed_ships():
 	return deployed_ships
@@ -128,6 +135,10 @@ func _draw():
 	var ships = docked_ships.size()
 	for i in range(ceil(ships/5.0)):
 		var row_length = min(5, ships-i*5)
-		var start = -row_length*10-2
+		var start = -row_length*10+2
 		for q in range(row_length):
 			draw_texture(cargo_ship_marker, Vector2(start+20*q, 100+24*i), $Sprite2D.modulate)
+	
+	var start = -cargo_amount*10+2
+	for i in range(cargo_amount):
+		draw_texture(fuel_marker, Vector2(start+20*i, -125), $Sprite2D.modulate)

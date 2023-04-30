@@ -1,10 +1,12 @@
-[gd_scene load_steps=9 format=3 uid="uid://bt6kdd48rxcyv"]
+[gd_scene load_steps=14 format=3 uid="uid://bt6kdd48rxcyv"]
 
 [ext_resource type="Script" path="res://Scripts/world.gd" id="1_s7eyf"]
 [ext_resource type="PackedScene" uid="uid://dxp165f3yspdb" path="res://Scenes/base.tscn" id="3_lnp6p"]
+[ext_resource type="Script" path="res://Scripts/UpgradeHanler.gd" id="3_xxfcf"]
 [ext_resource type="PackedScene" uid="uid://bixxpibpivcwh" path="res://Scenes/distress_beacon_spawner.tscn" id="4_7i0cp"]
 [ext_resource type="PackedScene" path="res://Scenes/camera.tscn" id="4_14cax"]
 [ext_resource type="Texture2D" uid="uid://dw65hg0bkaleh" path="res://Sprites/DistressBeacon.svg" id="4_o2c3h"]
+[ext_resource type="Texture2D" uid="uid://cbolycx0ij8ph" path="res://Sprites/DeliveryShip.svg" id="7_g302c"]
 
 [sub_resource type="Environment" id="Environment_47pud"]
 background_mode = 3
@@ -24,6 +26,42 @@ font = SubResource("SystemFont_syf1m")
 font_size = 50
 font_color = Color(0.972549, 0.972549, 0.972549, 1)
 
+[sub_resource type="Animation" id="Animation_k4ek4"]
+resource_name = "OpenUpgradeMenu"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("UpgradeHanler/UpgradeMenu/ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0.0588235, 0.054902, 0.0901961, 0), Color(0.0588235, 0.054902, 0.0901961, 0.784314)]
+}
+
+[sub_resource type="Animation" id="Animation_2uu67"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("UpgradeHanler/UpgradeMenu/ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.0588235, 0.054902, 0.0901961, 0.784314)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_yikp5"]
+_data = {
+"OpenUpgradeMenu": SubResource("Animation_k4ek4"),
+"RESET": SubResource("Animation_2uu67")
+}
+
 [node name="World" type="Node2D"]
 script = ExtResource("1_s7eyf")
 
@@ -33,13 +71,16 @@ environment = SubResource("Environment_47pud")
 [node name="DistressBeaconSpawner" parent="." instance=ExtResource("4_7i0cp")]
 
 [node name="Base" parent="." instance=ExtResource("3_lnp6p")]
+metadata/_edit_lock_ = true
 
 [node name="Camera" parent="." instance=ExtResource("4_14cax")]
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="GUI" type="CanvasLayer" parent="."]
+process_mode = 3
+layer = 100
 follow_viewport_enabled = true
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer"]
+[node name="TextureRect" type="TextureRect" parent="GUI"]
 modulate = Color(0.972549, 0.972549, 0.972549, 1)
 light_mask = 0
 offset_left = 857.0
@@ -50,12 +91,61 @@ size_flags_horizontal = 8
 texture = ExtResource("4_o2c3h")
 stretch_mode = 5
 
-[node name="Label" type="Label" parent="CanvasLayer"]
+[node name="Label" type="Label" parent="GUI"]
 offset_left = 650.0
 offset_top = -501.0
 offset_right = 845.0
 offset_bottom = -434.0
-text = "150"
+text = "0
+"
 label_settings = SubResource("LabelSettings_wv7uq")
 horizontal_alignment = 2
 vertical_alignment = 1
+
+[node name="UpgradeHanler" type="Node" parent="."]
+process_mode = 3
+script = ExtResource("3_xxfcf")
+
+[node name="UpgradeMenu" type="CanvasLayer" parent="UpgradeHanler"]
+process_mode = 3
+layer = 120
+follow_viewport_enabled = true
+
+[node name="ColorRect" type="ColorRect" parent="UpgradeHanler/UpgradeMenu"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -960.0
+offset_top = -540.0
+offset_right = -960.0
+offset_bottom = -540.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0588235, 0.054902, 0.0901961, 0.784314)
+metadata/_edit_lock_ = true
+
+[node name="LabelTitle" type="Label" parent="UpgradeHanler/UpgradeMenu"]
+light_mask = 0
+offset_left = -369.0
+offset_top = -355.0
+offset_right = -215.0
+offset_bottom = -290.0
+text = "Cycle 2"
+label_settings = SubResource("LabelSettings_wv7uq")
+
+[node name="Sprite2D" type="Sprite2D" parent="UpgradeHanler/UpgradeMenu"]
+position = Vector2(0, -100)
+rotation = 4.71239
+scale = Vector2(5, 5)
+texture = ExtResource("7_g302c")
+
+[node name="UpgradeTimer" type="Timer" parent="UpgradeHanler"]
+wait_time = 120.0
+one_shot = true
+autostart = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="UpgradeHanler"]
+root_node = NodePath("../..")
+libraries = {
+"": SubResource("AnimationLibrary_yikp5")
+}

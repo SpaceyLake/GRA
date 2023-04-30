@@ -1,16 +1,15 @@
 extends Node2D
 
+@onready var base = $Base
+
 func _ready():
 	path_marker_pool.node_creation_parent = self
 	distress_beacon_pool.node_creation_parent = self
 
 func _process(_delta):
-	#DEBUG
-	if Input.get_action_strength("ui_cancel"):
-		get_tree().quit()
-	
-	$CanvasLayer.scale = Vector2.ONE / $Camera.zoom
-	$CanvasLayer/Label.text = str(global.score)
+	$UpgradeHanler/UpgradeMenu.scale = Vector2.ONE / $Camera.zoom
+	$GUI.scale = Vector2.ONE / $Camera.zoom	
+	$GUI/Label.text = str(global.score)
 
 func _exit_tree():
 	path_marker_pool.node_creation_parent = null
