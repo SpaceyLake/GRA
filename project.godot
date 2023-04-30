@@ -20,6 +20,7 @@ config/icon="res://icon.svg"
 path_marker_pool="*res://Scripts/path_marker_pool.gd"
 distress_beacon_pool="*res://Scripts/distress_beacon_pool.gd"
 global="*res://Scripts/global.gd"
+laser_pool="*res://Scripts/laser_pool.gd"
 
 [display]
 
@@ -50,6 +51,7 @@ mute={
 2d_physics/layer_2="DeliveryShip"
 2d_physics/layer_3="Pirate"
 2d_physics/layer_4="Base"
+2d_physics/layer_5="Asteroids"
 
 [rendering]
 
