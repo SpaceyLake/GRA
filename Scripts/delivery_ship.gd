@@ -1,5 +1,7 @@
 extends CharacterBody2D
 
+signal update_cargo(ship:Node2D)
+
 var howered:bool = false
 var selected:bool = false
 var destinations:Array = []
@@ -71,6 +73,7 @@ func set_cargo(new_cargo:int):
 	cargo = min(new_cargo, max_cargo)
 	$CargoMeter.value = cargo
 	update_speed()
+	update_cargo.emit(self)
 
 func add_waypoint(pos:Vector2):
 	var marker = path_marker_pool.request_path_marker(pos)
@@ -117,3 +120,6 @@ func is_not_howering():
 
 func restart_particles():
 	$GPUParticles2D.restart()
+
+func get_cargo_amount():
+	return cargo

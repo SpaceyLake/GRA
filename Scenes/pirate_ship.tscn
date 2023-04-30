@@ -1,19 +1,24 @@
-[gd_scene load_steps=5 format=3 uid="uid://bvbxao8ihn2yd"]
+[gd_scene load_steps=7 format=3 uid="uid://bvbxao8ihn2yd"]
 
 [ext_resource type="Texture2D" uid="uid://cbolycx0ij8ph" path="res://Sprites/DeliveryShip.svg" id="1_8kf5t"]
+[ext_resource type="Script" path="res://Scripts/pirate_ship.gd" id="1_ax66q"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_d34j5"]
 radius = 20.02
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_npnr2"]
-radius = 20.02
+radius = 5.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_oo27d"]
 radius = 200.0
 
-[node name="Pirate" type="CharacterBody2D"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_kav5i"]
+radius = 125.0
+
+[node name="PirateShip" type="CharacterBody2D"]
 collision_layer = 4
-collision_mask = 4
+collision_mask = 0
+script = ExtResource("1_ax66q")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 modulate = Color(0.996078, 0, 0, 1)
@@ -23,11 +28,22 @@ texture = ExtResource("1_8kf5t")
 shape = SubResource("CircleShape2D_d34j5")
 
 [node name="PlunderArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlunderArea"]
 shape = SubResource("CircleShape2D_npnr2")
 
 [node name="VisionArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 14
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="VisionArea"]
 shape = SubResource("CircleShape2D_oo27d")
+
+[node name="RangeArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RangeArea"]
+shape = SubResource("CircleShape2D_kav5i")
