@@ -1,6 +1,7 @@
 extends CharacterBody2D
 
-signal update_cargo(ship:Node2D)
+signal update_cargo_signal(ship:Node2D)
+signal stunned_signal(ship:Node2D, is_stunned:bool)
 
 var howered:bool = false
 var selected:bool = false
@@ -8,27 +9,39 @@ var destinations:Array = []
 var cargo: int = 0
 var max_cargo: int = 5
 var base_position:Vector2 = Vector2(-1, -1)
+var full_health:int = 5
+var health:int = full_health
+var stunned:bool = false
+var stun_timer:Timer = Timer.new()
+var stun_time:float = 10
 
 var base_speed = 40
 var speed = base_speed
 
 func _ready():
+	add_child(stun_timer)
+	stun_timer.one_shot = true
+	stun_timer.wait_time = stun_time
+	stun_timer.timeout.connect(awaken)
 	mouse_entered.connect(is_howering)
 	mouse_exited.connect(is_not_howering)
 	$Node/PathLine.add_point(global_position)
 
 func _physics_process(delta):
-	if not destinations.is_empty() and global_position.distance_to(waypoint_next_pos()) < velocity.length()*delta:
-		global_position = waypoint_next_pos()
+	if stunned:
 		velocity = Vector2.ZERO
-		waypoint_skip()
-	if not destinations.is_empty():
-#		$Sprite2D.look_at(destinations.front().global_position)
-		velocity = global_position.direction_to(waypoint_next_pos())*speed
-		#Rotate
-		var diff = global_position.angle_to_point(waypoint_next_pos()) - global_rotation
-		diff = wrap(diff, -PI, PI)
-		global_rotation += sign(diff) * min(5 * delta, abs(diff))
+	else:
+		if not destinations.is_empty() and global_position.distance_to(waypoint_next_pos()) < velocity.length()*delta:
+			global_position = waypoint_next_pos()
+			velocity = Vector2.ZERO
+			waypoint_skip()
+		if not destinations.is_empty():
+	#		$Sprite2D.look_at(destinations.front().global_position)
+			velocity = global_position.direction_to(waypoint_next_pos())*speed
+			#Rotate
+			var diff = global_position.angle_to_point(waypoint_next_pos()) - global_rotation
+			diff = wrap(diff, -PI, PI)
+			global_rotation += sign(diff) * min(5 * delta, abs(diff))
 
 	move_and_slide()
 	$Node/PathLine.set_point_position(0, global_position)
@@ -56,7 +69,10 @@ func set_base_position(new_position):
 
 func select_ship(select:bool):
 	selected = select
-	$Sprite2D.modulate = Color("#BDD156") if selected else Color("#3fc778")
+	if stunned:
+		$Sprite2D.modulate = Color("#deef95") if selected else Color("#b2fec9")
+	else:
+		$Sprite2D.modulate = Color("#BDD156") if selected else Color("#3fc778")
 	$CargoMeter.tint_progress = Color("#BDD156") if selected else Color("#3fc778")
 	$Node/PathLine.visible = selected
 	for marker in destinations:
@@ -73,7 +89,7 @@ func set_cargo(new_cargo:int):
 	cargo = min(new_cargo, max_cargo)
 	$CargoMeter.value = cargo
 	update_speed()
-	update_cargo.emit(self)
+	update_cargo_signal.emit(self)
 
 func add_waypoint(pos:Vector2):
 	if waypoint_count() == 0 and velocity == Vector2.ZERO:
@@ -125,3 +141,27 @@ func restart_particles():
 
 func get_cargo_amount():
 	return cargo
+
+func is_stunned():
+	return stunned
+
+func attacked():
+	health -= 1
+	print("Hit")
+	if health == 0:
+		set_stunned(true)
+		stunned_signal.emit(self, stunned)
+
+func awaken():
+	set_stunned(false)
+	health = full_health
+	stunned_signal.emit(self, stunned)
+
+func set_stunned(stunning:bool):
+	stunned = stunning
+	print("Stunned: ", stunned)
+	if stunned:
+		stun_timer.start()
+		$Sprite2D.modulate = Color("#deef95") if selected else Color("#b2fec9")
+	else:
+		$Sprite2D.modulate = Color("#BDD156") if selected else Color("#3FC778")

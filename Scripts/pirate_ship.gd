@@ -10,15 +10,18 @@ var scared:bool = false
 var target:Node2D
 var calming:bool = false
 var visible_targets:Array = []
-var attack_time:float = 0.5
+var attack_time:float = 1
 var attack_timer:Timer = Timer.new()
 var attackable_targets = []
 var attack_target = null
+@onready var size: Vector2 = get_viewport().get_size()
+@onready var camera:Camera2D = get_parent().get_node("Camera")
 
 func _ready():
 	add_child(attack_timer)
 	attack_timer.timeout.connect(attack)
 	attack_timer.wait_time = attack_time
+	attack_timer.one_shot = true
 	direction = randf_range(-PI, PI)
 	destination = global_position + random_vector(direction)
 	$VisionArea.area_entered.connect(_on_area_entered_vision)
@@ -33,9 +36,14 @@ func _ready():
 func _physics_process(delta):
 	if not scared and not target == null:
 		destination = target.global_position
-		direction = destination.angle()
+		direction = global_position.angle_to(destination)
 	if global_position.distance_squared_to(destination) < velocity.length()*velocity.length()*delta*delta:
 		destination = global_position + random_vector(direction)
+		if abs(destination.x) > size.x/(camera.zoom.x*2) - $CollisionShape2D.shape.radius/2:
+			destination.x *= -1
+		if abs(destination.y) > size.y/(camera.zoom.y*2) - $CollisionShape2D.shape.radius/2:
+			destination.y *= -1
+		direction = global_position.angle_to(destination)
 		if calming:
 			calming = false
 			scared = false
@@ -54,7 +62,7 @@ func _on_area_entered_vision(area:Node2D):
 		destination = random_vector(direction)
 		if destination.dot(global_position.direction_to(area.global_position)) > 0:
 			destination = destination.rotated(PI)
-			direction = destination.angle()
+			direction = global_position.angle_to(destination)
 		destination += global_position
 	
 func _on_area_exited_vision(area:Node2D):
@@ -69,7 +77,7 @@ func _on_body_entered_vision(body:Node2D):
 	if body.get_collision_layer_value(3):
 		pass
 	elif body.get_collision_layer_value(2):
-		body.update_cargo.connect(_updated_cargo)
+		body.update_cargo_signal.connect(_updated_cargo)
 		if body.get_cargo_amount() > 0:
 			visible_targets.append(body)
 			choose_target()
@@ -77,7 +85,7 @@ func _on_body_entered_vision(body:Node2D):
 func _on_body_exited_vision(body:Node2D):
 	if body.get_collision_layer_value(2):
 		print("Target exited")
-		body.update_cargo.disconnect(_updated_cargo)
+		body.update_cargo_signal.disconnect(_updated_cargo)
 		visible_targets.erase(body)
 		choose_target()
 		print(visible_targets)
@@ -85,27 +93,41 @@ func _on_body_exited_vision(body:Node2D):
 
 func _on_body_entered_attack(body:Node2D):
 	if body.get_collision_layer_value(2):
+		body.stunned_signal.connect(update_attack_status)
 		attackable_targets.append(body)
 		if body == target:
-			attack_timer.start()
+			if not target.is_stunned():
+				attack_timer.start(attack_time)
 
 func _on_body_exited_attack(body:Node2D):
+	body.stunned_signal.disconnect(update_attack_status)
 	attackable_targets.erase(body)
-	choose_target()
-	if not target == null and attackable_targets.find(target) == 1:
-		if attack_timer.is_stopped():
-			attack_timer.start()
-	else:
-		attack_timer.stop()
+	if body == target:
+		choose_target()
+		if not target == null and attackable_targets.find(target) == 1:
+			if not target.is_stunned():
+				if attack_timer.is_stopped():
+					attack_timer.start(attack_time)
+		else:
+			attack_timer.stop()
 
 func attack():
+	if not target == null:
+		target.attacked()
+		if target.is_stunned():
+			attack_timer.stop()
+		else:
+			attack_timer.start(attack_time)
+	else:
+		attack_timer.stop()
+	#TODO: Insert laser here
 	pass
 
 func choose_target():
 	if not visible_targets.is_empty():
 		target = visible_targets.front()
 		for visible_target in visible_targets:
-			if (visible_target.get_cargo_amount() * 40)*(visible_target.get_cargo_amount() * 40)/global_position.distance_squared_to(target.global_position) > (target.get_cargo_amount()*40*target.get_cargo_amount()*40)/global_position.distance_squared_to(visible_target.global_position):
+			if (visible_target.get_cargo_amount() * 40)*(visible_target.get_cargo_amount() * 40)/global_position.distance_squared_to(visible_target.global_position) > (target.get_cargo_amount()*40*target.get_cargo_amount()*40)/global_position.distance_squared_to(target.global_position):
 				target = visible_target
 	else:
 		target = null
@@ -119,3 +141,10 @@ func _on_body_entered_plunder(body):
 	if not body.get_cargo_amount() == 0:
 		body.set_cargo(0)
 		body.return_home()
+
+func update_attack_status(ship:Node2D, stunned:bool):
+	if ship == target:
+		if stunned:
+			attack_timer.stop()
+		else:
+			attack_timer.start(attack_time)
