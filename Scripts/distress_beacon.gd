@@ -38,7 +38,8 @@ func _process(delta):
 		$TextureProgressBar.value = $TextureProgressBar.max_value*progress
 		queue_redraw()
 	else:
-		_timeout()
+		if timer < -5:
+			_timeout()
 
 func play_spawn_animation():
 	$AnimationPlayer.play("Spawn")
@@ -64,6 +65,7 @@ func _on_body_entered(body: Node2D):
 
 func _timeout():
 	print("Fail")
+	global.game_lost()
 	distress_beacon_pool.return_distress_beacon(self)
 
 func _alarm_timeout():

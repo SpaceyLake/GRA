@@ -5,6 +5,7 @@ var score = 0
 signal new_selected(old_selected:Node2D)
 
 var selected:Node2D
+var menu_hanler:Node = null
 
 func select(object:Node2D, selecting:bool):
 	if selecting:
@@ -25,3 +26,8 @@ func select(object:Node2D, selecting:bool):
 			if selected == object:
 				selected = null
 		return false
+
+func game_lost():
+	if menu_hanler == null:
+		return
+	menu_hanler.game_lost()

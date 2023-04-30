@@ -8,7 +8,7 @@ func _ready():
 	laser_pool.node_creation_parent = self
 
 func _process(_delta):
-	$UpgradeHanler/DarkOverlay.scale = Vector2.ONE / $Camera.zoom
+	$MenuHanler/DarkOverlay.scale = Vector2.ONE / $Camera.zoom
 	$GUI.scale = Vector2.ONE / $Camera.zoom	
 	$GUI/Label.text = str(global.score)
 
