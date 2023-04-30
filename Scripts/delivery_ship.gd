@@ -76,6 +76,8 @@ func set_cargo(new_cargo:int):
 	update_cargo.emit(self)
 
 func add_waypoint(pos:Vector2):
+	if waypoint_count() == 0 and velocity == Vector2.ZERO:
+		$AudioLaunch.play()
 	var marker = path_marker_pool.request_path_marker(pos)
 	marker.visible = selected
 	destinations.append(marker)
