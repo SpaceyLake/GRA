@@ -4,22 +4,12 @@
 [ext_resource type="PackedScene" uid="uid://dxp165f3yspdb" path="res://Scenes/base.tscn" id="3_lnp6p"]
 [ext_resource type="Script" path="res://Scripts/UpgradeHanler.gd" id="3_xxfcf"]
 [ext_resource type="PackedScene" uid="uid://bixxpibpivcwh" path="res://Scenes/distress_beacon_spawner.tscn" id="4_7i0cp"]
-[ext_resource type="PackedScene" uid="uid://blp6d7chtst1w" path="res://Scenes/camera.tscn" id="4_14cax"]
+[ext_resource type="PackedScene" path="res://Scenes/camera.tscn" id="4_14cax"]
 [ext_resource type="Texture2D" uid="uid://dw65hg0bkaleh" path="res://Sprites/DistressBeacon.svg" id="4_o2c3h"]
 [ext_resource type="LabelSettings" uid="uid://b10773gmtiwtb" path="res://Settings/LabelTitle.tres" id="6_02qeq"]
 [ext_resource type="Texture2D" uid="uid://bal3504l2ruuo" path="res://Sprites/DeliveryShipMenu.svg" id="7_eaghr"]
 [ext_resource type="LabelSettings" uid="uid://0ul8ma62ej0l" path="res://Settings/LabelText.tres" id="8_lymrp"]
-[ext_resource type="PackedScene" uid="uid://bvbxao8ihn2yd" path="res://Scenes/pirate_ship.tscn" id="10_y0qfq"]
-
-[sub_resource type="Environment" id="Environment_47pud"]
-background_mode = 3
-glow_enabled = true
-glow_levels/1 = 16.0
-glow_levels/2 = 16.0
-glow_levels/3 = 16.0
-glow_levels/4 = 16.0
-glow_intensity = 8.0
-glow_hdr_threshold = 0.0
+[ext_resource type="Theme" uid="uid://cdp3kqu3vj86v" path="res://Settings/UpgradeMenuButtons.tres" id="10_rufsc"]
 
 [sub_resource type="Animation" id="Animation_k4ek4"]
 resource_name = "OpenUpgradeMenu"
@@ -57,11 +47,19 @@ _data = {
 "RESET": SubResource("Animation_2uu67")
 }
 
+[sub_resource type="Environment" id="Environment_47pud"]
+background_mode = 3
+background_canvas_max_layer = 128
+glow_enabled = true
+glow_levels/1 = 16.0
+glow_levels/2 = 16.0
+glow_levels/3 = 16.0
+glow_levels/4 = 16.0
+glow_intensity = 8.0
+glow_hdr_threshold = 0.0
+
 [node name="World" type="Node2D"]
 script = ExtResource("1_s7eyf")
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_47pud")
 
 [node name="DistressBeaconSpawner" parent="." instance=ExtResource("4_7i0cp")]
 
@@ -151,7 +149,7 @@ clip_text = true
 text_overrun_behavior = 2
 
 [node name="TextureRect2" type="TextureRect" parent="UpgradeHanler/UpgradeMenu"]
-modulate = Color(0.972549, 0.972549, 0.972549, 1)
+modulate = Color(0.247059, 0.780392, 0.470588, 1)
 light_mask = 0
 offset_left = -80.0
 offset_top = -216.0
@@ -161,8 +159,53 @@ size_flags_horizontal = 8
 texture = ExtResource("7_eaghr")
 stretch_mode = 5
 
+[node name="Marker1" type="Marker2D" parent="UpgradeHanler/UpgradeMenu"]
+position = Vector2(-296, 88)
+
+[node name="Marker2" type="Marker2D" parent="UpgradeHanler/UpgradeMenu"]
+position = Vector2(88, 88)
+
+[node name="RefuelingShip" type="Button" parent="UpgradeHanler/UpgradeMenu"]
+offset_left = -296.0
+offset_top = 88.0
+offset_right = -88.0
+offset_bottom = 296.0
+size_flags_horizontal = 0
+size_flags_vertical = 4
+theme = ExtResource("10_rufsc")
+
+[node name="TextureRect" type="TextureRect" parent="UpgradeHanler/UpgradeMenu/RefuelingShip"]
+modulate = Color(0.247059, 0.780392, 0.470588, 1)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -80.0
+offset_right = 80.0
+offset_bottom = 160.0
+grow_horizontal = 2
+texture = ExtResource("7_eaghr")
+
+[node name="Label" type="Label" parent="UpgradeHanler/UpgradeMenu/RefuelingShip"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -128.0
+offset_top = -48.0
+offset_right = 128.0
+offset_bottom = 24.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Extra Refueling ship"
+label_settings = ExtResource("8_lymrp")
+horizontal_alignment = 1
+autowrap_mode = 3
+
 [node name="UpgradeTimer" type="Timer" parent="UpgradeHanler"]
-wait_time = 5.0
+wait_time = 120.0
 one_shot = true
 autostart = true
 
@@ -172,5 +215,5 @@ libraries = {
 "": SubResource("AnimationLibrary_yikp5")
 }
 
-[node name="PirateShip" parent="." instance=ExtResource("10_y0qfq")]
-position = Vector2(-651, 110)
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_47pud")
