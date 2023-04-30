@@ -14,7 +14,7 @@
 [ext_resource type="LabelSettings" uid="uid://ql3e6wdvyvoy" path="res://Settings/LabelTitleMain.tres" id="12_ndrmb"]
 [ext_resource type="AudioStream" uid="uid://bnvchtqffyfje" path="res://Sound/music6.wav" id="12_pqlq1"]
 [ext_resource type="Script" path="res://Scripts/music.gd" id="13_0aexi"]
-[ext_resource type="PackedScene" path="res://Scenes/pirate_base.tscn" id="14_v5iej"]
+[ext_resource type="PackedScene" uid="uid://b6q1jhxqkwuc" path="res://Scenes/pirate_base.tscn" id="14_v5iej"]
 
 [sub_resource type="Animation" id="Animation_k4ek4"]
 resource_name = "Darken"
