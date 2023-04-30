@@ -63,16 +63,17 @@ func _physics_process(delta):
 		destination = target.global_position
 		direction = global_position.angle_to_point(destination)
 		for attack_ship in visible_attack_ships:
-			if global_position.direction_to(destination).dot(global_position.direction_to(attack_ship.global_position)) > 0:
-				target = null
-				scared = true
-				var tangent_angle = global_position.angle_to_point(attack_ship.global_position) + PI/2
-				if destination.normalized().dot(Vector2(cos(tangent_angle), sin(tangent_angle))) > destination.normalized().dot(Vector2(cos(-tangent_angle), sin(-tangent_angle))):
-					direction = tangent_angle
-				else:
-					direction = -tangent_angle
-				destination = destination_vector_from_direction(direction) + global_position
-				destination += global_position
+			if not attack_ship.is_stunned():
+				if global_position.direction_to(destination).dot(global_position.direction_to(attack_ship.global_position)) > 0:
+					target = null
+					scared = true
+					var tangent_angle = global_position.angle_to_point(attack_ship.global_position) + PI/2
+					if destination.normalized().dot(Vector2(cos(tangent_angle), sin(tangent_angle))) > destination.normalized().dot(Vector2(cos(-tangent_angle), sin(-tangent_angle))):
+						direction = tangent_angle
+					else:
+						direction = -tangent_angle
+					destination = destination_vector_from_direction(direction) + global_position
+					destination += global_position
 	if global_position.distance_squared_to(destination) < velocity.length()*velocity.length()*delta*delta:
 		destination = global_position + random_vector(direction)
 		if abs(destination.x) > size.x/(camera.get_min_zoom()*2) - $CollisionShape2D.shape.radius/2:
@@ -129,7 +130,8 @@ func random_vector(current_direction:float):
 	var new_destination = Vector2.RIGHT.rotated(direction)
 	var separation_froce:Vector2 = Vector2.ZERO
 	for attack_ship in visible_attack_ships:
-		separation_froce += attack_ship.global_position.direction_to(global_position)
+		if not attack_ship.is_stunned():
+			separation_froce += attack_ship.global_position.direction_to(global_position)
 	new_destination += separation_froce * avoid_factor
 	new_destination = new_destination.normalized()*max(randf_range(min_length, $VisionArea/CollisionShape2D.shape.radius), (100 if scared else 0))
 	direction = new_destination.angle()
@@ -265,7 +267,6 @@ func attacked():
 	if health == full_health - 1:
 		heal_timer.start(heal_time)
 	if health == 0:
-		print("Should be killed")
 		killed.emit(self)
 		heal_timer.stop()
 

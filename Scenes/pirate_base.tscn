@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://b6q1jhxqkwuc"]
+[gd_scene load_steps=9 format=3 uid="uid://b6q1jhxqkwuc"]
 
 [ext_resource type="Script" path="res://Scripts/pirate_base.gd" id="1_if24b"]
 [ext_resource type="Texture2D" uid="uid://bn1b0u7hpl1x3" path="res://Sprites/PirateBase.svg" id="2_a1kc5"]
@@ -47,6 +47,9 @@ _data = {
 "Spin": SubResource("Animation_a2ugq")
 }
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_vmcgu"]
+radius = 284.002
+
 [node name="PirateBase" type="StaticBody2D"]
 collision_layer = 32
 collision_mask = 6
@@ -70,3 +73,9 @@ autoplay = "Spin"
 libraries = {
 "": SubResource("AnimationLibrary_80fst")
 }
+
+[node name="AttackArea" type="Area2D" parent="."]
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
+shape = SubResource("CircleShape2D_vmcgu")

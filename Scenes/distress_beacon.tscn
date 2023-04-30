@@ -46,8 +46,9 @@ _data = {
 }
 
 [node name="DistressBeacon" type="Area2D"]
+scale = Vector2(1e-05, 1e-05)
 collision_layer = 0
-collision_mask = 2
+collision_mask = 130
 script = ExtResource("1_bs46n")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
