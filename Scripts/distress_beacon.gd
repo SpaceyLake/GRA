@@ -61,10 +61,12 @@ func _on_body_entered(body: Node2D):
 	global.score += amount
 	if not needs:
 		print("Success")
+		$AlarmTimer.stop()
 		distress_beacon_pool.return_distress_beacon(self)
 
 func _timeout():
 	print("Fail")
+	$AlarmTimer.stop()
 	global.game_lost()
 	distress_beacon_pool.return_distress_beacon(self)
 

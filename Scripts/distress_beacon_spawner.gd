@@ -5,10 +5,9 @@ const MIN_LENGTH_FROM_DISTRESS_BEACON_SQUARED = 100*100
 const MIN_LENGTH_FROM_SHIP_SQUARED = 100*100
 
 @export var time_decreasment:float = 0.99
-var time:float = 15
 var timer:Timer = Timer.new()
-@export var min_need:int = 1
-@export var max_need:int = 3
+var needs:int = 5
+var needs_float:float = 0
 @onready var size: Vector2 = get_viewport().get_size()
 @onready var camera:Camera2D = get_parent().get_node("Camera")
 var rnd: RandomNumberGenerator = RandomNumberGenerator.new()
@@ -20,11 +19,19 @@ func _ready():
 	add_child(timer)
 	timer.timeout.connect(_timeout)
 	rnd.randomize()
-	timer.start(time)
+	timer.start(1)
+
+func _process(delta):
+	needs_float += delta*((2+pow(global.difficulty/120.0,2))/15)
+	if needs_float > 1:
+		needs += floor(needs_float)
+		needs_float -= floor(needs_float)
 
 func _timeout():
 	timer.stop()
-	time *= time_decreasment
+	if needs < 1:
+		timer.start(15)
+		return
 	var accepted_proposition:bool = false
 	var proposed_position: Vector2
 	while not accepted_proposition:
@@ -46,5 +53,13 @@ func _timeout():
 				accepted_proposition = false
 				break
 	var distress_beacon:Node2D = distress_beacon_pool.request_distress_beacon(proposed_position)
-	distress_beacon.set_needs(rnd.randi_range(min_need, max_need))
+	var beacon_needs = rnd.randi_range(min(needs, 1+global.difficulty/120), min(needs, 3+(global.difficulty/60)))
+	distress_beacon.set_needs(beacon_needs)
+	needs -= beacon_needs
+	var time = 5
+	if needs > 6+(global.difficulty/30):
+		time = 1
+	elif needs < 1+global.difficulty/120:
+		time = 15
+		
 	timer.start(time)
