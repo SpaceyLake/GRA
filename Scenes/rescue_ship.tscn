@@ -1,0 +1,29 @@
+[gd_scene load_steps=5 format=3 uid="uid://bfeomfgjg86pm"]
+
+[ext_resource type="Texture2D" uid="uid://dri0p1pkqbyeo" path="res://icon.svg" id="1_lcdk6"]
+[ext_resource type="Script" path="res://Scripts/rescue_ship.gd" id="1_tt6i3"]
+[ext_resource type="Texture2D" uid="uid://c036im7071r62" path="res://Sprites/PathLine.svg" id="2_6qv0m"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_rh3at"]
+radius = 60.0
+
+[node name="RescueShip" type="CharacterBody2D"]
+collision_layer = 128
+collision_mask = 0
+input_pickable = true
+script = ExtResource("1_tt6i3")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_lcdk6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_rh3at")
+
+[node name="Node" type="Node" parent="."]
+
+[node name="PathLine" type="Line2D" parent="Node"]
+texture_repeat = 2
+width = 1.5
+default_color = Color(0.741176, 0.819608, 0.337255, 1)
+texture = ExtResource("2_6qv0m")
+texture_mode = 1

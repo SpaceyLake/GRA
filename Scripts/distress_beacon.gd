@@ -56,13 +56,18 @@ func set_needs(new_needs:int):
 	queue_redraw()
 
 func _on_body_entered(body: Node2D):
-	var amount = body.deliver(needs)
-	set_needs(needs - amount)
-	global.score += amount
-	if not needs:
-		print("Success")
-		$AlarmTimer.stop()
-		distress_beacon_pool.return_distress_beacon(self)
+	if body.get_collision_layer_value(2):
+		var amount = body.deliver(needs)
+		set_needs(needs - amount)
+		global.score += amount
+		if not needs:
+			print("Success")
+			$AlarmTimer.stop()
+			distress_beacon_pool.return_distress_beacon(self)
+	elif body.get_collision_layer_value(8):
+		if body.rescue():
+			timer = timeout
+			$AlarmTimer.stop()
 
 func _timeout():
 	print("Fail")

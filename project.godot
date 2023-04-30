@@ -54,6 +54,7 @@ mute={
 2d_physics/layer_5="Asteroids"
 2d_physics/layer_6="PirateBase"
 2d_physics/layer_7="AttackShip"
+2d_physics/layer_8="RescueShip"
 
 [rendering]
 

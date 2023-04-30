@@ -8,7 +8,7 @@ var dead_pirates: Array = []
 var pirate_spawn_time:float = 10
 var pirate_spawn_timer: Timer = Timer.new()
 var visible_targets:Array = []
-var attack_time:float = 1
+var attack_time:float = 0.75
 var attack_timer:Timer = Timer.new()
 
 func _ready():

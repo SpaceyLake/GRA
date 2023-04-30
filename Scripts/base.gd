@@ -4,6 +4,7 @@ var howered:bool = false
 var selected:bool = false
 const cargo_ship:PackedScene = preload("res://Scenes/delivery_ship.tscn")
 const attack_ship:PackedScene = preload("res://Scenes/attack_ship.tscn")
+const rescue_ship:PackedScene = preload("res://Scenes/rescue_ship.tscn")
 const cargo_ship_marker = preload("res://Sprites/DeliveryShipIcon.svg")
 const fuel_marker = preload("res://Sprites/BaseFuelIcon.svg")
 @export var start_nr_ships = 2
@@ -30,6 +31,7 @@ func _ready():
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
 	spawn_attack_ship()
+	spawn_rescue_ship()
 
 func _input(event):
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_WHEEL_UP and event.is_pressed():
@@ -96,6 +98,15 @@ func spawn_attack_ship():
 	new_ship.global_position = global_position + Vector2(cos(random_angle), sin(random_angle)) * ($CollisionShape2D.shape.radius + attack_ship_radius + 1)
 	new_ship.rotation = random_angle
 
+func spawn_rescue_ship():
+	var new_ship = rescue_ship.instantiate()
+	add_sibling.call_deferred(new_ship)
+	new_ship.set_base_position(global_position)
+	var attack_ship_radius = new_ship.get_radius()
+	var random_angle = randf_range(-PI, PI)
+	new_ship.global_position = global_position + Vector2(cos(random_angle), sin(random_angle)) * ($CollisionShape2D.shape.radius + attack_ship_radius + 1)
+	new_ship.rotation = random_angle
+
 func ship_active(current_ship:Node2D, active:bool):
 	current_ship.velocity = Vector2.ZERO
 	current_ship.visible = active
@@ -140,6 +151,8 @@ func _on_body_entered(body: Node2D):
 			body.set_cargo(cargo_amount)
 	elif body.get_collision_layer_value(7):
 		body.is_home()
+	elif body.get_collision_layer_value(8):
+		body.fill_rescue()
 
 func _draw():
 	var ships = docked_ships.size()
