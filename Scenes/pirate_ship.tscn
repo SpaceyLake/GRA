@@ -1,7 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://bvbxao8ihn2yd"]
+[gd_scene load_steps=9 format=3 uid="uid://bvbxao8ihn2yd"]
 
-[ext_resource type="Texture2D" uid="uid://cbolycx0ij8ph" path="res://Sprites/DeliveryShip.svg" id="1_8kf5t"]
 [ext_resource type="Script" path="res://Scripts/pirate_ship.gd" id="1_ax66q"]
+[ext_resource type="Texture2D" uid="uid://unefx7qts5st" path="res://Sprites/PirateShip.svg" id="2_l4ccn"]
+[ext_resource type="Material" uid="uid://cm5gdcha1oraj" path="res://Settings/pirate_ship_thrusters.tres" id="3_28bko"]
+[ext_resource type="Texture2D" uid="uid://dkmbbbomkkuju" path="res://Sprites/Circle.svg" id="4_451c5"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_d34j5"]
 radius = 20.02
@@ -20,21 +22,28 @@ collision_layer = 4
 collision_mask = 0
 script = ExtResource("1_ax66q")
 
-[node name="LaserPoint" type="Node2D" parent="."]
-position = Vector2(16, 0)
-
 [node name="Sprite2D" type="Sprite2D" parent="."]
-modulate = Color(0.996078, 0, 0, 1)
-texture = ExtResource("1_8kf5t")
+modulate = Color(0.882353, 0.32549, 0.290196, 1)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_l4ccn")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 shape = SubResource("CircleShape2D_d34j5")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+position = Vector2(-19, 0)
+amount = 40
+process_material = ExtResource("3_28bko")
+texture = ExtResource("4_451c5")
+visibility_rect = Rect2(-80, -50, 100, 100)
 
 [node name="PlunderArea" type="Area2D" parent="."]
 collision_layer = 0
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlunderArea"]
+visible = false
 shape = SubResource("CircleShape2D_npnr2")
 
 [node name="VisionArea" type="Area2D" parent="."]
@@ -42,6 +51,7 @@ collision_layer = 0
 collision_mask = 14
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="VisionArea"]
+visible = false
 shape = SubResource("CircleShape2D_oo27d")
 
 [node name="AttackArea" type="Area2D" parent="."]
@@ -49,4 +59,13 @@ collision_layer = 0
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
+visible = false
 shape = SubResource("CircleShape2D_kav5i")
+
+[node name="Guns" type="Node2D" parent="."]
+
+[node name="Gun1" type="Marker2D" parent="Guns"]
+position = Vector2(6, -8)
+
+[node name="Gun2" type="Marker2D" parent="Guns"]
+position = Vector2(6, 8)

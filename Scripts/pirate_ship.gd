@@ -16,6 +16,8 @@ var attackable_targets = []
 var attack_target = null
 @onready var size: Vector2 = get_viewport().get_size()
 @onready var camera:Camera2D = get_parent().get_node("Camera")
+@onready var guns = $Guns.get_children()
+var next_gun = 0
 
 func _ready():
 	add_child(attack_timer)
@@ -113,7 +115,13 @@ func _on_body_exited_attack(body:Node2D):
 
 func attack():
 	if not target == null:
-		laser_pool.request_laser($LaserPoint.global_position, target.global_position, $Sprite2D.modulate)
+		laser_pool.request_laser(guns[next_gun].global_position, target.global_position+Vector2.RIGHT.rotated(randf_range(-PI, PI))*randf_range(0,10), $Sprite2D.modulate)
+		next_gun += 1
+		print_debug(guns)
+		print_debug(next_gun)
+		if next_gun >= guns.size():
+			next_gun -= guns.size()
+
 		target.attacked()
 		if target.is_stunned():
 			attack_timer.stop()
