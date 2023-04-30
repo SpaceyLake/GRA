@@ -1,10 +1,15 @@
-[gd_scene load_steps=7 format=3 uid="uid://dlgrb470mtuwp"]
+[gd_scene load_steps=12 format=3 uid="uid://dlgrb470mtuwp"]
 
 [ext_resource type="Script" path="res://Scripts/main_menu.gd" id="1_7gpuw"]
 [ext_resource type="LabelSettings" uid="uid://ql3e6wdvyvoy" path="res://Settings/LabelTitleMain.tres" id="1_n03fa"]
 [ext_resource type="LabelSettings" uid="uid://7vmh18irhg7p" path="res://Settings/LabelMEGA.tres" id="2_v2qlc"]
 [ext_resource type="LabelSettings" uid="uid://0ul8ma62ej0l" path="res://Settings/LabelText.tres" id="2_vo058"]
 [ext_resource type="Theme" uid="uid://cdp3kqu3vj86v" path="res://Settings/UpgradeMenuButtons.tres" id="4_fcxkb"]
+[ext_resource type="Texture2D" uid="uid://bal3504l2ruuo" path="res://Sprites/DeliveryShipMenu.svg" id="6_etkim"]
+[ext_resource type="Texture2D" uid="uid://b0gommbl50nef" path="res://Sprites/Base.svg" id="7_dx7ag"]
+[ext_resource type="Texture2D" uid="uid://bn1b0u7hpl1x3" path="res://Sprites/PirateBase.svg" id="8_opqfl"]
+[ext_resource type="Texture2D" uid="uid://unefx7qts5st" path="res://Sprites/PirateShip.svg" id="9_jmkka"]
+[ext_resource type="Texture2D" uid="uid://geg8g5w4ny3c" path="res://Sprites/DistressBeaconBig.svg" id="10_xyx8w"]
 
 [sub_resource type="Environment" id="Environment_4io26"]
 background_mode = 3
@@ -116,5 +121,84 @@ text = "Quit"
 label_settings = ExtResource("1_n03fa")
 horizontal_alignment = 1
 
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0.247059, 0.780392, 0.470588, 1)
+position = Vector2(361, 829)
+rotation = 1.0472
+texture = ExtResource("6_etkim")
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+modulate = Color(0.247059, 0.780392, 0.470588, 1)
+position = Vector2(215, 681)
+rotation = 0.523599
+texture = ExtResource("6_etkim")
+
+[node name="Sprite2D3" type="Sprite2D" parent="."]
+modulate = Color(0.247059, 0.780392, 0.470588, 1)
+position = Vector2(153, 881)
+rotation = 0.261799
+texture = ExtResource("7_dx7ag")
+
+[node name="Sprite2D4" type="Sprite2D" parent="."]
+modulate = Color(0.882353, 0.32549, 0.290196, 1)
+position = Vector2(1769, 881)
+rotation = 0.523599
+texture = ExtResource("8_opqfl")
+
+[node name="PirateShip" type="Sprite2D" parent="."]
+modulate = Color(0.882353, 0.32549, 0.290196, 1)
+position = Vector2(1601, 789)
+rotation = -2.61799
+texture = ExtResource("9_jmkka")
+
+[node name="PirateShip3" type="Sprite2D" parent="."]
+modulate = Color(0.882353, 0.32549, 0.290196, 1)
+position = Vector2(1557, 912)
+rotation = 2.96706
+texture = ExtResource("9_jmkka")
+
+[node name="PirateShip4" type="Sprite2D" parent="."]
+modulate = Color(0.882353, 0.32549, 0.290196, 1)
+position = Vector2(1832, 681)
+rotation = -1.39626
+texture = ExtResource("9_jmkka")
+
+[node name="PirateShip2" type="Sprite2D" parent="."]
+modulate = Color(0.882353, 0.32549, 0.290196, 1)
+position = Vector2(1712, 695)
+rotation = -2.0944
+texture = ExtResource("9_jmkka")
+
+[node name="PirateShip5" type="Sprite2D" parent="."]
+modulate = Color(0.882353, 0.32549, 0.290196, 1)
+position = Vector2(1607, 668)
+rotation = -2.18166
+texture = ExtResource("9_jmkka")
+
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_4io26")
+
+[node name="DistressBeacon" type="Sprite2D" parent="."]
+modulate = Color(0.247059, 0.780392, 0.470588, 1)
+position = Vector2(167, 157)
+texture = ExtResource("10_xyx8w")
+
+[node name="DistressBeacon2" type="Sprite2D" parent="."]
+modulate = Color(0.741176, 0.819608, 0.337255, 1)
+position = Vector2(523, 578)
+texture = ExtResource("10_xyx8w")
+
+[node name="DistressBeacon4" type="Sprite2D" parent="."]
+modulate = Color(0.94902, 0.584314, 0.27451, 1)
+position = Vector2(1403, 557)
+texture = ExtResource("10_xyx8w")
+
+[node name="DistressBeacon5" type="Sprite2D" parent="."]
+modulate = Color(0.882353, 0.32549, 0.290196, 1)
+position = Vector2(1726, 183)
+texture = ExtResource("10_xyx8w")
+
+[node name="DistressBeacon3" type="Sprite2D" parent="."]
+modulate = Color(1, 0.807843, 0, 1)
+position = Vector2(483, 205)
+texture = ExtResource("10_xyx8w")
