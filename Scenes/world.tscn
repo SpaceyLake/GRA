@@ -6,7 +6,9 @@
 [ext_resource type="PackedScene" uid="uid://bixxpibpivcwh" path="res://Scenes/distress_beacon_spawner.tscn" id="4_7i0cp"]
 [ext_resource type="PackedScene" path="res://Scenes/camera.tscn" id="4_14cax"]
 [ext_resource type="Texture2D" uid="uid://dw65hg0bkaleh" path="res://Sprites/DistressBeacon.svg" id="4_o2c3h"]
-[ext_resource type="Texture2D" uid="uid://cbolycx0ij8ph" path="res://Sprites/DeliveryShip.svg" id="7_g302c"]
+[ext_resource type="LabelSettings" uid="uid://b10773gmtiwtb" path="res://Settings/LabelTitle.tres" id="6_02qeq"]
+[ext_resource type="Texture2D" uid="uid://bal3504l2ruuo" path="res://Sprites/DeliveryShipMenu.svg" id="7_eaghr"]
+[ext_resource type="LabelSettings" uid="uid://0ul8ma62ej0l" path="res://Settings/LabelText.tres" id="8_lymrp"]
 
 [sub_resource type="Environment" id="Environment_47pud"]
 background_mode = 3
@@ -17,14 +19,6 @@ glow_levels/3 = 16.0
 glow_levels/4 = 16.0
 glow_intensity = 8.0
 glow_hdr_threshold = 0.0
-
-[sub_resource type="SystemFont" id="SystemFont_syf1m"]
-font_names = PackedStringArray("Impact")
-
-[sub_resource type="LabelSettings" id="LabelSettings_wv7uq"]
-font = SubResource("SystemFont_syf1m")
-font_size = 50
-font_color = Color(0.972549, 0.972549, 0.972549, 1)
 
 [sub_resource type="Animation" id="Animation_k4ek4"]
 resource_name = "OpenUpgradeMenu"
@@ -83,22 +77,22 @@ follow_viewport_enabled = true
 [node name="TextureRect" type="TextureRect" parent="GUI"]
 modulate = Color(0.972549, 0.972549, 0.972549, 1)
 light_mask = 0
-offset_left = 857.0
-offset_top = -513.0
-offset_right = 923.0
-offset_bottom = -434.0
+offset_left = 863.0
+offset_top = -512.0
+offset_right = 929.0
+offset_bottom = -433.0
 size_flags_horizontal = 8
 texture = ExtResource("4_o2c3h")
 stretch_mode = 5
 
 [node name="Label" type="Label" parent="GUI"]
-offset_left = 650.0
-offset_top = -501.0
-offset_right = 845.0
-offset_bottom = -434.0
+offset_left = 656.0
+offset_top = -500.0
+offset_right = 851.0
+offset_bottom = -433.0
 text = "0
 "
-label_settings = SubResource("LabelSettings_wv7uq")
+label_settings = ExtResource("6_02qeq")
 horizontal_alignment = 2
 vertical_alignment = 1
 
@@ -126,21 +120,48 @@ metadata/_edit_lock_ = true
 
 [node name="LabelTitle" type="Label" parent="UpgradeHanler/UpgradeMenu"]
 light_mask = 0
-offset_left = -369.0
-offset_top = -355.0
-offset_right = -215.0
-offset_bottom = -290.0
+offset_left = -320.0
+offset_top = -320.0
+offset_right = 192.0
+offset_bottom = -255.0
 text = "Cycle 2"
-label_settings = SubResource("LabelSettings_wv7uq")
+label_settings = ExtResource("6_02qeq")
 
-[node name="Sprite2D" type="Sprite2D" parent="UpgradeHanler/UpgradeMenu"]
-position = Vector2(0, -100)
-rotation = 4.71239
-scale = Vector2(5, 5)
-texture = ExtResource("7_g302c")
+[node name="LabelText1" type="Label" parent="UpgradeHanler/UpgradeMenu"]
+offset_left = -320.0
+offset_top = -255.0
+offset_right = 320.0
+offset_bottom = -191.0
+text = "You have been granted an extra refueling ship:"
+label_settings = ExtResource("8_lymrp")
+autowrap_mode = 2
+clip_text = true
+text_overrun_behavior = 2
+
+[node name="LabelText2" type="Label" parent="UpgradeHanler/UpgradeMenu"]
+offset_left = -320.0
+offset_top = -32.0
+offset_right = 320.0
+offset_bottom = 40.0
+text = "You may also select one of the following assets:"
+label_settings = ExtResource("8_lymrp")
+autowrap_mode = 2
+clip_text = true
+text_overrun_behavior = 2
+
+[node name="TextureRect2" type="TextureRect" parent="UpgradeHanler/UpgradeMenu"]
+modulate = Color(0.972549, 0.972549, 0.972549, 1)
+light_mask = 0
+offset_left = -80.0
+offset_top = -216.0
+offset_right = 80.0
+offset_bottom = -56.0
+size_flags_horizontal = 8
+texture = ExtResource("7_eaghr")
+stretch_mode = 5
 
 [node name="UpgradeTimer" type="Timer" parent="UpgradeHanler"]
-wait_time = 120.0
+wait_time = 5.0
 one_shot = true
 autostart = true
 
