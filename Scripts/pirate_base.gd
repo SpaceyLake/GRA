@@ -10,6 +10,8 @@ var pirate_spawn_timer: Timer = Timer.new()
 var visible_targets:Array = []
 var attack_time:float = 0.75
 var attack_timer:Timer = Timer.new()
+@onready var guns = $Sprite2D/Guns.get_children()
+var next_gun = 0
 
 func _ready():
 	add_child(attack_timer)
@@ -81,7 +83,10 @@ func pirate_leaving_base(pirate:Node2D):
 func attack():
 	var targets_to_erase:Array = []
 	for target in visible_targets:
-		laser_pool.request_laser(global_position, target.global_position+Vector2.RIGHT.rotated(randf_range(-PI, PI))*randf_range(0,10), $Sprite2D.modulate)
+		laser_pool.request_laser(guns[next_gun].global_position, target.global_position+Vector2.RIGHT.rotated(randf_range(-PI, PI))*randf_range(0,10), $Sprite2D.modulate)
+		next_gun += 1
+		if next_gun >= guns.size():
+			next_gun -= guns.size()
 		target.attacked()
 		if target.is_stunned():
 			targets_to_erase.append(target)

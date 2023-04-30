@@ -58,11 +58,34 @@ script = ExtResource("1_if24b")
 [node name="Sprite2D" type="Sprite2D" parent="."]
 modulate = Color(0.882353, 0.32549, 0.290196, 1)
 texture = ExtResource("2_a1kc5")
+metadata/_edit_lock_ = true
+
+[node name="Guns" type="Node2D" parent="Sprite2D"]
+
+[node name="Gun1" type="Marker2D" parent="Sprite2D/Guns"]
+position = Vector2(0, -47)
+
+[node name="Gun2" type="Marker2D" parent="Sprite2D/Guns"]
+position = Vector2(41, 23)
+
+[node name="Gun3" type="Marker2D" parent="Sprite2D/Guns"]
+position = Vector2(-40, 23)
+
+[node name="Gun4" type="Marker2D" parent="Sprite2D/Guns"]
+position = Vector2(-27, 16)
+
+[node name="Gun5" type="Marker2D" parent="Sprite2D/Guns"]
+position = Vector2(28, 16)
+
+[node name="Gun6" type="Marker2D" parent="Sprite2D/Guns"]
+position = Vector2(0, -32)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 shape = SubResource("CircleShape2D_xou6x")
 
 [node name="SafeArea" type="Area2D" parent="."]
+visible = false
 collision_mask = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SafeArea"]
@@ -75,6 +98,7 @@ libraries = {
 }
 
 [node name="AttackArea" type="Area2D" parent="."]
+visible = false
 collision_mask = 64
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
