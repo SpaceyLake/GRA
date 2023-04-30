@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://bt6kdd48rxcyv"]
+[gd_scene load_steps=20 format=3 uid="uid://bt6kdd48rxcyv"]
 
 [ext_resource type="Script" path="res://Scripts/world.gd" id="1_s7eyf"]
 [ext_resource type="PackedScene" uid="uid://dxp165f3yspdb" path="res://Scenes/base.tscn" id="3_lnp6p"]
@@ -15,7 +15,6 @@
 [ext_resource type="AudioStream" uid="uid://bnvchtqffyfje" path="res://Sound/music6.wav" id="12_pqlq1"]
 [ext_resource type="Script" path="res://Scripts/music.gd" id="13_0aexi"]
 [ext_resource type="PackedScene" uid="uid://b6q1jhxqkwuc" path="res://Scenes/pirate_base.tscn" id="14_v5iej"]
-[ext_resource type="PackedScene" uid="uid://buduk7fvudbk0" path="res://Scenes/attack_ship.tscn" id="16_vw2vg"]
 
 [sub_resource type="Animation" id="Animation_k4ek4"]
 resource_name = "Darken"
@@ -332,6 +331,3 @@ script = ExtResource("13_0aexi")
 
 [node name="PirateBase" parent="." instance=ExtResource("14_v5iej")]
 position = Vector2(-592, 173)
-
-[node name="AttackShip" parent="." instance=ExtResource("16_vw2vg")]
-position = Vector2(-313, -203)

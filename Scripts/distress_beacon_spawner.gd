@@ -3,6 +3,7 @@ extends Node
 const MIN_LENGTH_FROM_BASE_SQUARED = 200*200
 const MIN_LENGTH_FROM_DISTRESS_BEACON_SQUARED = 100*100
 const MIN_LENGTH_FROM_SHIP_SQUARED = 100*100
+const MIN_LENGTH_FROM_PIRATE_BASE = 200*200
 
 @export var time_decreasment:float = 0.99
 var timer:Timer = Timer.new()
@@ -10,12 +11,16 @@ var needs:int = 5
 var needs_float:float = 0
 @onready var size: Vector2 = get_viewport().get_size()
 @onready var camera:Camera2D = get_parent().get_node("Camera")
+var pirate_bases:Array = []
 var rnd: RandomNumberGenerator = RandomNumberGenerator.new()
 var path_marker_pool:Array = []
 
 @onready var base:Node2D = get_parent().get_node("Base")
 
 func _ready():
+	for node in get_parent().get_children():
+		if node is StaticBody2D and node.get_collision_layer_value(4):
+			pirate_bases.append(node)
 	add_child(timer)
 	timer.timeout.connect(_timeout)
 	rnd.randomize()
@@ -50,6 +55,10 @@ func _timeout():
 			continue
 		for ship in base.get_deployed_ships():
 			if ship.global_position.distance_squared_to(proposed_position) < MIN_LENGTH_FROM_SHIP_SQUARED:
+				accepted_proposition = false
+				break
+		for pirate_base in pirate_bases:
+			if pirate_base.global_position.distance_squared_to(proposed_position) < MIN_LENGTH_FROM_PIRATE_BASE:
 				accepted_proposition = false
 				break
 	var distress_beacon:Node2D = distress_beacon_pool.request_distress_beacon(proposed_position)

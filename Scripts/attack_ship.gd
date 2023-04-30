@@ -40,18 +40,15 @@ func _ready():
 	$Node/PathLine.add_point(global_position)
 
 func _physics_process(delta):
-	if stunned:
+	if not destinations.is_empty() and global_position.distance_to(waypoint_next_pos()) < velocity.length()*delta:
+		global_position = waypoint_next_pos()
 		velocity = Vector2.ZERO
-	else:
-		if not destinations.is_empty() and global_position.distance_to(waypoint_next_pos()) < velocity.length()*delta:
-			global_position = waypoint_next_pos()
-			velocity = Vector2.ZERO
-			waypoint_skip()
-		if not destinations.is_empty():
-			velocity = global_position.direction_to(waypoint_next_pos())*speed
-			var diff = global_position.angle_to_point(waypoint_next_pos()) - global_rotation
-			diff = wrap(diff, -PI, PI)
-			global_rotation += sign(diff) * min(5 * delta, abs(diff))
+		waypoint_skip()
+	if not destinations.is_empty():
+		velocity = global_position.direction_to(waypoint_next_pos())*speed
+		var diff = global_position.angle_to_point(waypoint_next_pos()) - global_rotation
+		diff = wrap(diff, -PI, PI)
+		global_rotation += sign(diff) * min(5 * delta, abs(diff))
 
 	move_and_slide()
 	$Node/PathLine.set_point_position(0, global_position)
@@ -138,6 +135,7 @@ func attacked():
 		heal_timer.start(heal_time)
 	if health == 0:
 		set_stunned(true)
+		return_home()
 		stunned_signal.emit(self, stunned)
 
 func heal():
@@ -158,10 +156,8 @@ func set_stunned(stunning:bool):
 	stunned = stunning
 	if stunned:
 		$Sprite2D.modulate = color_stunned
-		$CargoMeter.tint_progress = color_stunned
 	else:
 		$Sprite2D.modulate = color_normal
-		$CargoMeter.tint_progress = color_normal
 
 func update_selected(old_selected:Node2D):
 	if old_selected == self:
@@ -181,9 +177,16 @@ func _on_body_exited_attack_area(body:Node2D):
 
 func attack():
 	if not visible_targets.is_empty():
-		laser_pool.request_laser(global_position, visible_targets.front().global_position+Vector2.RIGHT.rotated(randf_range(-PI, PI))*randf_range(0,10), $Sprite2D.modulate)
-		visible_targets.front().attacked()
+		if not stunned:
+			laser_pool.request_laser(global_position, visible_targets.front().global_position+Vector2.RIGHT.rotated(randf_range(-PI, PI))*randf_range(0,10), $Sprite2D.modulate)
+			visible_targets.front().attacked()
 		attack_timer.start(attack_time)
 	else:
 		attack_timer.stop()
 	pass
+
+func is_home():
+	if stunned:
+		velocity = Vector2.ZERO
+		waypoint_clear()
+		awaken()
