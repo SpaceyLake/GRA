@@ -1,8 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://bsuriqu5ia71i"]
+[gd_scene load_steps=11 format=3 uid="uid://bsuriqu5ia71i"]
 
 [ext_resource type="Script" path="res://Scripts/distress_beacon.gd" id="1_bs46n"]
 [ext_resource type="Texture2D" uid="uid://dw65hg0bkaleh" path="res://Sprites/DistressBeacon.svg" id="2_q857a"]
 [ext_resource type="Texture2D" uid="uid://c4cb5rj5ka41f" path="res://Sprites/ProgressCircle1.svg" id="3_yckmp"]
+[ext_resource type="AudioStream" uid="uid://fii0wvv6i64u" path="res://Sound/signal.wav" id="4_mb2yu"]
+[ext_resource type="AudioStream" uid="uid://cxsk4s3hqeyeo" path="res://Sound/alarm.wav" id="5_cicpr"]
+[ext_resource type="AudioStream" uid="uid://dnhh4fvvylije" path="res://Sound/alarm2.wav" id="6_jqpkd"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_6nysa"]
 radius = 4.0
@@ -75,3 +78,18 @@ autoplay = "Spawn"
 libraries = {
 "": SubResource("AnimationLibrary_n8xap")
 }
+
+[node name="AudioSpawn" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_mb2yu")
+volume_db = -10.0
+
+[node name="AudioAlarm1" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_cicpr")
+volume_db = -10.0
+
+[node name="AudioAlarm2" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_jqpkd")
+volume_db = -10.0
+
+[node name="AlarmTimer" type="Timer" parent="."]
+autostart = true

@@ -92,6 +92,7 @@ func is_not_howering():
 	howered = false
 
 func ship_active(current_ship:Node2D, active:bool):
+	current_ship.velocity = Vector2.ZERO
 	current_ship.visible = active
 	current_ship.set_process(active)
 	current_ship.set_physics_process(active)
