@@ -82,4 +82,4 @@ tint_progress = Color(0.247059, 0.780392, 0.470588, 1)
 
 [node name="AudioLaunch" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("6_fwmnf")
-volume_db = -10.0
+volume_db = -5.0
