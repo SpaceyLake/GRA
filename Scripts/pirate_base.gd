@@ -19,7 +19,6 @@ func spawn_pirate():
 	pirate_spawn_timer.stop()
 	if not dead_pirates.is_empty():
 		var pirate:Node2D = dead_pirates.pop_front()
-		pirate.killed.connect(kill_pirate)
 		var random_angle: float = randf_range(-PI, PI)
 		var pirate_position:Vector2 = Vector2(cos(random_angle), sin(random_angle)) * ($CollisionShape2D.shape.radius + pirate.get_node("CollisionShape2D").shape.radius + 5)
 		pirate.global_position = pirate_position + global_position
@@ -27,6 +26,7 @@ func spawn_pirate():
 	elif pirates < max_pirates:
 		pirates +=1
 		var pirate:Node2D = pirate_ship.instantiate()
+		pirate.killed.connect(kill_pirate)
 		pirate.set_base_position(global_position)
 		add_sibling.call_deferred(pirate)
 		var random_angle: float = randf_range(-PI, PI)
@@ -57,6 +57,7 @@ func activate_pirate(pirate:Node2D, active:bool):
 	pirate.set_process_unhandled_key_input(active)
 	pirate.restart_particles()
 	pirate.recharge()
+	pirate.fill_health()
 	pirate.get_node("CollisionShape2D").set_deferred("disabled", not active)
 	if active == false:
 		pirate.global_position = global_position
