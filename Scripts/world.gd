@@ -7,7 +7,7 @@ func _ready():
 	distress_beacon_pool.node_creation_parent = self
 
 func _process(_delta):
-	$UpgradeHanler/UpgradeMenu.scale = Vector2.ONE / $Camera.zoom
+	$UpgradeHanler/DarkOverlay.scale = Vector2.ONE / $Camera.zoom
 	$GUI.scale = Vector2.ONE / $Camera.zoom	
 	$GUI/Label.text = str(global.score)
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://bt6kdd48rxcyv"]
+[gd_scene load_steps=16 format=3 uid="uid://bt6kdd48rxcyv"]
 
 [ext_resource type="Script" path="res://Scripts/world.gd" id="1_s7eyf"]
 [ext_resource type="PackedScene" uid="uid://dxp165f3yspdb" path="res://Scenes/base.tscn" id="3_lnp6p"]
@@ -10,28 +10,14 @@
 [ext_resource type="Texture2D" uid="uid://bal3504l2ruuo" path="res://Sprites/DeliveryShipMenu.svg" id="7_eaghr"]
 [ext_resource type="LabelSettings" uid="uid://0ul8ma62ej0l" path="res://Settings/LabelText.tres" id="8_lymrp"]
 [ext_resource type="Theme" uid="uid://cdp3kqu3vj86v" path="res://Settings/UpgradeMenuButtons.tres" id="10_rufsc"]
-
-[sub_resource type="Animation" id="Animation_k4ek4"]
-resource_name = "OpenUpgradeMenu"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("UpgradeHanler/UpgradeMenu/ColorRect:color")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(0.0588235, 0.054902, 0.0901961, 0), Color(0.0588235, 0.054902, 0.0901961, 0.784314)]
-}
+[ext_resource type="PackedScene" uid="uid://crsils443x1iq" path="res://Scenes/asteroid_field.tscn" id="11_hbnrm"]
 
 [sub_resource type="Animation" id="Animation_2uu67"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("UpgradeHanler/UpgradeMenu/ColorRect:color")
+tracks/0/path = NodePath("UpgradeHanler/DarkOverlay/ColorRect:color")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -40,10 +26,50 @@ tracks/0/keys = {
 "update": 0,
 "values": [Color(0.0588235, 0.054902, 0.0901961, 0.784314)]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("UpgradeHanler/DarkOverlay:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_k4ek4"]
+resource_name = "Darken"
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("UpgradeHanler/DarkOverlay/ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0.0588235, 0.054902, 0.0901961, 0), Color(0.0588235, 0.054902, 0.0901961, 0.784314)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("UpgradeHanler/DarkOverlay:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.0001, 0.01),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [false, false, true]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_yikp5"]
 _data = {
-"OpenUpgradeMenu": SubResource("Animation_k4ek4"),
+"Darken": SubResource("Animation_k4ek4"),
 "RESET": SubResource("Animation_2uu67")
 }
 
@@ -65,6 +91,15 @@ script = ExtResource("1_s7eyf")
 
 [node name="Base" parent="." instance=ExtResource("3_lnp6p")]
 metadata/_edit_lock_ = true
+
+[node name="AsteroidField" parent="." instance=ExtResource("11_hbnrm")]
+position = Vector2(600, 200)
+
+[node name="AsteroidField2" parent="." instance=ExtResource("11_hbnrm")]
+position = Vector2(664, 312)
+
+[node name="AsteroidField3" parent="." instance=ExtResource("11_hbnrm")]
+position = Vector2(712, 432)
 
 [node name="Camera" parent="." instance=ExtResource("4_14cax")]
 
@@ -99,12 +134,12 @@ vertical_alignment = 1
 process_mode = 3
 script = ExtResource("3_xxfcf")
 
-[node name="UpgradeMenu" type="CanvasLayer" parent="UpgradeHanler"]
+[node name="DarkOverlay" type="CanvasLayer" parent="UpgradeHanler"]
 process_mode = 3
 layer = 120
 follow_viewport_enabled = true
 
-[node name="ColorRect" type="ColorRect" parent="UpgradeHanler/UpgradeMenu"]
+[node name="ColorRect" type="ColorRect" parent="UpgradeHanler/DarkOverlay"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -114,10 +149,13 @@ offset_right = -960.0
 offset_bottom = -540.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 color = Color(0.0588235, 0.054902, 0.0901961, 0.784314)
 metadata/_edit_lock_ = true
 
-[node name="LabelTitle" type="Label" parent="UpgradeHanler/UpgradeMenu"]
+[node name="UpgradeMenu" type="Node2D" parent="UpgradeHanler/DarkOverlay"]
+
+[node name="LabelTitle" type="Label" parent="UpgradeHanler/DarkOverlay/UpgradeMenu"]
 light_mask = 0
 offset_left = -320.0
 offset_top = -320.0
@@ -126,7 +164,7 @@ offset_bottom = -255.0
 text = "Cycle 2"
 label_settings = ExtResource("6_02qeq")
 
-[node name="LabelText1" type="Label" parent="UpgradeHanler/UpgradeMenu"]
+[node name="LabelText1" type="Label" parent="UpgradeHanler/DarkOverlay/UpgradeMenu"]
 offset_left = -320.0
 offset_top = -255.0
 offset_right = 320.0
@@ -137,7 +175,7 @@ autowrap_mode = 2
 clip_text = true
 text_overrun_behavior = 2
 
-[node name="LabelText2" type="Label" parent="UpgradeHanler/UpgradeMenu"]
+[node name="LabelText2" type="Label" parent="UpgradeHanler/DarkOverlay/UpgradeMenu"]
 offset_left = -320.0
 offset_top = -32.0
 offset_right = 320.0
@@ -148,7 +186,7 @@ autowrap_mode = 2
 clip_text = true
 text_overrun_behavior = 2
 
-[node name="TextureRect2" type="TextureRect" parent="UpgradeHanler/UpgradeMenu"]
+[node name="TextureRect2" type="TextureRect" parent="UpgradeHanler/DarkOverlay/UpgradeMenu"]
 modulate = Color(0.247059, 0.780392, 0.470588, 1)
 light_mask = 0
 offset_left = -80.0
@@ -159,13 +197,13 @@ size_flags_horizontal = 8
 texture = ExtResource("7_eaghr")
 stretch_mode = 5
 
-[node name="Marker1" type="Marker2D" parent="UpgradeHanler/UpgradeMenu"]
+[node name="Marker1" type="Marker2D" parent="UpgradeHanler/DarkOverlay/UpgradeMenu"]
 position = Vector2(-296, 88)
 
-[node name="Marker2" type="Marker2D" parent="UpgradeHanler/UpgradeMenu"]
+[node name="Marker2" type="Marker2D" parent="UpgradeHanler/DarkOverlay/UpgradeMenu"]
 position = Vector2(88, 88)
 
-[node name="RefuelingShip" type="Button" parent="UpgradeHanler/UpgradeMenu"]
+[node name="RefuelingShip" type="Button" parent="UpgradeHanler/DarkOverlay/UpgradeMenu"]
 offset_left = -296.0
 offset_top = 88.0
 offset_right = -88.0
@@ -174,7 +212,7 @@ size_flags_horizontal = 0
 size_flags_vertical = 4
 theme = ExtResource("10_rufsc")
 
-[node name="TextureRect" type="TextureRect" parent="UpgradeHanler/UpgradeMenu/RefuelingShip"]
+[node name="TextureRect" type="TextureRect" parent="UpgradeHanler/DarkOverlay/UpgradeMenu/RefuelingShip"]
 modulate = Color(0.247059, 0.780392, 0.470588, 1)
 layout_mode = 1
 anchors_preset = 5
@@ -186,7 +224,7 @@ offset_bottom = 160.0
 grow_horizontal = 2
 texture = ExtResource("7_eaghr")
 
-[node name="Label" type="Label" parent="UpgradeHanler/UpgradeMenu/RefuelingShip"]
+[node name="Label" type="Label" parent="UpgradeHanler/DarkOverlay/UpgradeMenu/RefuelingShip"]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -204,8 +242,20 @@ label_settings = ExtResource("8_lymrp")
 horizontal_alignment = 1
 autowrap_mode = 3
 
+[node name="PauseMenu" type="Node2D" parent="UpgradeHanler/DarkOverlay"]
+
+[node name="LabelTitle" type="Label" parent="UpgradeHanler/DarkOverlay/PauseMenu"]
+light_mask = 0
+offset_left = -256.0
+offset_top = -256.0
+offset_right = 256.0
+offset_bottom = -191.0
+text = "GAME IS PAUSED"
+label_settings = ExtResource("6_02qeq")
+horizontal_alignment = 1
+
 [node name="UpgradeTimer" type="Timer" parent="UpgradeHanler"]
-wait_time = 120.0
+wait_time = 5.0
 one_shot = true
 autostart = true
 

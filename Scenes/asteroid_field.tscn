@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://crsils443x1iq"]
+
+[ext_resource type="Script" path="res://Scripts/asteroid_field.gd" id="1_xd5td"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_rxx10"]
+radius = 75.0
+
+[node name="AsteroidField" type="Area2D"]
+collision_layer = 16
+collision_mask = 0
+script = ExtResource("1_xd5td")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_rxx10")
