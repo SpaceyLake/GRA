@@ -43,7 +43,6 @@ _data = {
 [node name="PathMarker" type="Node2D"]
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-modulate = Color(0.741176, 0.819608, 0.337255, 1)
 light_mask = 0
 rotation = 6.28319
 texture = ExtResource("1_att2n")

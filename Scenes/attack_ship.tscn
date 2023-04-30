@@ -1,10 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://buduk7fvudbk0"]
+[gd_scene load_steps=6 format=3 uid="uid://ol2teqws0a31"]
 
-[ext_resource type="Texture2D" uid="uid://dri0p1pkqbyeo" path="res://icon.svg" id="1_8vrpt"]
 [ext_resource type="Script" path="res://Scripts/attack_ship.gd" id="1_udusr"]
+[ext_resource type="Texture2D" uid="uid://c8ll5y2erwpd8" path="res://Sprites/AttackShip.png" id="2_qaxwg"]
+[ext_resource type="Texture2D" uid="uid://c036im7071r62" path="res://Sprites/PathLine.svg" id="3_a8gix"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_8n1a8"]
-radius = 67.4685
+radius = 22.0227
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_o1rgi"]
 radius = 180.0
@@ -16,7 +17,8 @@ input_pickable = true
 script = ExtResource("1_udusr")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("1_8vrpt")
+modulate = Color(0, 0.490196, 0.780392, 1)
+texture = ExtResource("2_qaxwg")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_8n1a8")
@@ -25,8 +27,26 @@ shape = SubResource("CircleShape2D_8n1a8")
 collision_mask = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
+visible = false
 shape = SubResource("CircleShape2D_o1rgi")
+metadata/_edit_lock_ = true
 
 [node name="Node" type="Node" parent="."]
 
 [node name="PathLine" type="Line2D" parent="Node"]
+texture_repeat = 2
+width = 1.5
+default_color = Color(0.572549, 0.956863, 1, 1)
+texture = ExtResource("3_a8gix")
+texture_mode = 1
+
+[node name="Guns" type="Node2D" parent="."]
+
+[node name="Gun1" type="Marker2D" parent="Guns"]
+position = Vector2(22, 0)
+
+[node name="Gun2" type="Marker2D" parent="Guns"]
+position = Vector2(1, -11)
+
+[node name="Gun3" type="Marker2D" parent="Guns"]
+position = Vector2(1, 11)

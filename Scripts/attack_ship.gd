@@ -16,12 +16,15 @@ var visible_targets:Array = []
 var attack_time:float = 1
 var attack_timer:Timer = Timer.new()
 
+@onready var guns = $Guns.get_children()
+var next_gun = 0
+
 var base_speed = 100
 var speed = base_speed
 
-var color_normal:Color = Color("#3fc778")
-var color_selected:Color = Color("#BDD156")
-var color_stunned:Color = Color("#00635C")
+var color_normal:Color = Color("#007DC7")
+var color_selected:Color = Color("#92F4FF")
+var color_stunned:Color = Color("#243F72")
 
 func _ready():
 	add_child(attack_timer)
@@ -85,7 +88,7 @@ func add_waypoint(pos:Vector2):
 	if waypoint_count() == 0 and velocity == Vector2.ZERO:
 		#$AudioLaunch.play()
 		pass
-	var marker = path_marker_pool.request_path_marker(pos)
+	var marker = path_marker_pool.request_path_marker(pos, color_selected)
 	marker.visible = selected
 	destinations.append(marker)
 	$Node/PathLine.add_point(pos)
@@ -181,7 +184,10 @@ func _on_body_exited_attack_area(body:Node2D):
 
 func attack():
 	if not visible_targets.is_empty():
-		laser_pool.request_laser(global_position, visible_targets.front().global_position+Vector2.RIGHT.rotated(randf_range(-PI, PI))*randf_range(0,10), $Sprite2D.modulate)
+		laser_pool.request_laser(guns[next_gun].global_position, visible_targets.front().global_position+Vector2.RIGHT.rotated(randf_range(-PI, PI))*randf_range(0,10), $Sprite2D.modulate)
+		next_gun += 1
+		if next_gun >= guns.size():
+			next_gun -= guns.size()
 		visible_targets.front().attacked()
 		attack_timer.start(attack_time)
 	else:

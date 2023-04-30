@@ -5,7 +5,7 @@ var node_creation_parent = null
 var scn_path_marker = preload("res://Scenes/path_marker.tscn")
 var path_marker_pool:Array = []
 
-func request_path_marker(location):
+func request_path_marker(location, color):
 	var node_instance = null
 	if path_marker_pool.is_empty():
 		if node_creation_parent == null:
@@ -17,6 +17,7 @@ func request_path_marker(location):
 		node_instance = path_marker_pool.pop_front()
 		_marker_set_active(node_instance, true)
 	node_instance.global_position = location
+	node_instance.modulate = color
 	return node_instance
 
 
