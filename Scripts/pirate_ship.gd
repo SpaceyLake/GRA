@@ -1,5 +1,7 @@
 extends CharacterBody2D
 
+signal killed(pirate:Node2D)
+
 var destination:Vector2
 var min_length:float = 50
 var base_speed = 20
