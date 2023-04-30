@@ -3,11 +3,14 @@ extends Area2D
 var fuel_marker = load("res://Sprites/DistressBeaconFuelMarker.svg")
 
 var needs: int = 5
-var timeout: float = 60
+var timeout: float = 120
 var timer: float = timeout
 
 func _ready():
 	body_entered.connect(_on_body_entered)
+	$AlarmTimer.timeout.connect(_alarm_timeout)
+	$AudioSpawn.pitch_scale = randf_range(0.5, 2)
+	$AudioSpawn.play()
 
 func _process(delta):
 	timer -= delta
@@ -18,6 +21,8 @@ func _process(delta):
 			color = Color("#e1534a")
 		elif progress < 0.4:
 			color = Color("#f29546")
+			if $AlarmTimer.is_stopped():
+				$AlarmTimer.start()
 		elif progress < 0.6:
 			color = Color("#ffce00")
 		elif progress < 0.8:
@@ -35,10 +40,13 @@ func play_spawn_animation():
 
 func reset_timer():
 	timer = timeout
+	$AudioSpawn.pitch_scale = randf_range(0.5, 2)
+	$AudioSpawn.play()
 
 func set_needs(new_needs:int):
 	needs = new_needs
 	queue_redraw()
+	$AlarmTimer.stop()
 
 func _on_body_entered(body: Node2D):
 	var amount = body.deliver(needs)
@@ -51,6 +59,13 @@ func _on_body_entered(body: Node2D):
 func _timeout():
 	print("Fail")
 	distress_beacon_pool.return_distress_beacon(self)
+
+func _alarm_timeout():
+	var progress = (timer/timeout)
+	if progress < 0.2:
+		$AudioAlarm2.play()
+	else:
+		$AudioAlarm1.play()
 
 func _draw():
 	var step = (2*PI)/needs
