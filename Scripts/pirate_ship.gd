@@ -54,15 +54,16 @@ func _physics_process(delta):
 		direction = global_position.angle_to_point(destination)
 	if global_position.distance_squared_to(destination) < velocity.length()*velocity.length()*delta*delta:
 		destination = global_position + random_vector(direction)
-		if abs(destination.x) > size.x/(camera.zoom.x*2) - $CollisionShape2D.shape.radius/2:
+		if abs(destination.x) > size.x/(camera.get_min_zoom.x*2) - $CollisionShape2D.shape.radius/2:
 			destination.x *= -1
-		if abs(destination.y) > size.y/(camera.zoom.y*2) - $CollisionShape2D.shape.radius/2:
+		if abs(destination.y) > size.y/(camera.get_min_zoom.y*2) - $CollisionShape2D.shape.radius/2:
 			destination.y *= -1
 		direction = global_position.angle_to(destination)
 		if calming:
 			calming = false
 			scared = false
 			choose_target()
+			check_for_attackable()
 	else:
 		velocity = global_position.direction_to(destination)*speed
 		var diff = global_position.angle_to_point(destination) - global_rotation
@@ -74,13 +75,14 @@ func _on_area_entered_vision(area:Node2D):
 	if area.get_collision_layer_value(4):
 		target = null
 		scared = true
-		destination = random_vector(direction)
+		#destination = random_vector(direction)
 		var tangent_angle = global_position.angle_to_point(area.global_position) + PI/2
+		print("Tangent: ", Vector2(cos(tangent_angle), sin(tangent_angle)))
 		if destination.normalized().dot(Vector2(cos(tangent_angle), sin(tangent_angle))) > 0:
 			direction = tangent_angle
 		else:
 			direction = -tangent_angle
-		destination = destination_vector_from_direction(direction)
+		destination = destination_vector_from_direction(direction) + global_position
 		print(direction)
 		destination += global_position
 	
@@ -98,15 +100,13 @@ func get_direction():
 	return direction
 
 func destination_vector_from_direction(angle:float):
-	return Vector2.RIGHT.rotated(angle)*(randf_range($CollisionShape2D.shape.radius + min_length, $VisionArea/CollisionShape2D.shape.radius) + (100 if scared else 0))
+	return Vector2.RIGHT.rotated(angle)*max(randf_range(min_length, $VisionArea/CollisionShape2D.shape.radius), (100 if scared else 0))
 
 func random_vector(current_direction:float):
 	direction = current_direction+randf_range(-1, 1)*max_turn
 	var diff = global_position.angle_to_point(base_position) - direction
 	diff = wrap(diff, -PI, PI)
 	direction += diff * (1 - charge/full_charge)
-	if returning_home:
-		print(direction)
 	return destination_vector_from_direction(direction)
 
 func _on_body_entered_vision(body:Node2D):
@@ -145,12 +145,18 @@ func _on_body_exited_attack(body:Node2D):
 	attackable_targets.erase(body)
 	if body == target:
 		choose_target()
-		if not target == null and attackable_targets.find(target) == 1:
+		if not target == null and not attackable_targets.find(target) == -1:
 			if not target.is_stunned():
 				if attack_timer.is_stopped():
 					attack_timer.start(attack_time)
 		else:
 			attack_timer.stop()
+
+func check_for_attackable():
+	if not target == null and not attackable_targets.find(target) == -1:
+		if not target.is_stunned():
+			if attack_timer.is_stopped():
+				attack_timer.start(attack_time)
 
 func attack():
 	if not target == null and not scared and not returning_home:
@@ -158,7 +164,6 @@ func attack():
 		next_gun += 1
 		if next_gun >= guns.size():
 			next_gun -= guns.size()
-
 		target.attacked()
 		if target.is_stunned():
 			attack_timer.stop()
@@ -176,13 +181,13 @@ func choose_target():
 				target = visible_target
 	else:
 		target = null
-		destination = random_vector(direction)
+		destination = random_vector(direction) + global_position
 
 func _updated_cargo(body:Node2D):
 	if body.get_cargo_amount() == 0:
 		visible_targets.erase(body)
 	choose_target()
-	if not target == null and attackable_targets.find(target) == 1:
+	if not target == null and not attackable_targets.find(target) == -1:
 		if not target.is_stunned():
 			if attack_timer.is_stopped():
 				attack_timer.start(attack_time)
@@ -199,6 +204,7 @@ func _on_body_entered_plunder(body):
 		body.set_cargo(0)
 		body.return_home()
 		return_home()
+		destination = random_vector(direction) + global_position
 
 func update_attack_status(ship:Node2D, stunned:bool):
 	if ship == target:

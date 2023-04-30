@@ -15,3 +15,6 @@ func _process(delta):
 	else:
 		zoom.x -= zoom_decrease * delta
 		zoom.y -= zoom_decrease * delta
+
+func get_min_zoom():
+	return min_zoom

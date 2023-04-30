@@ -28,8 +28,8 @@ func _timeout():
 	var accepted_proposition:bool = false
 	var proposed_position: Vector2
 	while not accepted_proposition:
-		var x_range:float = size.x/(camera.zoom.x*2) - 40
-		var y_range:float = size.y/(camera.zoom.y*2) - 40
+		var x_range:float = size.x/(camera.zoom.x*2) - 100
+		var y_range:float = size.y/(camera.zoom.y*2) - 100
 		proposed_position = Vector2(rnd.randf_range(-x_range, x_range), rnd.randf_range(-y_range, y_range))
 		accepted_proposition = true
 		if proposed_position.distance_squared_to(base.get_position()) < MIN_LENGTH_FROM_BASE_SQUARED:
