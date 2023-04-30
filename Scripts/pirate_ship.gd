@@ -54,9 +54,9 @@ func _physics_process(delta):
 		direction = global_position.angle_to_point(destination)
 	if global_position.distance_squared_to(destination) < velocity.length()*velocity.length()*delta*delta:
 		destination = global_position + random_vector(direction)
-		if abs(destination.x) > size.x/(camera.get_min_zoom.x*2) - $CollisionShape2D.shape.radius/2:
+		if abs(destination.x) > size.x/(camera.get_min_zoom()*2) - $CollisionShape2D.shape.radius/2:
 			destination.x *= -1
-		if abs(destination.y) > size.y/(camera.get_min_zoom.y*2) - $CollisionShape2D.shape.radius/2:
+		if abs(destination.y) > size.y/(camera.get_min_zoom()*2) - $CollisionShape2D.shape.radius/2:
 			destination.y *= -1
 		direction = global_position.angle_to(destination)
 		if calming:
