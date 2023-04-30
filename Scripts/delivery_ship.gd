@@ -19,6 +19,7 @@ var base_speed = 40
 var speed = base_speed
 
 func _ready():
+	global.new_selected.connect(update_selected)
 	add_child(stun_timer)
 	stun_timer.one_shot = true
 	stun_timer.wait_time = stun_time
@@ -47,10 +48,7 @@ func _physics_process(delta):
 
 func _input(event):
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
-		if howered:
-			select_ship(true)
-		else:
-			select_ship(false)
+		select_ship(howered)
 	elif selected and event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed():
 		if not Input.is_action_pressed("shift"):
 			waypoint_clear()
@@ -66,7 +64,9 @@ func set_base_position(new_position):
 	base_position = new_position
 
 func select_ship(select:bool):
-	selected = select
+	print(self)
+	print(select)
+	selected = global.select(self, select)
 	if stunned:
 		$Sprite2D.modulate = Color("#deef95") if selected else Color("#b2fec9")
 	else:
@@ -161,3 +161,7 @@ func set_stunned(stunning:bool):
 		$Sprite2D.modulate = Color("#deef95") if selected else Color("#b2fec9")
 	else:
 		$Sprite2D.modulate = Color("#BDD156") if selected else Color("#3FC778")
+
+func update_selected(old_selected:Node2D):
+	if old_selected == self:
+		select_ship(global.select(self, false))

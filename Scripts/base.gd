@@ -20,6 +20,7 @@ var min_cargo = 1
 var ship_radius:float
 
 func _ready():
+	global.new_selected.connect(update_selected)
 	if cargo_ship.can_instantiate():
 		for i in start_nr_ships:
 			add_ship()
@@ -46,14 +47,7 @@ func _input(event):
 				ship.set_cargo(cargo_amount)
 			queue_redraw()
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
-		if howered:
-			selected = true
-		else:
-			selected = false
-			launched_ship = null
-			selected_ship = null
-		$Sprite2D.modulate = Color("#BDD156") if selected else Color("#3fc778")
-		queue_redraw()
+		select_base(global.select(self, howered))
 	elif selected and event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed():
 		if global_position.distance_squared_to(get_global_mouse_position()) > ($CollisionShape2D.shape.radius + ship_radius + 2)*($CollisionShape2D.shape.radius + ship_radius + 2):
 			if selected_ship == null and not docked_ships.is_empty():
@@ -143,3 +137,15 @@ func _draw():
 	var start = -cargo_amount*10+2
 	for i in range(cargo_amount):
 		draw_texture(fuel_marker, Vector2(start+20*i, -125), $Sprite2D.modulate)
+
+func select_base(select:bool):
+	selected = global.select(self, howered)
+	if selected == false:
+		launched_ship = null
+		selected_ship = null
+	$Sprite2D.modulate = Color("#BDD156") if selected else Color("#3fc778")
+	queue_redraw()
+
+func update_selected(old_selected:Node2D):
+	if old_selected == self:
+		select_base(global.select(self, false))
