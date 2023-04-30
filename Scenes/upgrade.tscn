@@ -1,0 +1,43 @@
+[gd_scene load_steps=5 format=3 uid="uid://cbnskydhspfc0"]
+
+[ext_resource type="Theme" uid="uid://cdp3kqu3vj86v" path="res://Settings/UpgradeMenuButtons.tres" id="1_ru45e"]
+[ext_resource type="Script" path="res://Scripts/upgrade.gd" id="2_mx7ny"]
+[ext_resource type="Texture2D" uid="uid://bal3504l2ruuo" path="res://Sprites/DeliveryShipMenu.svg" id="2_po1mh"]
+[ext_resource type="LabelSettings" uid="uid://0ul8ma62ej0l" path="res://Settings/LabelText.tres" id="3_uj7qp"]
+
+[node name="Upgrade" type="Button"]
+offset_right = 208.0
+offset_bottom = 208.0
+size_flags_horizontal = 0
+size_flags_vertical = 4
+theme = ExtResource("1_ru45e")
+script = ExtResource("2_mx7ny")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -80.0
+offset_right = 80.0
+offset_bottom = 160.0
+grow_horizontal = 2
+texture = ExtResource("2_po1mh")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -128.0
+offset_top = -48.0
+offset_right = 128.0
+offset_bottom = 43.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Extra Refueling ship"
+label_settings = ExtResource("3_uj7qp")
+horizontal_alignment = 1
+autowrap_mode = 3
