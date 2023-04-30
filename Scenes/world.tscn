@@ -205,7 +205,7 @@ horizontal_alignment = 1
 autowrap_mode = 3
 
 [node name="UpgradeTimer" type="Timer" parent="UpgradeHanler"]
-wait_time = 5.0
+wait_time = 120.0
 one_shot = true
 autostart = true
 
