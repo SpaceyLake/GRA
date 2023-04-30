@@ -92,7 +92,9 @@ func spawn_attack_ship():
 	add_sibling.call_deferred(new_ship)
 	new_ship.set_base_position(global_position)
 	var attack_ship_radius = new_ship.get_radius()
-	new_ship.global_position = global_position + global_position.direction_to(get_global_mouse_position()) * ($CollisionShape2D.shape.radius + attack_ship_radius + 1)
+	var random_angle = randf_range(-PI, PI)
+	new_ship.global_position = global_position + Vector2(cos(random_angle), sin(random_angle)) * ($CollisionShape2D.shape.radius + attack_ship_radius + 1)
+	new_ship.rotation = random_angle
 
 func ship_active(current_ship:Node2D, active:bool):
 	current_ship.velocity = Vector2.ZERO
