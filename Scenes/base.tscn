@@ -45,6 +45,7 @@ _data = {
 }
 
 [node name="Base" type="Area2D"]
+collision_layer = 8
 collision_mask = 2
 script = ExtResource("1_oqdku")
 
