@@ -7,7 +7,7 @@
 radius = 63.0714
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ppdhh"]
-radius = 150.0
+radius = 100.0
 
 [node name="PirateBase" type="StaticBody2D"]
 collision_layer = 32

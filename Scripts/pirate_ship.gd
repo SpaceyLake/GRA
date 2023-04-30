@@ -4,7 +4,7 @@ signal killed(pirate:Node2D)
 
 var destination:Vector2
 var min_length:float = 50
-var base_speed = 20
+var base_speed = 30
 var speed = base_speed
 var direction:float = 0
 var max_turn: float = (3*PI/4)
@@ -14,14 +14,23 @@ var calming:bool = false
 var visible_targets:Array = []
 var attack_time:float = 1
 var attack_timer:Timer = Timer.new()
+var visible_pirates:Array = []
 var attackable_targets = []
 var attack_target = null
 @onready var size: Vector2 = get_viewport().get_size()
 @onready var camera:Camera2D = get_parent().get_node("Camera")
 @onready var guns = $Guns.get_children()
 var next_gun = 0
+var base_position:Vector2
+var max_charge:float = 50
+var min_charge:float = 10
+var full_charge:float
+var charge:float
+var returning_home = false
+var in_base:bool = true
 
 func _ready():
+	recharge()
 	add_child(attack_timer)
 	attack_timer.timeout.connect(attack)
 	attack_timer.wait_time = attack_time
@@ -38,9 +47,11 @@ func _ready():
 	pass
 
 func _physics_process(delta):
-	if not scared and not target == null:
+	if not in_base:
+		charge = move_toward(charge, 0, delta)
+	if not scared and not target == null and not returning_home:
 		destination = target.global_position
-		direction = global_position.angle_to(destination)
+		direction = global_position.angle_to_point(destination)
 	if global_position.distance_squared_to(destination) < velocity.length()*velocity.length()*delta*delta:
 		destination = global_position + random_vector(direction)
 		if abs(destination.x) > size.x/(camera.zoom.x*2) - $CollisionShape2D.shape.radius/2:
@@ -64,22 +75,46 @@ func _on_area_entered_vision(area:Node2D):
 		target = null
 		scared = true
 		destination = random_vector(direction)
-		if destination.dot(global_position.direction_to(area.global_position)) > 0:
-			destination = destination.rotated(PI)
-			direction = global_position.angle_to(destination)
+		var tangent_angle = global_position.angle_to_point(area.global_position) + PI/2
+		if destination.normalized().dot(Vector2(cos(tangent_angle), sin(tangent_angle))) > 0:
+			direction = tangent_angle
+		else:
+			direction = -tangent_angle
+		destination = destination_vector_from_direction(direction)
+		print(direction)
 		destination += global_position
 	
 func _on_area_exited_vision(area:Node2D):
 	if area.get_collision_layer_value(4):
 		calming = true
 
+func set_base_position(new_position:Vector2):
+	base_position = new_position
+
+func get_destination():
+	return destination
+
+func get_direction():
+	return direction
+
+func destination_vector_from_direction(angle:float):
+	return Vector2.RIGHT.rotated(angle)*(randf_range($CollisionShape2D.shape.radius + min_length, $VisionArea/CollisionShape2D.shape.radius) + (100 if scared else 0))
+
 func random_vector(current_direction:float):
 	direction = current_direction+randf_range(-1, 1)*max_turn
-	return Vector2.RIGHT.rotated(direction)*(randf_range($CollisionShape2D.shape.radius + min_length, $VisionArea/CollisionShape2D.shape.radius) + (100 if scared else 0))
+	var diff = global_position.angle_to_point(base_position) - direction
+	diff = wrap(diff, -PI, PI)
+	direction += diff * (1 - charge/full_charge)
+	if returning_home:
+		print(direction)
+	return destination_vector_from_direction(direction)
 
 func _on_body_entered_vision(body:Node2D):
 	if body.get_collision_layer_value(3):
-		pass
+		if body == self:
+			pass
+		else: 
+			visible_pirates.append(body)
 	elif body.get_collision_layer_value(2):
 		body.update_cargo_signal.connect(_updated_cargo)
 		if body.get_cargo_amount() > 0:
@@ -87,7 +122,12 @@ func _on_body_entered_vision(body:Node2D):
 			choose_target()
 
 func _on_body_exited_vision(body:Node2D):
-	if body.get_collision_layer_value(2):
+	if body.get_collision_layer_value(3):
+		if body == self:
+			pass
+		else: 
+			visible_pirates.erase(body)
+	elif body.get_collision_layer_value(2):
 		body.update_cargo_signal.disconnect(_updated_cargo)
 		visible_targets.erase(body)
 		choose_target()
@@ -113,11 +153,9 @@ func _on_body_exited_attack(body:Node2D):
 			attack_timer.stop()
 
 func attack():
-	if not target == null:
+	if not target == null and not scared and not returning_home:
 		laser_pool.request_laser(guns[next_gun].global_position, target.global_position+Vector2.RIGHT.rotated(randf_range(-PI, PI))*randf_range(0,10), $Sprite2D.modulate)
 		next_gun += 1
-		print_debug(guns)
-		print_debug(next_gun)
 		if next_gun >= guns.size():
 			next_gun -= guns.size()
 
@@ -138,6 +176,7 @@ func choose_target():
 				target = visible_target
 	else:
 		target = null
+		destination = random_vector(direction)
 
 func _updated_cargo(body:Node2D):
 	if body.get_cargo_amount() == 0:
@@ -147,13 +186,19 @@ func _updated_cargo(body:Node2D):
 		if not target.is_stunned():
 			if attack_timer.is_stopped():
 				attack_timer.start(attack_time)
+				return
 	else:
 		attack_timer.stop()
 
+func return_home():
+	returning_home = true
+	charge = 0
+
 func _on_body_entered_plunder(body):
-	if not body.get_cargo_amount() == 0:
+	if not body.get_cargo_amount() == 0 and not scared and not returning_home:
 		body.set_cargo(0)
 		body.return_home()
+		return_home()
 
 func update_attack_status(ship:Node2D, stunned:bool):
 	if ship == target:
@@ -161,3 +206,15 @@ func update_attack_status(ship:Node2D, stunned:bool):
 			attack_timer.stop()
 		else:
 			attack_timer.start(attack_time)
+
+func recharge():
+	full_charge = randf_range(min_charge, max_charge)
+	charge = full_charge
+	returning_home = false
+
+func returned_to_base():
+	in_base = true
+	recharge()
+
+func left_base():
+	in_base = false
