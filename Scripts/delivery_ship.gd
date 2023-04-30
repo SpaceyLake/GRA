@@ -36,9 +36,7 @@ func _physics_process(delta):
 			velocity = Vector2.ZERO
 			waypoint_skip()
 		if not destinations.is_empty():
-	#		$Sprite2D.look_at(destinations.front().global_position)
 			velocity = global_position.direction_to(waypoint_next_pos())*speed
-			#Rotate
 			var diff = global_position.angle_to_point(waypoint_next_pos()) - global_rotation
 			diff = wrap(diff, -PI, PI)
 			global_rotation += sign(diff) * min(5 * delta, abs(diff))
@@ -147,7 +145,6 @@ func is_stunned():
 
 func attacked():
 	health -= 1
-	print("Hit")
 	if health == 0:
 		set_stunned(true)
 		stunned_signal.emit(self, stunned)
@@ -159,7 +156,6 @@ func awaken():
 
 func set_stunned(stunning:bool):
 	stunned = stunning
-	print("Stunned: ", stunned)
 	if stunned:
 		stun_timer.start()
 		$Sprite2D.modulate = Color("#deef95") if selected else Color("#b2fec9")
