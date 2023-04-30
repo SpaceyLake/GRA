@@ -17,19 +17,14 @@ var path_marker_pool:Array = []
 @onready var base:Node2D = get_parent().get_node("Base")
 
 func _ready():
-	print(size)
-	print(get_parent().get_children())
 	add_child(timer)
 	timer.timeout.connect(_timeout)
 	rnd.randomize()
 	timer.start(time)
-	print("Timer started")
 
 func _timeout():
 	timer.stop()
 	time *= time_decreasment
-	print(time)
-	print("Beacon spawned")
 	var accepted_proposition:bool = false
 	var proposed_position: Vector2
 	while not accepted_proposition:
