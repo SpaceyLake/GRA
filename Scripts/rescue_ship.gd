@@ -29,7 +29,8 @@ func _physics_process(delta):
 
 	move_and_slide()
 	$Node/PathLine.set_point_position(0, global_position)
-	#$GPUParticles2D.emitting = velocity != Vector2.ZERO
+	$GPUParticles2D.emitting = velocity != Vector2.ZERO
+	$GPUParticles2D2.emitting = velocity != Vector2.ZERO
 
 func _input(event):
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
@@ -48,6 +49,7 @@ func set_base_position(new_position):
 func select_ship(select:bool):
 	selected = global.select(self, select)
 	$Sprite2D.modulate = color_selected if selected else color_normal
+	$SpritePlus.modulate = color_selected if selected else color_normal
 	$Node/PathLine.visible = selected
 	for marker in destinations:
 		marker.visible = selected
@@ -108,11 +110,13 @@ func update_selected(old_selected:Node2D):
 func fill_rescue():
 	if not can_rescue:
 		can_rescue = true
+		$SpritePlus.visible = true
 		velocity = Vector2.ZERO
 		waypoint_skip()
 
 func rescue():
 	if can_rescue:
 		can_rescue = false
+		$SpritePlus.visible = false
 		return true
 	return false

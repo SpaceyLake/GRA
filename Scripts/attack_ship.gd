@@ -54,7 +54,8 @@ func _physics_process(delta):
 
 	move_and_slide()
 	$Node/PathLine.set_point_position(0, global_position)
-	#$GPUParticles2D.emitting = velocity != Vector2.ZERO
+	$GPUParticles2D.emitting = velocity != Vector2.ZERO
+	$GPUParticles2D2.emitting = velocity != Vector2.ZERO
 
 func _input(event):
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
