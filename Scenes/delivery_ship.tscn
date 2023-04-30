@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://c036im7071r62" path="res://Sprites/PathLine.svg" id="3_y86k7"]
 [ext_resource type="Texture2D" uid="uid://dkmbbbomkkuju" path="res://Sprites/Circle.svg" id="4_73fo8"]
 [ext_resource type="Texture2D" uid="uid://35ns2mw55ic8" path="res://Sprites/DeliveryShipFuelGauge.svg" id="5_3axg1"]
-[ext_resource type="AudioStream" uid="uid://cjtw6tlt5xbea" path="res://Sound/launch.wav" id="6_fvvi7"]
+[ext_resource type="AudioStream" uid="uid://hc0jvblatdd3" path="res://Sound/launch2.wav" id="6_fwmnf"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_dd135"]
 radius = 20.025
@@ -81,5 +81,5 @@ texture_progress = ExtResource("5_3axg1")
 tint_progress = Color(0.247059, 0.780392, 0.470588, 1)
 
 [node name="AudioLaunch" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("6_fvvi7")
+stream = ExtResource("6_fwmnf")
 volume_db = -10.0

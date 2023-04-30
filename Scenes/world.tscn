@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://dxp165f3yspdb" path="res://Scenes/base.tscn" id="3_lnp6p"]
 [ext_resource type="Script" path="res://Scripts/UpgradeHanler.gd" id="3_xxfcf"]
 [ext_resource type="PackedScene" uid="uid://bixxpibpivcwh" path="res://Scenes/distress_beacon_spawner.tscn" id="4_7i0cp"]
-[ext_resource type="PackedScene" path="res://Scenes/camera.tscn" id="4_14cax"]
+[ext_resource type="PackedScene" uid="uid://blp6d7chtst1w" path="res://Scenes/camera.tscn" id="4_14cax"]
 [ext_resource type="Texture2D" uid="uid://dw65hg0bkaleh" path="res://Sprites/DistressBeacon.svg" id="4_o2c3h"]
 [ext_resource type="LabelSettings" uid="uid://b10773gmtiwtb" path="res://Settings/LabelTitle.tres" id="6_02qeq"]
 [ext_resource type="Texture2D" uid="uid://bal3504l2ruuo" path="res://Sprites/DeliveryShipMenu.svg" id="7_eaghr"]
