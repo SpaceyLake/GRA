@@ -56,7 +56,7 @@ func add_waypoint(pos:Vector2):
 	if waypoint_count() == 0 and velocity == Vector2.ZERO:
 		#$AudioLaunch.play()
 		pass
-	var marker = path_marker_pool.request_path_marker(pos)
+	var marker = path_marker_pool.request_path_marker(pos, color_selected)
 	marker.visible = selected
 	destinations.append(marker)
 	$Node/PathLine.add_point(pos)
