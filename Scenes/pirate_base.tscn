@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://ntkassipqhdq"]
+
+[ext_resource type="Texture2D" uid="uid://dri0p1pkqbyeo" path="res://icon.svg" id="1_ej41m"]
+[ext_resource type="Script" path="res://Scripts/pirate_base.gd" id="1_if24b"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_xou6x"]
+radius = 63.0714
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ppdhh"]
+radius = 150.0
+
+[node name="PirateBase" type="StaticBody2D"]
+collision_layer = 32
+collision_mask = 6
+script = ExtResource("1_if24b")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_ej41m")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_xou6x")
+
+[node name="SafeArea" type="Area2D" parent="."]
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SafeArea"]
+shape = SubResource("CircleShape2D_ppdhh")
