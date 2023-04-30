@@ -113,6 +113,7 @@ func _on_body_exited_attack(body:Node2D):
 
 func attack():
 	if not target == null:
+		laser_pool.request_laser($LaserPoint.global_position, target.global_position, $Sprite2D.modulate)
 		target.attacked()
 		if target.is_stunned():
 			attack_timer.stop()
@@ -120,7 +121,6 @@ func attack():
 			attack_timer.start(attack_time)
 	else:
 		attack_timer.stop()
-	#TODO: Insert laser here
 	pass
 
 func choose_target():
