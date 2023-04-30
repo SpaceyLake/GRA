@@ -18,6 +18,10 @@ var heal_timer:Timer = Timer.new()
 var base_speed = 40
 var speed = base_speed
 
+var color_normal:Color = Color("#3fc778")
+var color_selected:Color = Color("#BDD156")
+var color_stunned:Color = Color("#00635C")
+
 func _ready():
 	global.new_selected.connect(update_selected)
 	add_child(heal_timer)
@@ -64,12 +68,11 @@ func set_base_position(new_position):
 	base_position = new_position
 
 func select_ship(select:bool):
-	selected = global.select(self, select)
 	if stunned:
-		$Sprite2D.modulate = Color("#deef95") if selected else Color("#b2fec9")
-	else:
-		$Sprite2D.modulate = Color("#BDD156") if selected else Color("#3fc778")
-	$CargoMeter.tint_progress = Color("#BDD156") if selected else Color("#3fc778")
+		return
+	selected = global.select(self, select)
+	$Sprite2D.modulate = color_selected if selected else color_normal
+	$CargoMeter.tint_progress = color_selected if selected else color_normal
 	$Node/PathLine.visible = selected
 	for marker in destinations:
 		marker.visible = selected
@@ -162,11 +165,15 @@ func awaken():
 	stunned_signal.emit(self, stunned)
 
 func set_stunned(stunning:bool):
+	if stunning and selected:
+		select_ship(false)
 	stunned = stunning
 	if stunned:
-		$Sprite2D.modulate = Color("#deef95") if selected else Color("#b2fec9")
+		$Sprite2D.modulate = color_stunned
+		$CargoMeter.tint_progress = color_stunned
 	else:
-		$Sprite2D.modulate = Color("#BDD156") if selected else Color("#3FC778")
+		$Sprite2D.modulate = color_normal
+		$CargoMeter.tint_progress = color_normal
 
 func update_selected(old_selected:Node2D):
 	if old_selected == self:
