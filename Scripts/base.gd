@@ -93,6 +93,7 @@ func ship_active(current_ship:Node2D, active:bool):
 	current_ship.set_process_unhandled_input(active)
 	current_ship.set_process_unhandled_key_input(active)
 	current_ship.restart_particles()
+	current_ship.get_node("CollisionShape2D").set_deferred("disabled", not active)
 	if active == false:
 		current_ship.global_position = global_position
 		current_ship.waypoint_clear()
