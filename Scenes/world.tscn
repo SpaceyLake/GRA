@@ -1,15 +1,17 @@
-[gd_scene load_steps=15 format=3 uid="uid://bt6kdd48rxcyv"]
+[gd_scene load_steps=17 format=3 uid="uid://bt6kdd48rxcyv"]
 
 [ext_resource type="Script" path="res://Scripts/world.gd" id="1_s7eyf"]
 [ext_resource type="PackedScene" uid="uid://dxp165f3yspdb" path="res://Scenes/base.tscn" id="3_lnp6p"]
 [ext_resource type="Script" path="res://Scripts/UpgradeHanler.gd" id="3_xxfcf"]
 [ext_resource type="PackedScene" uid="uid://bixxpibpivcwh" path="res://Scenes/distress_beacon_spawner.tscn" id="4_7i0cp"]
-[ext_resource type="PackedScene" path="res://Scenes/camera.tscn" id="4_14cax"]
+[ext_resource type="PackedScene" uid="uid://blp6d7chtst1w" path="res://Scenes/camera.tscn" id="4_14cax"]
 [ext_resource type="Texture2D" uid="uid://dw65hg0bkaleh" path="res://Sprites/DistressBeacon.svg" id="4_o2c3h"]
 [ext_resource type="LabelSettings" uid="uid://b10773gmtiwtb" path="res://Settings/LabelTitle.tres" id="6_02qeq"]
 [ext_resource type="Texture2D" uid="uid://bal3504l2ruuo" path="res://Sprites/DeliveryShipMenu.svg" id="7_eaghr"]
 [ext_resource type="LabelSettings" uid="uid://0ul8ma62ej0l" path="res://Settings/LabelText.tres" id="8_lymrp"]
 [ext_resource type="Theme" uid="uid://cdp3kqu3vj86v" path="res://Settings/UpgradeMenuButtons.tres" id="10_rufsc"]
+[ext_resource type="AudioStream" uid="uid://bnvchtqffyfje" path="res://Sound/music6.wav" id="11_8vx58"]
+[ext_resource type="Script" path="res://Scripts/music.gd" id="12_1qde7"]
 
 [sub_resource type="Animation" id="Animation_k4ek4"]
 resource_name = "OpenUpgradeMenu"
@@ -217,3 +219,9 @@ libraries = {
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_47pud")
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("11_8vx58")
+volume_db = -2.0
+autoplay = true
+script = ExtResource("12_1qde7")
