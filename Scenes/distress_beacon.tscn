@@ -92,4 +92,3 @@ stream = ExtResource("6_jqpkd")
 volume_db = -10.0
 
 [node name="AlarmTimer" type="Timer" parent="."]
-autostart = true
