@@ -1,0 +1,111 @@
+[gd_scene load_steps=7 format=3 uid="uid://cxmgsh704rgb8"]
+
+[ext_resource type="Script" path="res://Scripts/help_menu.gd" id="1_sog5w"]
+[ext_resource type="LabelSettings" uid="uid://ql3e6wdvyvoy" path="res://Settings/LabelTitleMain.tres" id="1_vbr6b"]
+[ext_resource type="LabelSettings" uid="uid://0ul8ma62ej0l" path="res://Settings/LabelText.tres" id="2_7wjvs"]
+[ext_resource type="LabelSettings" uid="uid://7vmh18irhg7p" path="res://Settings/LabelMEGA.tres" id="3_bxaap"]
+[ext_resource type="Theme" uid="uid://cdp3kqu3vj86v" path="res://Settings/UpgradeMenuButtons.tres" id="3_u834k"]
+
+[sub_resource type="Environment" id="Environment_gq04f"]
+background_mode = 3
+background_canvas_max_layer = 128
+glow_enabled = true
+glow_levels/1 = 16.0
+glow_levels/2 = 16.0
+glow_levels/3 = 16.0
+glow_levels/4 = 16.0
+glow_hdr_threshold = 0.0
+
+[node name="HelpMenu" type="Node2D"]
+script = ExtResource("1_sog5w")
+
+[node name="Instructions" type="Node2D" parent="."]
+
+[node name="Info1" type="Label" parent="Instructions"]
+offset_top = 335.0
+offset_right = 1920.0
+offset_bottom = 884.0
+text = "Running out of fuel in never fun. Now imagine you are out of fuel in the vast empty darkness of space with your oxygen and food supplies are dwindling.
+However there is no need for dispair galactic citizen, Galactic Roadside Assistance is here to save you!
+Our trained professionals will fly to you with the fuel you need to continue your journey through the stars.
+
+We have recently expanded to a brand new region of and you have been put in charde of managing our operations here."
+label_settings = ExtResource("2_7wjvs")
+horizontal_alignment = 1
+
+[node name="Info2" type="Label" parent="Instructions"]
+visible = false
+offset_left = 131.0
+offset_top = 335.0
+offset_right = 1790.0
+offset_bottom = 884.0
+text = "Here are some quick instructions to get you started with your brand new VERY IMPORTANT duties:
+
+1. Use LEFT CLICK to select your different units
+2. WIth a unit selected use RIGHT CLICK to issue orders to it (holding down SHIFT allows you to queue orders)
+3. Distress calls with come in peridicaly and will be marked on your map. Each marker shows its time remaining and fuel needed.
+4. Command you Refuel ships to refuel the stranded ships before they perish. The return the to the base to refill their cargo with fuel
+5. Each basic refuel ship may hold up to 5 units of fuel. You can adjust the amount of fuel loaded by the base using the scrollwheel while hovering the base or having it selected.
+6. Unfortunatly we are not the only once roaming the darkess. Since the founding of the G.R.A. pirates have been trying to claim our cargo for themselfs. Be sure to steer clear of these good for nothing thiefs.
+7. Rember we pride ourself in our 100% success rate, so if someone perishes on your watch then you might want to look for a new job."
+label_settings = ExtResource("2_7wjvs")
+autowrap_mode = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+offset_right = 1920.0
+offset_bottom = 370.0
+alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="G" type="Label" parent="HBoxContainer"]
+modulate = Color(0.247059, 0.780392, 0.470588, 1)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "G."
+label_settings = ExtResource("3_bxaap")
+
+[node name="R" type="Label" parent="HBoxContainer"]
+modulate = Color(0.882353, 0.32549, 0.290196, 1)
+layout_mode = 2
+size_flags_horizontal = 0
+text = "R."
+label_settings = ExtResource("3_bxaap")
+
+[node name="A" type="Label" parent="HBoxContainer"]
+modulate = Color(0, 0.490196, 0.780392, 1)
+layout_mode = 2
+size_flags_horizontal = 8
+text = "A."
+label_settings = ExtResource("3_bxaap")
+
+[node name="ButtonNext" type="Button" parent="."]
+offset_left = 1590.0
+offset_top = 884.0
+offset_right = 1920.0
+offset_bottom = 1010.0
+theme = ExtResource("3_u834k")
+
+[node name="Label" type="Label" parent="ButtonNext"]
+layout_mode = 0
+offset_right = 330.0
+offset_bottom = 126.0
+text = "NEXT >"
+label_settings = ExtResource("1_vbr6b")
+horizontal_alignment = 1
+
+[node name="ButtonBack" type="Button" parent="."]
+offset_top = 884.0
+offset_right = 330.0
+offset_bottom = 1010.0
+theme = ExtResource("3_u834k")
+
+[node name="Label" type="Label" parent="ButtonBack"]
+layout_mode = 0
+offset_right = 330.0
+offset_bottom = 126.0
+text = "< BACK"
+label_settings = ExtResource("1_vbr6b")
+horizontal_alignment = 1
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_gq04f")
