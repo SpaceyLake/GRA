@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://bt6kdd48rxcyv"]
+[gd_scene load_steps=15 format=3 uid="uid://bt6kdd48rxcyv"]
 
 [ext_resource type="Script" path="res://Scripts/world.gd" id="1_s7eyf"]
 [ext_resource type="PackedScene" uid="uid://dxp165f3yspdb" path="res://Scenes/base.tscn" id="3_lnp6p"]
@@ -9,6 +9,7 @@
 [ext_resource type="LabelSettings" uid="uid://b10773gmtiwtb" path="res://Settings/LabelTitle.tres" id="6_02qeq"]
 [ext_resource type="Texture2D" uid="uid://bal3504l2ruuo" path="res://Sprites/DeliveryShipMenu.svg" id="7_eaghr"]
 [ext_resource type="LabelSettings" uid="uid://0ul8ma62ej0l" path="res://Settings/LabelText.tres" id="8_lymrp"]
+[ext_resource type="PackedScene" uid="uid://bvbxao8ihn2yd" path="res://Scenes/pirate_ship.tscn" id="10_y0qfq"]
 
 [sub_resource type="Environment" id="Environment_47pud"]
 background_mode = 3
@@ -170,3 +171,6 @@ root_node = NodePath("../..")
 libraries = {
 "": SubResource("AnimationLibrary_yikp5")
 }
+
+[node name="PirateShip" parent="." instance=ExtResource("10_y0qfq")]
+position = Vector2(-651, 110)
