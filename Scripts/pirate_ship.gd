@@ -86,12 +86,9 @@ func _on_body_entered_vision(body:Node2D):
 
 func _on_body_exited_vision(body:Node2D):
 	if body.get_collision_layer_value(2):
-		print("Target exited")
 		body.update_cargo_signal.disconnect(_updated_cargo)
 		visible_targets.erase(body)
 		choose_target()
-		print(visible_targets)
-		print(target)
 
 func _on_body_entered_attack(body:Node2D):
 	if body.get_collision_layer_value(2):
@@ -144,6 +141,12 @@ func _updated_cargo(body:Node2D):
 	if body.get_cargo_amount() == 0:
 		visible_targets.erase(body)
 	choose_target()
+	if not target == null and attackable_targets.find(target) == 1:
+		if not target.is_stunned():
+			if attack_timer.is_stopped():
+				attack_timer.start(attack_time)
+	else:
+		attack_timer.stop()
 
 func _on_body_entered_plunder(body):
 	if not body.get_cargo_amount() == 0:

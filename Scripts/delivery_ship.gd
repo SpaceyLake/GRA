@@ -9,21 +9,21 @@ var destinations:Array = []
 var cargo: int = 0
 var max_cargo: int = 5
 var base_position:Vector2 = Vector2(-1, -1)
-var full_health:int = 5
+var full_health:int = 4
 var health:int = full_health
 var stunned:bool = false
-var stun_timer:Timer = Timer.new()
-var stun_time:float = 10
+var heal_time:float = 2.5
+var heal_timer:Timer = Timer.new()
 
 var base_speed = 40
 var speed = base_speed
 
 func _ready():
 	global.new_selected.connect(update_selected)
-	add_child(stun_timer)
-	stun_timer.one_shot = true
-	stun_timer.wait_time = stun_time
-	stun_timer.timeout.connect(awaken)
+	add_child(heal_timer)
+	heal_timer.one_shot = true
+	heal_timer.wait_time = heal_time
+	heal_timer.timeout.connect(heal)
 	mouse_entered.connect(is_howering)
 	mouse_exited.connect(is_not_howering)
 	$Node/PathLine.add_point(global_position)
@@ -64,8 +64,6 @@ func set_base_position(new_position):
 	base_position = new_position
 
 func select_ship(select:bool):
-	print(self)
-	print(select)
 	selected = global.select(self, select)
 	if stunned:
 		$Sprite2D.modulate = Color("#deef95") if selected else Color("#b2fec9")
@@ -145,19 +143,27 @@ func is_stunned():
 
 func attacked():
 	health -= 1
+	if health == full_health - 1:
+		heal_timer.start(heal_time)
 	if health == 0:
 		set_stunned(true)
 		stunned_signal.emit(self, stunned)
 
+func heal():
+	health += 1
+	if health == full_health:
+		heal_timer.stop()
+		awaken()
+	else:
+		heal_timer.start(heal_time)
+
 func awaken():
 	set_stunned(false)
-	health = full_health
 	stunned_signal.emit(self, stunned)
 
 func set_stunned(stunning:bool):
 	stunned = stunning
 	if stunned:
-		stun_timer.start()
 		$Sprite2D.modulate = Color("#deef95") if selected else Color("#b2fec9")
 	else:
 		$Sprite2D.modulate = Color("#BDD156") if selected else Color("#3FC778")
