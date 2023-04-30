@@ -4,6 +4,10 @@ extends Node2D
 var current_instruction:int = 0
 
 func _ready():
+	for l in instructions:
+		l.visible = false
+	instructions[0].visible = true
+	
 	$ButtonNext.pressed.connect(_on_pressed_Next)
 	$ButtonBack.pressed.connect(_on_pressed_Back)
 	

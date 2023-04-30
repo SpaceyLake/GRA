@@ -22,7 +22,6 @@ script = ExtResource("1_sog5w")
 [node name="Instructions" type="Node2D" parent="."]
 
 [node name="Info1" type="Label" parent="Instructions"]
-visible = false
 offset_top = 335.0
 offset_right = 1920.0
 offset_bottom = 884.0
@@ -35,6 +34,7 @@ label_settings = ExtResource("2_7wjvs")
 horizontal_alignment = 1
 
 [node name="Info2" type="Label" parent="Instructions"]
+visible = false
 offset_left = 131.0
 offset_top = 335.0
 offset_right = 1790.0
