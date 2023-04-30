@@ -1,6 +1,7 @@
 extends Node2D
 
 var score = 0
+var difficulty = 0
 
 signal new_selected(old_selected:Node2D)
 
