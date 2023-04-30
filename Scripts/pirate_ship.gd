@@ -28,9 +28,19 @@ var full_charge:float
 var charge:float
 var returning_home = false
 var in_base:bool = true
+var full_health:int = 5
+var health:int = full_health
+var heal_time:float = 3
+var heal_timer:Timer = Timer.new()
+var visible_attack_ships:Array = []
+var avoid_factor: float = 10
 
 func _ready():
 	recharge()
+	add_child(heal_timer)
+	heal_timer.one_shot = true
+	heal_timer.wait_time = heal_time
+	heal_timer.timeout.connect(heal)
 	add_child(attack_timer)
 	attack_timer.timeout.connect(attack)
 	attack_timer.wait_time = attack_time
@@ -52,6 +62,17 @@ func _physics_process(delta):
 	if not scared and not target == null and not returning_home:
 		destination = target.global_position
 		direction = global_position.angle_to_point(destination)
+		for attack_ship in visible_attack_ships:
+			if global_position.direction_to(destination).dot(global_position.direction_to(attack_ship.global_position)) > 0:
+				target = null
+				scared = true
+				var tangent_angle = global_position.angle_to_point(attack_ship.global_position) + PI/2
+				if destination.normalized().dot(Vector2(cos(tangent_angle), sin(tangent_angle))) > destination.normalized().dot(Vector2(cos(-tangent_angle), sin(-tangent_angle))):
+					direction = tangent_angle
+				else:
+					direction = -tangent_angle
+				destination = destination_vector_from_direction(direction) + global_position
+				destination += global_position
 	if global_position.distance_squared_to(destination) < velocity.length()*velocity.length()*delta*delta:
 		destination = global_position + random_vector(direction)
 		if abs(destination.x) > size.x/(camera.get_min_zoom()*2) - $CollisionShape2D.shape.radius/2:
@@ -77,13 +98,11 @@ func _on_area_entered_vision(area:Node2D):
 		scared = true
 		#destination = random_vector(direction)
 		var tangent_angle = global_position.angle_to_point(area.global_position) + PI/2
-		print("Tangent: ", Vector2(cos(tangent_angle), sin(tangent_angle)))
-		if destination.normalized().dot(Vector2(cos(tangent_angle), sin(tangent_angle))) > 0:
+		if destination.normalized().dot(Vector2(cos(tangent_angle), sin(tangent_angle))) > destination.normalized().dot(Vector2(cos(-tangent_angle), sin(-tangent_angle))):
 			direction = tangent_angle
 		else:
 			direction = -tangent_angle
 		destination = destination_vector_from_direction(direction) + global_position
-		print(direction)
 		destination += global_position
 	
 func _on_area_exited_vision(area:Node2D):
@@ -107,7 +126,14 @@ func random_vector(current_direction:float):
 	var diff = global_position.angle_to_point(base_position) - direction
 	diff = wrap(diff, -PI, PI)
 	direction += diff * (1 - charge/full_charge)
-	return destination_vector_from_direction(direction)
+	var new_destination = Vector2.RIGHT.rotated(direction)
+	var separation_froce:Vector2 = Vector2.ZERO
+	for attack_ship in visible_attack_ships:
+		separation_froce += attack_ship.global_position.direction_to(global_position)
+	new_destination += separation_froce * avoid_factor
+	new_destination = new_destination.normalized()*max(randf_range(min_length, $VisionArea/CollisionShape2D.shape.radius), (100 if scared else 0))
+	direction = new_destination.angle()
+	return new_destination
 
 func _on_body_entered_vision(body:Node2D):
 	if body.get_collision_layer_value(3):
@@ -120,6 +146,9 @@ func _on_body_entered_vision(body:Node2D):
 		if body.get_cargo_amount() > 0:
 			visible_targets.append(body)
 			choose_target()
+	elif body.get_collision_layer_value(7):
+		visible_attack_ships.append(body)
+		destination = random_vector(direction) + global_position
 
 func _on_body_exited_vision(body:Node2D):
 	if body.get_collision_layer_value(3):
@@ -131,6 +160,8 @@ func _on_body_exited_vision(body:Node2D):
 		body.update_cargo_signal.disconnect(_updated_cargo)
 		visible_targets.erase(body)
 		choose_target()
+	elif body.get_collision_layer_value(7):
+		visible_attack_ships.erase(body)
 
 func _on_body_entered_attack(body:Node2D):
 	if body.get_collision_layer_value(2):
@@ -224,3 +255,26 @@ func returned_to_base():
 
 func left_base():
 	in_base = false
+
+func fill_health():
+	health = full_health
+
+func attacked():
+	health -= 1
+	print(health)
+	if health == full_health - 1:
+		heal_timer.start(heal_time)
+	if health == 0:
+		print("Should be killed")
+		killed.emit(self)
+		heal_timer.stop()
+
+func restart_particles():
+	$GPUParticles2D.restart()
+
+func heal():
+	health += 1
+	if health == full_health:
+		heal_timer.stop()
+	else:
+		heal_timer.start(heal_time)
