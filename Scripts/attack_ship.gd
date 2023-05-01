@@ -6,7 +6,7 @@ var howered:bool = false
 var selected:bool = false
 var destinations:Array = []
 var base_position:Vector2 = Vector2(-1, -1)
-var full_health:int = 4
+var full_health:int = 6
 var health:int = full_health
 var stunned:bool = false
 var heal_time:float = 2.5
@@ -18,8 +18,9 @@ var attack_timer:Timer = Timer.new()
 @onready var guns = $Guns.get_children()
 var next_gun = 0
 
-var base_speed = 100
+var base_speed = 30
 var speed = base_speed
+var patrol:bool = false
 
 var color_normal:Color = Color("#007DC7")
 var color_selected:Color = Color("#92F4FF")
@@ -44,6 +45,8 @@ func _ready():
 func _physics_process(delta):
 	if not destinations.is_empty() and global_position.distance_to(waypoint_next_pos()) < velocity.length()*delta:
 		global_position = waypoint_next_pos()
+		if patrol:
+			add_waypoint(waypoint_next_pos())
 		velocity = Vector2.ZERO
 		waypoint_skip()
 	if not destinations.is_empty():
@@ -62,8 +65,13 @@ func _input(event):
 		print(howered)
 		select_ship(howered)
 	elif selected and event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed():
-		if not Input.is_action_pressed("shift"):
+		if Input.is_action_pressed("ctrl") and waypoint_count() > 0:
+			patrol = true
+		elif not Input.is_action_pressed("shift"):
 			waypoint_clear()
+			patrol = false
+		else:
+			patrol = false
 		add_waypoint(get_global_mouse_position())
 
 func get_radius():
@@ -83,7 +91,7 @@ func select_ship(select:bool):
 
 func add_waypoint(pos:Vector2):
 	if waypoint_count() == 0 and velocity == Vector2.ZERO:
-		#$AudioLaunch.play()
+		$AudioLaunch.play()
 		pass
 	var marker = path_marker_pool.request_path_marker(pos, color_selected)
 	marker.visible = selected
@@ -122,8 +130,7 @@ func is_not_howering():
 	howered = false
 
 func restart_particles():
-	pass
-	#$GPUParticles2D.restart()
+	$GPUParticles2D.restart()
 
 func is_stunned():
 	return stunned
@@ -132,8 +139,11 @@ func waypoint_skip():
 	path_marker_pool.return_path_marker(destinations.pop_front())
 	$Node/PathLine.remove_point(1)
 
-func attacked():
+func attacked(attacker_position:Vector2):
 	health -= 1
+	if waypoint_count() == 0:
+		var escape_direction = attacker_position.angle_to_point(global_position)
+		add_waypoint(global_position + Vector2(cos(escape_direction), sin(escape_direction)) * 100)
 	if health == full_health - 1:
 		heal_timer.start(heal_time)
 	if health == 0:
@@ -145,7 +155,6 @@ func heal():
 	health += 1
 	if health == full_health:
 		heal_timer.stop()
-		awaken()
 	else:
 		heal_timer.start(heal_time)
 
@@ -183,10 +192,9 @@ func attack():
 		next_gun += 1
 		if next_gun >= guns.size():
 			next_gun -= guns.size()
-		visible_targets.front().attacked()
 		if not stunned:
 			laser_pool.request_laser(guns[next_gun].global_position, visible_targets.front().global_position+Vector2.RIGHT.rotated(randf_range(-PI, PI))*randf_range(0,10), $Sprite2D.modulate)
-			visible_targets.front().attacked()
+			visible_targets.front().attacked(global_position)
 		attack_timer.start(attack_time)
 	else:
 		attack_timer.stop()
@@ -196,4 +204,6 @@ func is_home():
 	if stunned:
 		velocity = Vector2.ZERO
 		waypoint_clear()
+		health = full_health
+		heal_timer.stop()
 		awaken()

@@ -5,7 +5,8 @@ var selected:bool = false
 var destinations:Array = []
 var base_position:Vector2 = Vector2(-1, -1)
 var can_rescue:bool = true
-var speed = 100
+var speed = 60
+var patrol:bool = false
 
 var color_normal:Color = Color("#3fc778")
 var color_selected:Color = Color("#BDD156")
@@ -19,6 +20,8 @@ func _ready():
 func _physics_process(delta):
 	if not destinations.is_empty() and global_position.distance_to(waypoint_next_pos()) < velocity.length()*delta:
 		global_position = waypoint_next_pos()
+		if patrol:
+			add_waypoint(waypoint_next_pos())
 		velocity = Vector2.ZERO
 		waypoint_skip()
 	if not destinations.is_empty():
@@ -36,8 +39,13 @@ func _input(event):
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
 		select_ship(howered)
 	elif selected and event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed():
-		if not Input.is_action_pressed("shift"):
+		if Input.is_action_pressed("ctrl") and waypoint_count() > 0:
+			patrol = true
+		elif not Input.is_action_pressed("shift"):
 			waypoint_clear()
+			patrol = false
+		else:
+			patrol = false
 		add_waypoint(get_global_mouse_position())
 
 func get_radius():
@@ -56,7 +64,7 @@ func select_ship(select:bool):
 
 func add_waypoint(pos:Vector2):
 	if waypoint_count() == 0 and velocity == Vector2.ZERO:
-		#$AudioLaunch.play()
+		$AudioLaunch.play()
 		pass
 	var marker = path_marker_pool.request_path_marker(pos, color_selected)
 	marker.visible = selected

@@ -5,7 +5,7 @@ const pirate_ship:PackedScene = preload("res://Scenes/pirate_ship.tscn")
 var max_pirates:int = 2
 var pirates:int = 0
 var dead_pirates: Array = []
-var pirate_spawn_time:float = 10
+var pirate_spawn_time:float = 5
 var pirate_spawn_timer: Timer = Timer.new()
 var visible_targets:Array = []
 var attack_time:float = 0.75
@@ -87,7 +87,7 @@ func attack():
 		next_gun += 1
 		if next_gun >= guns.size():
 			next_gun -= guns.size()
-		target.attacked()
+		target.attacked(global_position)
 		if target.is_stunned():
 			targets_to_erase.append(target)
 	for target in targets_to_erase:

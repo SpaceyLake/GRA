@@ -9,11 +9,12 @@ var destinations:Array = []
 var cargo: int = 0
 var max_cargo: int = 5
 var base_position:Vector2 = Vector2(-1, -1)
-var full_health:int = 4
+var full_health:int = 6
 var health:int = full_health
 var stunned:bool = false
 var heal_time:float = 2.5
 var heal_timer:Timer = Timer.new()
+var patrol:bool = false
 
 var base_speed = 40
 var speed = base_speed
@@ -38,6 +39,8 @@ func _physics_process(delta):
 	else:
 		if not destinations.is_empty() and global_position.distance_to(waypoint_next_pos()) < velocity.length()*delta:
 			global_position = waypoint_next_pos()
+			if patrol:
+				add_waypoint(waypoint_next_pos())
 			velocity = Vector2.ZERO
 			waypoint_skip()
 		if not destinations.is_empty():
@@ -54,10 +57,14 @@ func _input(event):
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
 		select_ship(howered)
 	elif selected and event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed():
-		if not Input.is_action_pressed("shift"):
+		if Input.is_action_pressed("ctrl") and waypoint_count() > 0:
+			patrol = true
+		elif not Input.is_action_pressed("shift"):
 			waypoint_clear()
+			patrol = false
+		else:
+			patrol = false
 		add_waypoint(get_global_mouse_position())
-
 func get_radius():
 	return $CollisionShape2D.shape.radius
 

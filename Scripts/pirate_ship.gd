@@ -4,13 +4,12 @@ signal killed(pirate:Node2D)
 
 var destination:Vector2
 var min_length:float = 50
-var base_speed = 30
+var base_speed = 35
 var speed = base_speed
 var direction:float = 0
 var max_turn: float = (3*PI/4)
 var scared:bool = false
 var target:Node2D
-var calming:bool = false
 var visible_targets:Array = []
 var attack_time:float = 1
 var attack_timer:Timer = Timer.new()
@@ -33,7 +32,8 @@ var health:int = full_health
 var heal_time:float = 3
 var heal_timer:Timer = Timer.new()
 var visible_attack_ships:Array = []
-var avoid_factor: float = 10
+var avoid_factor: float = 50
+var in_enemy_base:bool = false
 
 func _ready():
 	recharge()
@@ -62,27 +62,12 @@ func _physics_process(delta):
 	if not scared and not target == null and not returning_home:
 		destination = target.global_position
 		direction = global_position.angle_to_point(destination)
-		for attack_ship in visible_attack_ships:
-			if not attack_ship.is_stunned():
-				if global_position.direction_to(destination).dot(global_position.direction_to(attack_ship.global_position)) > 0:
-					target = null
-					scared = true
-					var tangent_angle = global_position.angle_to_point(attack_ship.global_position) + PI/2
-					if destination.normalized().dot(Vector2(cos(tangent_angle), sin(tangent_angle))) > destination.normalized().dot(Vector2(cos(-tangent_angle), sin(-tangent_angle))):
-						direction = tangent_angle
-					else:
-						direction = -tangent_angle
-					destination = destination_vector_from_direction(direction) + global_position
-					destination += global_position
 	if global_position.distance_squared_to(destination) < velocity.length()*velocity.length()*delta*delta:
 		destination = global_position + random_vector(direction)
-		if abs(destination.x) > size.x/(camera.get_min_zoom()*2) - $CollisionShape2D.shape.radius/2:
-			destination.x *= -1
-		if abs(destination.y) > size.y/(camera.get_min_zoom()*2) - $CollisionShape2D.shape.radius/2:
-			destination.y *= -1
+		if abs(position.x) > size.x/(camera.get_min_zoom()*2) - $CollisionShape2D.shape.radius/2 or abs(position.y) > size.y/(camera.get_min_zoom()*2) - $CollisionShape2D.shape.radius/2:
+			destination = global_position + destination_vector_from_direction(global_position.angle_to(Vector2.ZERO))
 		direction = global_position.angle_to(destination)
-		if calming:
-			calming = false
+		if not in_enemy_base:
 			scared = false
 			choose_target()
 			check_for_attackable()
@@ -97,6 +82,7 @@ func _on_area_entered_vision(area:Node2D):
 	if area.get_collision_layer_value(4):
 		target = null
 		scared = true
+		in_enemy_base = true
 		#destination = random_vector(direction)
 		var tangent_angle = global_position.angle_to_point(area.global_position) + PI/2
 		if destination.normalized().dot(Vector2(cos(tangent_angle), sin(tangent_angle))) > destination.normalized().dot(Vector2(cos(-tangent_angle), sin(-tangent_angle))):
@@ -108,7 +94,7 @@ func _on_area_entered_vision(area:Node2D):
 	
 func _on_area_exited_vision(area:Node2D):
 	if area.get_collision_layer_value(4):
-		calming = true
+		in_enemy_base = false
 
 func set_base_position(new_position:Vector2):
 	base_position = new_position
@@ -219,6 +205,9 @@ func choose_target():
 func _updated_cargo(body:Node2D):
 	if body.get_cargo_amount() == 0:
 		visible_targets.erase(body)
+	elif not visible_targets.find(body) == -1:
+		visible_targets.append(body)
+		
 	choose_target()
 	if not target == null and not attackable_targets.find(target) == -1:
 		if not target.is_stunned():
@@ -261,9 +250,11 @@ func left_base():
 func fill_health():
 	health = full_health
 
-func attacked():
+func attacked(attacker_position:Vector2):
 	health -= 1
-	print(health)
+	scared = true
+	var escape_direction = attacker_position.angle_to_point(global_position)
+	destination = global_position + destination_vector_from_direction(escape_direction)
 	if health == full_health - 1:
 		heal_timer.start(heal_time)
 	if health == 0:
