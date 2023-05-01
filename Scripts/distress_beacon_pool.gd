@@ -9,6 +9,9 @@ var distress_beacons_placed:Array = []
 func request_distress_beacon(location):
 	var node_instance = null
 	if distress_beacon_pool.is_empty():
+		if node_creation_parent == null:
+			print_debug("node_creation_parent is null")
+			return null
 		node_instance = scn_distress_beacon.instantiate()
 		node_creation_parent.add_child(node_instance)
 	else:
@@ -31,6 +34,7 @@ func _distress_beacon_set_active(distress_beacon, active):
 	distress_beacon.set_process_internal(active)
 	distress_beacon.set_process_unhandled_input(active)
 	distress_beacon.set_process_unhandled_key_input(active)
+	distress_beacon.get_node("CollisionShape2D").set_deferred("disabled", not active)
 	if active:
 		distress_beacon.reset_timer()
 		distress_beacon.play_spawn_animation()
