@@ -73,7 +73,8 @@ func activate_pirate(pirate:Node2D, active:bool):
 	pirate.fill_health()
 	pirate.get_node("CollisionShape2D").set_deferred("disabled", not active)
 	pirate.get_node("AttackArea/CollisionShape2D").set_deferred("disabled", not active)
-	pirate.get_node("SafeArea/CollisionShape2D").set_deferred("disabled", not active)
+	pirate.get_node("VisionArea/CollisionShape2D").set_deferred("disabled", not active)
+	pirate.get_node("PlunderArea/CollisionShape2D").set_deferred("disabled", not active)
 	if active == false:
 		pirate.global_position = global_position
 
