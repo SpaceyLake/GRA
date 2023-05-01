@@ -11,6 +11,8 @@ var visible_targets:Array = []
 var attack_time:float = 0.75
 var attack_timer:Timer = Timer.new()
 @onready var guns = $Sprite2D/Guns.get_children()
+@onready var size = Vector2(1920, 1080)
+@onready var camera:Camera2D = get_parent().get_node("Camera")
 var next_gun = 0
 
 func _ready():
@@ -70,6 +72,8 @@ func activate_pirate(pirate:Node2D, active:bool):
 	pirate.recharge()
 	pirate.fill_health()
 	pirate.get_node("CollisionShape2D").set_deferred("disabled", not active)
+	pirate.get_node("AttackArea/CollisionShape2D").set_deferred("disabled", not active)
+	pirate.get_node("SafeArea/CollisionShape2D").set_deferred("disabled", not active)
 	if active == false:
 		pirate.global_position = global_position
 
@@ -81,21 +85,24 @@ func pirate_leaving_base(pirate:Node2D):
 	pirate.left_base()
 
 func attack():
-	var targets_to_erase:Array = []
-	for target in visible_targets:
-		laser_pool.request_laser(guns[next_gun].global_position, target.global_position+Vector2.RIGHT.rotated(randf_range(-PI, PI))*randf_range(0,10), $Sprite2D.modulate)
-		next_gun += 1
-		if next_gun >= guns.size():
-			next_gun -= guns.size()
-		target.attacked(global_position)
-		if target.is_stunned():
-			targets_to_erase.append(target)
-	for target in targets_to_erase:
-		visible_targets.erase(target)
-	if not visible_targets.is_empty():
-		attack_timer.start(attack_time)
+	if abs(position.x) <= size.x/(camera.zoom.x*2) and abs(position.y) <= size.y/(camera.zoom.y*2):
+		var targets_to_erase:Array = []
+		for target in visible_targets:
+			laser_pool.request_laser(guns[next_gun].global_position, target.global_position+Vector2.RIGHT.rotated(randf_range(-PI, PI))*randf_range(0,10), $Sprite2D.modulate)
+			next_gun += 1
+			if next_gun >= guns.size():
+				next_gun -= guns.size()
+			target.attacked(global_position)
+			if target.is_stunned():
+				targets_to_erase.append(target)
+		for target in targets_to_erase:
+			visible_targets.erase(target)
+		if not visible_targets.is_empty():
+			attack_timer.start(attack_time)
+		else:
+			attack_timer.stop()
 	else:
-		attack_timer.stop()
+		attack_timer.start(attack_time)
 
 func _body_entered_attack_area(body:Node2D):
 	visible_targets.append(body)
