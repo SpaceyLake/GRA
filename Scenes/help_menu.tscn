@@ -32,9 +32,9 @@ text = "Running out of fuel in never fun. Now imagine you are out of fuel in the
 However there is no need for dispair galactic citizen, Galactic Roadside Assistance is here to save you!
 Our trained professionals will fly to you with the fuel you need to continue your journey through the stars.
 
-We have recently expanded to a brand new region of sapce and you have been put in charge of managing our operations here.
+We have recently expanded to a brand new region of space and you have been put in charge of managing our operations here.
 
-Press SPACE to pause and ESC to quit
+Press SPACE to pause, ESC to quit and M to toggle music.
 
 Instructions follow on next page ->"
 label_settings = ExtResource("2_7wjvs")
@@ -49,11 +49,11 @@ offset_bottom = 884.0
 text = "Here are some quick instructions to get you started with your brand new VERY IMPORTANT duties:
 
 1. Use LEFT CLICK to select your different units
-2. WIth a unit selected use RIGHT CLICK to issue orders to it (holding down SHIFT allows you to queue orders and holding CTRL will allow you to setup repeating partols)
-3. Distress calls with come in peridicaly and will be marked on your map. Each marker shows its time remaining and fuel needed.
-4. Command you Refuel ships to refuel the stranded ships before they perish. Then return them to the base to refill their cargo with fuel.
-5. Each basic refuel ship may hold up to 5 units of fuel. You may adjust the amount of fuel loaded by the base using the scrollwheel while hovering over the base or having it selected. Ships with lighter cargo travel faster.
-6. Unfortunatly we are not the only once roaming the darkess. Since the founding of the G.R.A. pirates have been trying to claim our cargo for themselfs. Be sure to steer clear of these good for nothing thiefs.
+2. With a unit selected use RIGHT CLICK to issue orders to it (holding down SHIFT allows you to queue orders and holding CTRL will allow you to setup repeating partols)
+3. Distress calls come in periodically and will be marked on your map. Each marker shows its time remaining and fuel needed.
+4. Command your Refuel ships to refuel the stranded ships before they perish. Return Refuel ships to the base to refill their cargo with fuel.
+5. Each basic Refuel ship may hold up to 5 units of fuel. You may adjust the amount of fuel loaded by the base using the SCROLLWHEEL (Refule ships with lighter cargo travel faster).
+6. Unfortunatly we are not the only once roaming the darkess. Since the founding of the G.R.A. pirates have been trying to claim our fuel for themselfs. Be sure to steer clear of these good for nothing thiefs.
 
 More instructions follow on the next page ->"
 label_settings = ExtResource("2_7wjvs")
@@ -64,8 +64,8 @@ offset_left = 131.0
 offset_top = 335.0
 offset_right = 1790.0
 offset_bottom = 884.0
-text = "7. Fortunatly we have managed to get our hands on some Combar ship which may be used to scare away the pirates.
-8. Lastly our Rescue ships may be used to bring stranded travelers vital food and oxygen while they wait for their fuel.
+text = "7. Fortunatly we have managed to get our hands on some Combat ships which may be used to scare away the pirates.
+8. Lastly our Rescue ships may be used to bring stranded travelers vital food and oxygen so they may survive longer while they wait for their fuel.
 8.1. Rember we pride ourself in our 100% success rate, so if someone perishes on your watch then you might want to look for a new job."
 label_settings = ExtResource("2_7wjvs")
 autowrap_mode = 3
