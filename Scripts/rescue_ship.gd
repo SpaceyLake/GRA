@@ -5,7 +5,7 @@ var selected:bool = false
 var destinations:Array = []
 var base_position:Vector2 = Vector2(-1, -1)
 var can_rescue:bool = true
-var speed = 100
+var speed = 60
 
 var color_normal:Color = Color("#3fc778")
 var color_selected:Color = Color("#BDD156")

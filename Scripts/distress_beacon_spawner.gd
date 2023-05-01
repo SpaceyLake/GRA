@@ -3,7 +3,7 @@ extends Node
 const MIN_LENGTH_FROM_BASE_SQUARED = 200*200
 const MIN_LENGTH_FROM_DISTRESS_BEACON_SQUARED = 100*100
 const MIN_LENGTH_FROM_SHIP_SQUARED = 100*100
-const MIN_LENGTH_FROM_PIRATE_BASE = 200*200
+const MIN_LENGTH_FROM_PIRATE_BASE = 320*320
 
 @export var time_decreasment:float = 0.99
 var timer:Timer = Timer.new()
@@ -19,7 +19,7 @@ var path_marker_pool:Array = []
 
 func _ready():
 	for node in get_parent().get_children():
-		if node is StaticBody2D and node.get_collision_layer_value(4):
+		if node is StaticBody2D and node.get_collision_layer_value(6):
 			pirate_bases.append(node)
 	add_child(timer)
 	timer.timeout.connect(_timeout)

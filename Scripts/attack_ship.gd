@@ -6,7 +6,7 @@ var howered:bool = false
 var selected:bool = false
 var destinations:Array = []
 var base_position:Vector2 = Vector2(-1, -1)
-var full_health:int = 4
+var full_health:int = 6
 var health:int = full_health
 var stunned:bool = false
 var heal_time:float = 2.5
@@ -18,7 +18,7 @@ var attack_timer:Timer = Timer.new()
 @onready var guns = $Guns.get_children()
 var next_gun = 0
 
-var base_speed = 100
+var base_speed = 30
 var speed = base_speed
 
 var color_normal:Color = Color("#007DC7")
@@ -132,8 +132,11 @@ func waypoint_skip():
 	path_marker_pool.return_path_marker(destinations.pop_front())
 	$Node/PathLine.remove_point(1)
 
-func attacked():
+func attacked(attacker_position:Vector2):
 	health -= 1
+	if waypoint_count() == 0:
+		var escape_direction = attacker_position.angle_to_point(global_position)
+		add_waypoint(global_position + Vector2(cos(escape_direction), sin(escape_direction)) * 100)
 	if health == full_health - 1:
 		heal_timer.start(heal_time)
 	if health == 0:
@@ -145,7 +148,6 @@ func heal():
 	health += 1
 	if health == full_health:
 		heal_timer.stop()
-		awaken()
 	else:
 		heal_timer.start(heal_time)
 
@@ -183,10 +185,9 @@ func attack():
 		next_gun += 1
 		if next_gun >= guns.size():
 			next_gun -= guns.size()
-		visible_targets.front().attacked()
 		if not stunned:
 			laser_pool.request_laser(guns[next_gun].global_position, visible_targets.front().global_position+Vector2.RIGHT.rotated(randf_range(-PI, PI))*randf_range(0,10), $Sprite2D.modulate)
-			visible_targets.front().attacked()
+			visible_targets.front().attacked(global_position)
 		attack_timer.start(attack_time)
 	else:
 		attack_timer.stop()
@@ -196,4 +197,6 @@ func is_home():
 	if stunned:
 		velocity = Vector2.ZERO
 		waypoint_clear()
+		health = full_health
+		heal_timer.stop()
 		awaken()
