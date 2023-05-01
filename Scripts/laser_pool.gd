@@ -5,6 +5,9 @@ var node_creation_parent = null
 var scn_laser = preload("res://Scenes/laser.tscn")
 var laser_pool:Array = []
 
+func reset():
+	laser_pool = []
+
 func request_laser(point1:Vector2, point2:Vector2, color:Color):
 	var node_instance = null
 	if laser_pool.is_empty():

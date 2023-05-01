@@ -5,6 +5,9 @@ var node_creation_parent = null
 var scn_path_marker = preload("res://Scenes/path_marker.tscn")
 var path_marker_pool:Array = []
 
+func reset():
+	path_marker_pool = []
+
 func request_path_marker(location, color):
 	var node_instance = null
 	if path_marker_pool.is_empty():

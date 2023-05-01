@@ -6,6 +6,10 @@ var scn_distress_beacon = preload("res://Scenes/distress_beacon.tscn")
 var distress_beacon_pool:Array = []
 var distress_beacons_placed:Array = []
 
+func reset():
+	distress_beacon_pool = []
+	distress_beacons_placed = []
+
 func request_distress_beacon(location):
 	var node_instance = null
 	if distress_beacon_pool.is_empty():
