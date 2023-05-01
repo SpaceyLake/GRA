@@ -18,8 +18,8 @@ func _ready():
 	
 	$UpgradeTimer.timeout.connect(_on_UpgradeTimer_timeout)
 	$DarkOverlay/UpgradeMenu/RefuelingShip.pressed.connect(_on_RefuelingShip_pressed)
-	$DarkOverlay/UpgradeMenu/AttackShip.pressed.connect(_on_RefuelingShip_pressed)
-	$DarkOverlay/UpgradeMenu/RescueShip.pressed.connect(_on_RefuelingShip_pressed)	
+	$DarkOverlay/UpgradeMenu/AttackShip.pressed.connect(_on_AttackShip_pressed)
+	$DarkOverlay/UpgradeMenu/RescueShip.pressed.connect(_on_RescueShip_pressed)	
 	
 	$DarkOverlay/LoseMenu/ButtonReturn.pressed.connect(_on_ButtonReturn_pressed)
 	$DarkOverlay/LoseMenu/ButtonReturn.mouse_entered.connect(_on_hover_ButtonReturn)
@@ -110,10 +110,10 @@ func _on_RefuelingShip_pressed():
 	finnish_upgrade()
 
 func _on_AttackShip_pressed():
-	get_parent().base.add_ship()
+	get_parent().base.spawn_attack_ship()
 	finnish_upgrade()
 
 func _on_RescueShip_pressed():
-	get_parent().base.add_ship()
+	get_parent().base.spawn_rescue_ship()
 	finnish_upgrade()
 
