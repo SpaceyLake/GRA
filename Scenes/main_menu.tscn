@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://dlgrb470mtuwp"]
+[gd_scene load_steps=14 format=3 uid="uid://dlgrb470mtuwp"]
 
 [ext_resource type="Script" path="res://Scripts/main_menu.gd" id="1_7gpuw"]
 [ext_resource type="LabelSettings" uid="uid://ql3e6wdvyvoy" path="res://Settings/LabelTitleMain.tres" id="1_n03fa"]
@@ -10,6 +10,8 @@
 [ext_resource type="Texture2D" uid="uid://bn1b0u7hpl1x3" path="res://Sprites/PirateBase.svg" id="8_opqfl"]
 [ext_resource type="Texture2D" uid="uid://unefx7qts5st" path="res://Sprites/PirateShip.svg" id="9_jmkka"]
 [ext_resource type="Texture2D" uid="uid://geg8g5w4ny3c" path="res://Sprites/DistressBeaconBig.svg" id="10_xyx8w"]
+[ext_resource type="AudioStream" uid="uid://c5tuopcj7h8ps" path="res://Sound/music7.wav" id="11_tvf62"]
+[ext_resource type="Script" path="res://Scripts/music.gd" id="12_ilcuy"]
 
 [sub_resource type="Environment" id="Environment_4io26"]
 background_mode = 3
@@ -202,3 +204,8 @@ texture = ExtResource("10_xyx8w")
 modulate = Color(1, 0.807843, 0, 1)
 position = Vector2(483, 205)
 texture = ExtResource("10_xyx8w")
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("11_tvf62")
+autoplay = true
+script = ExtResource("12_ilcuy")
