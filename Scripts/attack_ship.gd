@@ -14,6 +14,9 @@ var heal_timer:Timer = Timer.new()
 var visible_targets:Array = []
 var attack_time:float = 1
 var attack_timer:Timer = Timer.new()
+var attacked_timer:Timer = Timer.new()
+var attacked_time = 1.5
+var times_attacked = 0
 
 @onready var guns = $Guns.get_children()
 var next_gun = 0
@@ -31,6 +34,10 @@ func _ready():
 	attack_timer.timeout.connect(attack)
 	attack_timer.wait_time = attack_time
 	attack_timer.one_shot = true
+	add_child(attacked_timer)
+	attacked_timer.timeout.connect(not_attacked)
+	attacked_timer.wait_time = attacked_time
+	attacked_timer.one_shot = true
 	$AttackArea.body_entered.connect(_on_body_entered_attack_area)
 	$AttackArea.body_exited.connect(_on_body_exited_attack_area)
 	global.new_selected.connect(update_selected)
@@ -62,7 +69,6 @@ func _physics_process(delta):
 
 func _input(event):
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
-		print(howered)
 		select_ship(howered)
 	elif selected and event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed():
 		if Input.is_action_pressed("ctrl") and waypoint_count() > 0:
@@ -143,7 +149,10 @@ func attacked(attacker_position:Vector2):
 	health -= 1
 	if waypoint_count() == 0:
 		var escape_direction = attacker_position.angle_to_point(global_position)
-		add_waypoint(global_position + Vector2(cos(escape_direction), sin(escape_direction)) * 100)
+		times_attacked += 1
+		add_waypoint(global_position + Vector2(cos(escape_direction), sin(escape_direction)) * 100 * times_attacked)
+		attacked_timer.stop()
+		attacked_timer.start(attacked_time)
 	if health == full_health - 1:
 		heal_timer.start(heal_time)
 	if health == 0:
@@ -207,3 +216,7 @@ func is_home():
 		health = full_health
 		heal_timer.stop()
 		awaken()
+
+func not_attacked():
+	times_attacked = 0
+	attacked_timer.stop()
