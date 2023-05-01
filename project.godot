@@ -13,7 +13,8 @@ config_version=5
 config/name="LDJAM53"
 run/main_scene="res://Scenes/main_menu.tscn"
 config/features=PackedStringArray("4.0", "Forward Plus")
-config/icon="res://icon.svg"
+boot_splash/bg_color=Color(0.0627451, 0.117647, 0.160784, 1)
+boot_splash/image="res://Sprites/splash.png"
 
 [autoload]
 
