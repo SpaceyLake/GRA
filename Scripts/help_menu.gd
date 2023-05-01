@@ -21,6 +21,8 @@ func _on_pressed_Next():
 	instructions[current_instruction].visible = false
 	if current_instruction < instructions.size()-1:
 		current_instruction += 1
+	else:
+		get_tree().change_scene_to_file("res://Scenes/main_menu.tscn")
 	instructions[current_instruction].visible = true
 
 func _on_pressed_Back():
