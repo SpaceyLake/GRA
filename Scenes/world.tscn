@@ -197,7 +197,7 @@ offset_top = -104.0
 offset_right = -88.0
 offset_bottom = 104.0
 image = ExtResource("7_eaghr")
-txt = "Extra Refueling ship"
+txt = "Refueling ship"
 
 [node name="AttackShip" parent="MenuHanler/DarkOverlay/UpgradeMenu" instance=ExtResource("11_s8g4o")]
 modulate = Color(0, 0.490196, 0.780392, 1)
@@ -206,7 +206,7 @@ offset_top = -104.0
 offset_right = 296.0
 offset_bottom = 104.0
 image = ExtResource("12_xbxai")
-txt = "Extra Attack ship"
+txt = "Combat ship"
 
 [node name="RescueShip" parent="MenuHanler/DarkOverlay/UpgradeMenu" instance=ExtResource("11_s8g4o")]
 modulate = Color(0.247059, 0.780392, 0.470588, 1)
@@ -215,7 +215,7 @@ offset_top = 109.0
 offset_right = -88.0
 offset_bottom = 317.0
 image = SubResource("CompressedTexture2D_qa02w")
-txt = "Extra Rescue ship"
+txt = "Rescue ship"
 
 [node name="PauseMenu" type="Node2D" parent="MenuHanler/DarkOverlay"]
 visible = false
