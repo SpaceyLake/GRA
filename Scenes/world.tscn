@@ -282,7 +282,7 @@ label_settings = ExtResource("12_ndrmb")
 horizontal_alignment = 1
 
 [node name="UpgradeTimer" type="Timer" parent="MenuHanler"]
-wait_time = 5.0
+wait_time = 120.0
 one_shot = true
 autostart = true
 
