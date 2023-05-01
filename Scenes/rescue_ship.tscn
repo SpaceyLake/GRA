@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://dka0nkoyvf23j"]
+[gd_scene load_steps=8 format=3 uid="uid://dka0nkoyvf23j"]
 
 [ext_resource type="Script" path="res://Scripts/rescue_ship.gd" id="1_tt6i3"]
 [ext_resource type="Texture2D" uid="uid://crgnaeisvitxt" path="res://Sprites/RescueShip.svg" id="2_3mhmj"]
@@ -6,7 +6,6 @@
 [ext_resource type="Texture2D" uid="uid://vmsbqmsho02e" path="res://Sprites/RescueShipPlus.svg" id="3_rsyiq"]
 [ext_resource type="Material" uid="uid://b0fgt23bfp4sx" path="res://Settings/delivery_ship_thrusters.tres" id="5_6ljbi"]
 [ext_resource type="Texture2D" uid="uid://dkmbbbomkkuju" path="res://Sprites/Circle.svg" id="6_oy1up"]
-[ext_resource type="AudioStream" uid="uid://hc0jvblatdd3" path="res://Sound/launch2.wav" id="7_svlau"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_rh3at"]
 radius = 22.0907
@@ -52,7 +51,3 @@ amount = 40
 process_material = ExtResource("5_6ljbi")
 texture = ExtResource("6_oy1up")
 visibility_rect = Rect2(-80, -50, 100, 100)
-
-[node name="AudioLaunch" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("7_svlau")
-volume_db = -5.0
