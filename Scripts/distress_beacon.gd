@@ -11,7 +11,7 @@ var has_alarmed = false
 func _ready():
 	body_entered.connect(_on_body_entered)
 	$AlarmTimer.timeout.connect(_alarm_timeout)
-	$AudioSpawn.pitch_scale = randf_range(0.5, 2)
+	$AudioSpawn.pitch_scale = randf_range(0.5, 1.2)
 	$AudioSpawn.play()
 
 func _process(delta):
@@ -61,7 +61,6 @@ func _on_body_entered(body: Node2D):
 		set_needs(needs - amount)
 		global.score += amount
 		if not needs:
-			print("Success")
 			$AlarmTimer.stop()
 			distress_beacon_pool.return_distress_beacon(self)
 	elif body.get_collision_layer_value(8):
@@ -70,7 +69,6 @@ func _on_body_entered(body: Node2D):
 			$AlarmTimer.stop()
 
 func _timeout():
-	print("Fail")
 	$AlarmTimer.stop()
 	global.game_lost()
 	distress_beacon_pool.return_distress_beacon(self)
