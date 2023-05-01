@@ -24,6 +24,15 @@ func _ready():
 	$DarkOverlay/LoseMenu/ButtonReturn.pressed.connect(_on_ButtonReturn_pressed)
 	$DarkOverlay/LoseMenu/ButtonReturn.mouse_entered.connect(_on_hover_ButtonReturn)
 	$DarkOverlay/LoseMenu/ButtonReturn.mouse_exited.connect(_on_stop_hover_ButtonReturn)
+	
+	$DarkOverlay/PauseMenu/ButtonReturn.pressed.connect(_on_pressed_Return)
+	$DarkOverlay/PauseMenu/ButtonQuit.pressed.connect(_on_pressed_Quit)
+	
+	$DarkOverlay/PauseMenu/ButtonReturn.mouse_entered.connect(_on_hover_Return)
+	$DarkOverlay/PauseMenu/ButtonQuit.mouse_entered.connect(_on_hover_Quit)
+	
+	$DarkOverlay/PauseMenu/ButtonReturn.mouse_exited.connect(_on_stop_hover_Return)
+	$DarkOverlay/PauseMenu/ButtonQuit.mouse_exited.connect(_on_stop_hover_Quit)
 
 func  _exit_tree():
 	global.menu_hanler = null
@@ -117,3 +126,23 @@ func _on_RescueShip_pressed():
 	get_parent().base.spawn_rescue_ship()
 	finnish_upgrade()
 
+
+
+func _on_pressed_Return():
+	get_tree().paused = false
+	get_tree().change_scene_to_file("res://Scenes/main_menu.tscn")
+
+func _on_pressed_Quit():
+	get_tree().quit()
+
+func _on_hover_Return():
+	$DarkOverlay/PauseMenu/ButtonReturn/Label.modulate = Color("#3fc778")
+
+func _on_hover_Quit():
+	$DarkOverlay/PauseMenu/ButtonQuit/Label.modulate = Color("#e1534a")
+
+func _on_stop_hover_Return():
+	$DarkOverlay/PauseMenu/ButtonReturn/Label.modulate = Color.WHITE
+
+func _on_stop_hover_Quit():
+	$DarkOverlay/PauseMenu/ButtonQuit/Label.modulate = Color.WHITE
