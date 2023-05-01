@@ -162,58 +162,36 @@ metadata/_edit_lock_ = true
 
 [node name="LabelTitle" type="Label" parent="MenuHanler/DarkOverlay/UpgradeMenu"]
 light_mask = 0
-offset_left = -320.0
-offset_top = -320.0
-offset_right = 192.0
-offset_bottom = -255.0
+offset_left = -288.0
+offset_top = -256.0
+offset_right = 288.0
+offset_bottom = -191.0
 text = "Cycle 2"
 label_settings = ExtResource("6_02qeq")
 
-[node name="LabelText1" type="Label" parent="MenuHanler/DarkOverlay/UpgradeMenu"]
-offset_left = -320.0
-offset_top = -255.0
-offset_right = 320.0
-offset_bottom = -191.0
-text = "You have been granted an extra refueling ship:"
-label_settings = ExtResource("8_lymrp")
-autowrap_mode = 2
-clip_text = true
-text_overrun_behavior = 2
-
 [node name="LabelText2" type="Label" parent="MenuHanler/DarkOverlay/UpgradeMenu"]
-offset_left = -320.0
-offset_top = -32.0
-offset_right = 320.0
-offset_bottom = 40.0
-text = "You may also select one of the following assets:"
+offset_left = -288.0
+offset_top = -192.0
+offset_right = 288.0
+offset_bottom = -128.0
+text = "You may select one of the following assets:"
 label_settings = ExtResource("8_lymrp")
 autowrap_mode = 2
 clip_text = true
 text_overrun_behavior = 2
-
-[node name="TextureRect2" type="TextureRect" parent="MenuHanler/DarkOverlay/UpgradeMenu"]
-modulate = Color(0.247059, 0.780392, 0.470588, 1)
-light_mask = 0
-offset_left = -80.0
-offset_top = -216.0
-offset_right = 80.0
-offset_bottom = -56.0
-size_flags_horizontal = 8
-texture = ExtResource("7_eaghr")
-stretch_mode = 5
 
 [node name="Marker1" type="Marker2D" parent="MenuHanler/DarkOverlay/UpgradeMenu"]
-position = Vector2(-296, 88)
+position = Vector2(-296, -104)
 
 [node name="Marker2" type="Marker2D" parent="MenuHanler/DarkOverlay/UpgradeMenu"]
-position = Vector2(88, 88)
+position = Vector2(88, -104)
 
 [node name="RefuelingShip" parent="MenuHanler/DarkOverlay/UpgradeMenu" instance=ExtResource("11_s8g4o")]
 modulate = Color(0.247059, 0.780392, 0.470588, 1)
 offset_left = -296.0
-offset_top = 88.0
+offset_top = -104.0
 offset_right = -88.0
-offset_bottom = 296.0
+offset_bottom = 104.0
 image = ExtResource("7_eaghr")
 txt = "Extra Refueling ship"
 
