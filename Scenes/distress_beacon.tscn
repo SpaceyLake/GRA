@@ -8,7 +8,7 @@
 [ext_resource type="AudioStream" uid="uid://dnhh4fvvylije" path="res://Sound/alarm2.wav" id="6_jqpkd"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_6nysa"]
-radius = 4.0
+radius = 12.0
 
 [sub_resource type="Animation" id="Animation_6bbhf"]
 tracks/0/type = "value"

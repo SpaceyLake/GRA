@@ -27,7 +27,7 @@ func _ready():
 	timer.start(1)
 
 func _process(delta):
-	needs_float += delta*((2+pow(global.difficulty/120.0,2))/15)
+	needs_float += delta*((2+pow(global.difficulty/150.0,2))/15)
 	if needs_float > 1:
 		needs += floor(needs_float)
 		needs_float -= floor(needs_float)
