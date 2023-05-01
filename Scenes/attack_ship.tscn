@@ -1,16 +1,17 @@
-[gd_scene load_steps=8 format=3 uid="uid://ol2teqws0a31"]
+[gd_scene load_steps=9 format=3 uid="uid://ol2teqws0a31"]
 
 [ext_resource type="Script" path="res://Scripts/attack_ship.gd" id="1_udusr"]
-[ext_resource type="Texture2D" uid="uid://bj6fiavi0c7aw" path="res://Sprites/AttackShip.svg" id="2_hwr0h"]
+[ext_resource type="Texture2D" uid="uid://c8ll5y2erwpd8" path="res://Sprites/AttackShip.png" id="2_qaxwg"]
 [ext_resource type="Texture2D" uid="uid://c036im7071r62" path="res://Sprites/PathLine.svg" id="3_a8gix"]
 [ext_resource type="Material" uid="uid://om7hyn8t644e" path="res://Settings/attack_ship_thrusters.tres" id="4_vl4uq"]
 [ext_resource type="Texture2D" uid="uid://dkmbbbomkkuju" path="res://Sprites/Circle.svg" id="5_ehym0"]
+[ext_resource type="AudioStream" uid="uid://hc0jvblatdd3" path="res://Sound/launch2.wav" id="6_v5hop"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_8n1a8"]
-radius = 30.0167
+radius = 22.0227
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_o1rgi"]
-radius = 180.0
+radius = 220.0
 
 [node name="AttackShip" type="CharacterBody2D"]
 collision_layer = 64
@@ -20,7 +21,7 @@ script = ExtResource("1_udusr")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 modulate = Color(0, 0.490196, 0.780392, 1)
-texture = ExtResource("2_hwr0h")
+texture = ExtResource("2_qaxwg")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_8n1a8")
@@ -29,9 +30,7 @@ shape = SubResource("CircleShape2D_8n1a8")
 collision_mask = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
-visible = false
 shape = SubResource("CircleShape2D_o1rgi")
-metadata/_edit_lock_ = true
 
 [node name="Node" type="Node" parent="."]
 
@@ -45,24 +44,28 @@ texture_mode = 1
 [node name="Guns" type="Node2D" parent="."]
 
 [node name="Gun1" type="Marker2D" parent="Guns"]
-position = Vector2(30, 0)
+position = Vector2(22, 0)
 
 [node name="Gun2" type="Marker2D" parent="Guns"]
-position = Vector2(1, -15)
+position = Vector2(1, -11)
 
 [node name="Gun3" type="Marker2D" parent="Guns"]
-position = Vector2(1, 15)
+position = Vector2(1, 11)
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="."]
-position = Vector2(-26, 16)
+position = Vector2(-20, 12)
 amount = 40
 process_material = ExtResource("4_vl4uq")
 texture = ExtResource("5_ehym0")
 visibility_rect = Rect2(-80, -50, 100, 100)
 
 [node name="GPUParticles2D2" type="GPUParticles2D" parent="."]
-position = Vector2(-26, -16)
+position = Vector2(-20, -12)
 amount = 40
 process_material = ExtResource("4_vl4uq")
 texture = ExtResource("5_ehym0")
 visibility_rect = Rect2(-80, -50, 100, 100)
+
+[node name="AudioLaunch" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_v5hop")
+volume_db = -5.0

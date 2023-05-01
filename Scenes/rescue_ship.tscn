@@ -1,11 +1,12 @@
-[gd_scene load_steps=8 format=3 uid="uid://dka0nkoyvf23j"]
+[gd_scene load_steps=9 format=3 uid="uid://dka0nkoyvf23j"]
 
 [ext_resource type="Script" path="res://Scripts/rescue_ship.gd" id="1_tt6i3"]
-[ext_resource type="Texture2D" uid="uid://crgnaeisvitxt" path="res://Sprites/RescueShip.svg" id="2_3mhmj"]
 [ext_resource type="Texture2D" uid="uid://c036im7071r62" path="res://Sprites/PathLine.svg" id="2_6qv0m"]
+[ext_resource type="Texture2D" uid="uid://psbdh3cb55g5" path="res://Sprites/RescueShip.png" id="2_g0o1y"]
 [ext_resource type="Texture2D" uid="uid://vmsbqmsho02e" path="res://Sprites/RescueShipPlus.svg" id="3_rsyiq"]
 [ext_resource type="Material" uid="uid://b0fgt23bfp4sx" path="res://Settings/delivery_ship_thrusters.tres" id="5_6ljbi"]
 [ext_resource type="Texture2D" uid="uid://dkmbbbomkkuju" path="res://Sprites/Circle.svg" id="6_oy1up"]
+[ext_resource type="AudioStream" uid="uid://hc0jvblatdd3" path="res://Sound/launch2.wav" id="7_svlau"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_rh3at"]
 radius = 22.0907
@@ -18,11 +19,12 @@ script = ExtResource("1_tt6i3")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 modulate = Color(0.247059, 0.780392, 0.470588, 1)
-texture = ExtResource("2_3mhmj")
+texture = ExtResource("2_g0o1y")
 
 [node name="SpritePlus" type="Sprite2D" parent="."]
 modulate = Color(0.247059, 0.780392, 0.470588, 1)
-position = Vector2(-5, 0)
+position = Vector2(-4, 0)
+scale = Vector2(0.75, 0.75)
 texture = ExtResource("3_rsyiq")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -39,15 +41,19 @@ texture = ExtResource("2_6qv0m")
 texture_mode = 1
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="."]
-position = Vector2(-23, 12)
+position = Vector2(-18, 9)
 amount = 40
 process_material = ExtResource("5_6ljbi")
 texture = ExtResource("6_oy1up")
 visibility_rect = Rect2(-80, -50, 100, 100)
 
 [node name="GPUParticles2D2" type="GPUParticles2D" parent="."]
-position = Vector2(-23, -12)
+position = Vector2(-18, -9)
 amount = 40
 process_material = ExtResource("5_6ljbi")
 texture = ExtResource("6_oy1up")
 visibility_rect = Rect2(-80, -50, 100, 100)
+
+[node name="AudioLaunch" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_svlau")
+volume_db = -5.0
