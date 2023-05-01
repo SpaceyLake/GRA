@@ -26,10 +26,10 @@ func _on_hover_PlayGame():
 	$ButtonPlayGame/Label.modulate = Color("#3fc778")
 
 func _on_hover_HowToPlay():
-	$ButtonHowToPlay/Label.modulate = Color("#e1534a")
+	$ButtonHowToPlay/Label.modulate = Color("#007dc7")
 
 func _on_hover_Quit():
-	$ButtonQuit/Label.modulate = Color("#007dc7")
+	$ButtonQuit/Label.modulate = Color("#e1534a")
 
 func _on_stop_hover_PlayGame():
 	$ButtonPlayGame/Label.modulate = Color.WHITE

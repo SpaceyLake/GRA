@@ -96,6 +96,8 @@ glow_hdr_threshold = 0.0
 [node name="World" type="Node2D"]
 script = ExtResource("1_s7eyf")
 
+[node name="DistressBeaconSpawner" parent="." instance=ExtResource("4_7i0cp")]
+
 [node name="AsteroidField" parent="." instance=ExtResource("11_hbnrm")]
 position = Vector2(501, -428)
 
@@ -105,7 +107,77 @@ position = Vector2(616, -341)
 [node name="AsteroidField3" parent="." instance=ExtResource("11_hbnrm")]
 position = Vector2(678, -233)
 
-[node name="DistressBeaconSpawner" parent="." instance=ExtResource("4_7i0cp")]
+[node name="AsteroidField4" parent="." instance=ExtResource("11_hbnrm")]
+position = Vector2(-721, -268)
+
+[node name="AsteroidField5" parent="." instance=ExtResource("11_hbnrm")]
+position = Vector2(-687, -362)
+
+[node name="AsteroidField6" parent="." instance=ExtResource("11_hbnrm")]
+position = Vector2(-1637, 747)
+
+[node name="AsteroidField7" parent="." instance=ExtResource("11_hbnrm")]
+position = Vector2(-1714, 640)
+
+[node name="AsteroidField8" parent="." instance=ExtResource("11_hbnrm")]
+position = Vector2(-1592, 645)
+
+[node name="AsteroidField9" parent="." instance=ExtResource("11_hbnrm")]
+position = Vector2(-1517, 737)
+
+[node name="AsteroidField10" parent="." instance=ExtResource("11_hbnrm")]
+position = Vector2(-583, 366)
+
+[node name="AsteroidField11" parent="." instance=ExtResource("11_hbnrm")]
+position = Vector2(-463, 410)
+
+[node name="AsteroidField12" parent="." instance=ExtResource("11_hbnrm")]
+position = Vector2(1639, 595)
+
+[node name="AsteroidField13" parent="." instance=ExtResource("11_hbnrm")]
+position = Vector2(1598, 718)
+
+[node name="AsteroidField14" parent="." instance=ExtResource("11_hbnrm")]
+position = Vector2(1547, 845)
+
+[node name="AsteroidField15" parent="." instance=ExtResource("11_hbnrm")]
+position = Vector2(1455, 934)
+
+[node name="AsteroidField16" parent="." instance=ExtResource("11_hbnrm")]
+position = Vector2(-1640, -691)
+
+[node name="AsteroidField17" parent="." instance=ExtResource("11_hbnrm")]
+position = Vector2(-1526, -748)
+
+[node name="AsteroidField18" parent="." instance=ExtResource("11_hbnrm")]
+position = Vector2(439, 804)
+
+[node name="AsteroidField19" parent="." instance=ExtResource("11_hbnrm")]
+position = Vector2(309, 810)
+
+[node name="AsteroidField20" parent="." instance=ExtResource("11_hbnrm")]
+position = Vector2(-269, -786)
+
+[node name="AsteroidField21" parent="." instance=ExtResource("11_hbnrm")]
+position = Vector2(-158, -859)
+
+[node name="AsteroidField22" parent="." instance=ExtResource("11_hbnrm")]
+position = Vector2(-155, -732)
+
+[node name="AsteroidField23" parent="." instance=ExtResource("11_hbnrm")]
+position = Vector2(966, -901)
+
+[node name="AsteroidField24" parent="." instance=ExtResource("11_hbnrm")]
+position = Vector2(896, -786)
+
+[node name="PirateBase" parent="." instance=ExtResource("14_v5iej")]
+position = Vector2(-1198, 32)
+
+[node name="PirateBase2" parent="." instance=ExtResource("14_v5iej")]
+position = Vector2(1546, -691)
+
+[node name="PirateBase3" parent="." instance=ExtResource("14_v5iej")]
+position = Vector2(1055, 586)
 
 [node name="Base" parent="." instance=ExtResource("3_lnp6p")]
 metadata/_edit_lock_ = true
@@ -164,6 +236,7 @@ color = Color(0.0588235, 0.054902, 0.0901961, 0.784314)
 metadata/_edit_lock_ = true
 
 [node name="UpgradeMenu" type="Node2D" parent="MenuHanler/DarkOverlay"]
+visible = false
 
 [node name="LabelTitle" type="Label" parent="MenuHanler/DarkOverlay/UpgradeMenu"]
 light_mask = 0
@@ -219,7 +292,6 @@ image = SubResource("CompressedTexture2D_qa02w")
 txt = "Rescue ship"
 
 [node name="PauseMenu" type="Node2D" parent="MenuHanler/DarkOverlay"]
-visible = false
 
 [node name="LabelTitle" type="Label" parent="MenuHanler/DarkOverlay/PauseMenu"]
 light_mask = 0
@@ -228,6 +300,36 @@ offset_top = -256.0
 offset_right = 256.0
 offset_bottom = -191.0
 text = "GAME IS PAUSED"
+label_settings = ExtResource("6_02qeq")
+horizontal_alignment = 1
+
+[node name="ButtonReturn" type="Button" parent="MenuHanler/DarkOverlay/PauseMenu"]
+offset_left = -160.0
+offset_top = -128.0
+offset_right = 160.0
+offset_bottom = -64.0
+theme = ExtResource("10_rufsc")
+
+[node name="Label" type="Label" parent="MenuHanler/DarkOverlay/PauseMenu/ButtonReturn"]
+layout_mode = 0
+offset_right = 320.0
+offset_bottom = 65.0
+text = "Return to menu"
+label_settings = ExtResource("6_02qeq")
+horizontal_alignment = 1
+
+[node name="ButtonQuit" type="Button" parent="MenuHanler/DarkOverlay/PauseMenu"]
+offset_left = -158.0
+offset_right = 160.0
+offset_bottom = 64.0
+theme = ExtResource("10_rufsc")
+
+[node name="Label" type="Label" parent="MenuHanler/DarkOverlay/PauseMenu/ButtonQuit"]
+layout_mode = 0
+offset_left = 3.0
+offset_right = 314.0
+offset_bottom = 65.0
+text = "Quit Game"
 label_settings = ExtResource("6_02qeq")
 horizontal_alignment = 1
 
@@ -300,75 +402,3 @@ script = ExtResource("13_0aexi")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_47pud")
-
-[node name="PirateBase" parent="." instance=ExtResource("14_v5iej")]
-position = Vector2(-1198, 32)
-
-[node name="PirateBase2" parent="." instance=ExtResource("14_v5iej")]
-position = Vector2(1546, -691)
-
-[node name="PirateBase3" parent="." instance=ExtResource("14_v5iej")]
-position = Vector2(1055, 586)
-
-[node name="AsteroidField4" parent="." instance=ExtResource("11_hbnrm")]
-position = Vector2(-721, -268)
-
-[node name="AsteroidField5" parent="." instance=ExtResource("11_hbnrm")]
-position = Vector2(-687, -362)
-
-[node name="AsteroidField6" parent="." instance=ExtResource("11_hbnrm")]
-position = Vector2(-1637, 747)
-
-[node name="AsteroidField7" parent="." instance=ExtResource("11_hbnrm")]
-position = Vector2(-1714, 640)
-
-[node name="AsteroidField8" parent="." instance=ExtResource("11_hbnrm")]
-position = Vector2(-1592, 645)
-
-[node name="AsteroidField9" parent="." instance=ExtResource("11_hbnrm")]
-position = Vector2(-1517, 737)
-
-[node name="AsteroidField10" parent="." instance=ExtResource("11_hbnrm")]
-position = Vector2(-583, 366)
-
-[node name="AsteroidField11" parent="." instance=ExtResource("11_hbnrm")]
-position = Vector2(-463, 410)
-
-[node name="AsteroidField12" parent="." instance=ExtResource("11_hbnrm")]
-position = Vector2(1639, 595)
-
-[node name="AsteroidField13" parent="." instance=ExtResource("11_hbnrm")]
-position = Vector2(1598, 718)
-
-[node name="AsteroidField14" parent="." instance=ExtResource("11_hbnrm")]
-position = Vector2(1547, 845)
-
-[node name="AsteroidField15" parent="." instance=ExtResource("11_hbnrm")]
-position = Vector2(1455, 934)
-
-[node name="AsteroidField16" parent="." instance=ExtResource("11_hbnrm")]
-position = Vector2(-1640, -691)
-
-[node name="AsteroidField17" parent="." instance=ExtResource("11_hbnrm")]
-position = Vector2(-1526, -748)
-
-[node name="AsteroidField18" parent="." instance=ExtResource("11_hbnrm")]
-position = Vector2(439, 804)
-
-[node name="AsteroidField19" parent="." instance=ExtResource("11_hbnrm")]
-position = Vector2(309, 810)
-
-[node name="AsteroidField20" parent="." instance=ExtResource("11_hbnrm")]
-position = Vector2(-269, -786)
-
-[node name="AsteroidField21" parent="." instance=ExtResource("11_hbnrm")]
-position = Vector2(-158, -859)
-
-[node name="AsteroidField22" parent="." instance=ExtResource("11_hbnrm")]
-position = Vector2(-155, -732)
-
-[node name="AsteroidField23" parent="." instance=ExtResource("11_hbnrm")]
-position = Vector2(966, -901)
-
-[node name="AsteroidField24" parent="." instance=ExtResource("11_hbnrm")]
-position = Vector2(896, -786)
