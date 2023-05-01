@@ -1,6 +1,6 @@
 extends Camera2D
 
-@export var zoom_decrease = 0.5/900
+@export var zoom_decrease = 0.5/600
 @export var min_zoom = 0.5
 @export var start_zoom = 1
 
@@ -13,8 +13,8 @@ func _process(delta):
 		zoom.x = min_zoom
 		zoom.y = min_zoom
 	else:
-		zoom.x -= zoom_decrease * delta
-		zoom.y -= zoom_decrease * delta
+		zoom.x = start_zoom - zoom_decrease * global.difficulty
+		zoom.y = start_zoom - zoom_decrease * global.difficulty
 
 func get_min_zoom():
 	return min_zoom
