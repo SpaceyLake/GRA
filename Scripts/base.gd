@@ -30,8 +30,6 @@ func _ready():
 	mouse_exited.connect(is_not_howering)
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
-	spawn_attack_ship()
-	spawn_rescue_ship()
 
 func _input(event):
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_WHEEL_UP and event.is_pressed():
