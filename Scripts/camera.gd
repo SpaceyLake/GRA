@@ -8,7 +8,7 @@ func _ready():
 	zoom.x = start_zoom
 	zoom.y = start_zoom
 
-func _process(delta):
+func _process(_delta):
 	if zoom.x <= min_zoom and zoom.y <= min_zoom:
 		zoom.x = min_zoom
 		zoom.y = min_zoom
