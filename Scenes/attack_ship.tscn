@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://ol2teqws0a31"]
+[gd_scene load_steps=9 format=3 uid="uid://ol2teqws0a31"]
 
 [ext_resource type="Script" path="res://Scripts/attack_ship.gd" id="1_udusr"]
 [ext_resource type="Texture2D" uid="uid://c8ll5y2erwpd8" path="res://Sprites/AttackShip.png" id="2_qaxwg"]
 [ext_resource type="Texture2D" uid="uid://c036im7071r62" path="res://Sprites/PathLine.svg" id="3_a8gix"]
 [ext_resource type="Material" uid="uid://om7hyn8t644e" path="res://Settings/attack_ship_thrusters.tres" id="4_vl4uq"]
 [ext_resource type="Texture2D" uid="uid://dkmbbbomkkuju" path="res://Sprites/Circle.svg" id="5_ehym0"]
+[ext_resource type="AudioStream" uid="uid://hc0jvblatdd3" path="res://Sound/launch2.wav" id="6_v5hop"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_8n1a8"]
 radius = 22.0227
@@ -64,3 +65,7 @@ amount = 40
 process_material = ExtResource("4_vl4uq")
 texture = ExtResource("5_ehym0")
 visibility_rect = Rect2(-80, -50, 100, 100)
+
+[node name="AudioLaunch" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_v5hop")
+volume_db = -5.0
