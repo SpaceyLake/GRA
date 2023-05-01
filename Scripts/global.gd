@@ -7,6 +7,10 @@ signal new_selected(old_selected:Node2D)
 
 var selected:Node2D
 var menu_hanler:Node = null
+var rng = RandomNumberGenerator.new()
+
+func _ready():
+	rng.randomize()
 
 func select(object:Node2D, selecting:bool):
 	if selecting:

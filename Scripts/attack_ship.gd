@@ -97,7 +97,7 @@ func select_ship(select:bool):
 
 func add_waypoint(pos:Vector2):
 	if waypoint_count() == 0 and velocity == Vector2.ZERO:
-		$AudioLaunch.play()
+		#$AudioLaunch.play()
 		pass
 	var marker = path_marker_pool.request_path_marker(pos, color_selected)
 	marker.visible = selected

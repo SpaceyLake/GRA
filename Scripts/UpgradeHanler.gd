@@ -12,10 +12,16 @@ func _ready():
 	$DarkOverlay/LoseMenu.visible = false
 	$AnimationPlayer.play_backwards("Darken")
 	
+	$DarkOverlay/UpgradeMenu/RefuelingShip.visible = false
+	$DarkOverlay/UpgradeMenu/AttackShip.visible = false
+	$DarkOverlay/UpgradeMenu/RescueShip.visible = false	
+	
 	$UpgradeTimer.timeout.connect(_on_UpgradeTimer_timeout)
 	$DarkOverlay/UpgradeMenu/RefuelingShip.pressed.connect(_on_RefuelingShip_pressed)
-	$DarkOverlay/LoseMenu/ButtonReturn.pressed.connect(_on_ButtonReturn_pressed)
+	$DarkOverlay/UpgradeMenu/AttackShip.pressed.connect(_on_AttackShip_pressed)
+	$DarkOverlay/UpgradeMenu/RescueShip.pressed.connect(_on_RescueShip_pressed)	
 	
+	$DarkOverlay/LoseMenu/ButtonReturn.pressed.connect(_on_ButtonReturn_pressed)
 	$DarkOverlay/LoseMenu/ButtonReturn.mouse_entered.connect(_on_hover_ButtonReturn)
 	$DarkOverlay/LoseMenu/ButtonReturn.mouse_exited.connect(_on_stop_hover_ButtonReturn)
 
@@ -44,7 +50,10 @@ func finnish_upgrade():
 	$AnimationPlayer.play_backwards("Darken")
 	$UpgradeTimer.start()
 	
-	get_parent().base.add_ship()
+	$DarkOverlay/UpgradeMenu/RefuelingShip.visible = false
+	$DarkOverlay/UpgradeMenu/AttackShip.visible = false
+	$DarkOverlay/UpgradeMenu/RescueShip.visible = false	
+	#get_parent().base.add_ship()
 
 func game_lost():
 	get_tree().paused = true
@@ -62,6 +71,29 @@ func _on_UpgradeTimer_timeout():
 	$DarkOverlay/UpgradeMenu/LabelTitle.text = "Cycle "+str(cycle)
 	
 	$AnimationPlayer.play("Darken")
+	
+	if cycle == 2:
+		$DarkOverlay/UpgradeMenu/RefuelingShip.visible = true
+		$DarkOverlay/UpgradeMenu/RefuelingShip.global_position = $DarkOverlay/UpgradeMenu/Marker1.global_position		
+		$DarkOverlay/UpgradeMenu/AttackShip.visible = true
+		$DarkOverlay/UpgradeMenu/AttackShip.global_position = $DarkOverlay/UpgradeMenu/Marker2.global_position
+	else:
+		var upgrade = global.rng.randf_range(0, 1)
+		if upgrade < 0.2:
+			$DarkOverlay/UpgradeMenu/AttackShip.visible = true
+			$DarkOverlay/UpgradeMenu/AttackShip.global_position = $DarkOverlay/UpgradeMenu/Marker1.global_position
+			$DarkOverlay/UpgradeMenu/RescueShip.visible = true
+			$DarkOverlay/UpgradeMenu/RescueShip.global_position = $DarkOverlay/UpgradeMenu/Marker2.global_position		
+		elif upgrade < 0.5:
+			$DarkOverlay/UpgradeMenu/RefuelingShip.visible = true
+			$DarkOverlay/UpgradeMenu/RefuelingShip.global_position = $DarkOverlay/UpgradeMenu/Marker1.global_position
+			$DarkOverlay/UpgradeMenu/RescueShip.visible = true
+			$DarkOverlay/UpgradeMenu/RescueShip.global_position = $DarkOverlay/UpgradeMenu/Marker2.global_position		
+		else:
+			$DarkOverlay/UpgradeMenu/RefuelingShip.visible = true
+			$DarkOverlay/UpgradeMenu/RefuelingShip.global_position = $DarkOverlay/UpgradeMenu/Marker1.global_position		
+			$DarkOverlay/UpgradeMenu/AttackShip.visible = true
+			$DarkOverlay/UpgradeMenu/AttackShip.global_position = $DarkOverlay/UpgradeMenu/Marker2.global_position
 
 func _on_ButtonReturn_pressed():
 	get_tree().paused = false
@@ -75,5 +107,13 @@ func _on_stop_hover_ButtonReturn():
 
 func _on_RefuelingShip_pressed():
 	get_parent().base.add_ship()
+	finnish_upgrade()
+
+func _on_AttackShip_pressed():
+	get_parent().base.spawn_attack_ship()
+	finnish_upgrade()
+
+func _on_RescueShip_pressed():
+	get_parent().base.spawn_rescue_ship()
 	finnish_upgrade()
 
